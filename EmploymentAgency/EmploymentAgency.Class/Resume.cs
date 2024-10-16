@@ -12,7 +12,7 @@ namespace EmploymentAgency.Class
         public int IdSlave { get; set; }
         public decimal Exp { get; set; } // опыт работы 
         public JobPosition? Position { get; set; }
-        public uint? WnatSalary { get; set; }
+        public uint? WantSalary { get; set; }
         public string? Summary { get; set; }
     }
 }
