@@ -13,6 +13,6 @@ namespace EmploymentAgency.Class
         public int IdVacancy { get; set; }
         public int IdUser { get; set; }
         public bool? ResponseStatus { get; set; } //null - rewiew, true - accepted, false - rejected
-        public string? ResponseDate { get; set; }
+        public string? Summary { get; set; } // Сообщение при отклике
     }
 }
