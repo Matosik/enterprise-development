@@ -16,7 +16,7 @@
 #### Slave(соискатель)
 + Age
 
-#### Master(Работадатель)
+#### Master(Работодатель)
 + Company
 
 ### JobPosition
