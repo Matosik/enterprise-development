@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmploymentAgency.Class
 {
-    internal class JobPosition
+    public class JobPosition
     {
         public int Id { get; set; }  
         public string Section { get; set; }  // Раздел (IT, финансы, реклама и т.д.)

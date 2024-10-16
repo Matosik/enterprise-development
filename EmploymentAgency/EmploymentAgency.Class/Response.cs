@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmploymentAgency.Class
 {
-    internal class Response
+    public class Response
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }

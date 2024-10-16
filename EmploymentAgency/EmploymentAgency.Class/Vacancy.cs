@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace EmploymentAgency.Class
 {
-    internal class Vacancy
+    public class Vacancy
     {
         public int Id { get; set; }
         public int IdMaster { get; set; }
+        public int IdJob { get; set; }
         public string NameVacancy { get; set; }
-        public JobPosition Job { get; set; }
         public DateTime Date { get; set; }
         public bool IsActive { get; set; }
         public uint? Salary { get; set; } // надеюсь нет зарплат больше 2^32, если есть я буду плакать
@@ -21,5 +21,6 @@ namespace EmploymentAgency.Class
         public string? PhoneNumber { get; set; } // по дефолту берется из Master
         public string? Email { get; set; } // по дефолту берется из Master
         public string? Summary { get; set; }
+        public JobPosition Job { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmploymentAgency.Class
 {
-    internal class Resume
+    public class Resume
     {
         public int Id { get; set; }
         public int IdSlave { get; set; }
