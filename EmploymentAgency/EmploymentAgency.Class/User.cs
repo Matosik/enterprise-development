@@ -1,6 +1,4 @@
-﻿using System.Runtime.Intrinsics.X86;
-
-namespace EmploymentAgency.Class
+﻿namespace EmploymentAgency.Class
 {
     public class User
     {
