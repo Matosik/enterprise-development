@@ -12,7 +12,19 @@ namespace EmploymentAgency.Class
         public DateTime Date { get; set; }
         public int IdVacancy { get; set; }
         public int IdSlave { get; set; }
-        public bool? ResponseStatus { get; set; } //null - rewiew, true - accepted, false - rejected
-        public string? Summary { get; set; } // Сообщение при отклике
+        /// <summary>
+        /// Статус отклика 
+        /// <list>
+        ///     <item>null - rewiew </item>
+        ///     <item>true - accept</item>
+        ///     <item>fasle - rejected</item>
+        /// </list>   
+        /// </summary>
+        public bool? ResponseStatus { get; set; }
+
+        /// <summary>
+        /// Сообщение соискателя при отклике
+        /// </summary>
+        public string? Summary { get; set; }
     }
 }

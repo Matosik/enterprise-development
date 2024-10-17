@@ -12,19 +12,5 @@ namespace EmploymentAgency.Class
         public string? FullName { get; set; }
 
     }
-    
-    public class Slave : User // класс для соискателя  
-    {
-        public byte Age { get; set; }
-        public virtual ICollection<Resume> Resumes { get; set; }
-        public virtual ICollection<Response> Responses { get; set; }
-    }
-
-    public class Master : User// класс для работодателя
-    {
-        public string? Company { get; set; }
-        public virtual ICollection<Vacancy> Offers { get; set; } = new List<Vacancy>();
-
-    }
 
 }
