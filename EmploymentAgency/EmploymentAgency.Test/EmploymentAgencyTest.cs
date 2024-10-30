@@ -14,7 +14,7 @@ public class EmploymentAgencyTest
     /// 2. Вывести всех соискателей, оставивших заявки за заданный период.
     /// </summary>
     [Fact]
-    public void Test_GetSlavesByResponsesWithinPeriod()
+    public void TestGetSlavesByResponsesWithinPeriod()
     {
 
     }
