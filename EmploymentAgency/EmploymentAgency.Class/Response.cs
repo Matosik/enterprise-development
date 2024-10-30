@@ -1,11 +1,14 @@
 ﻿namespace EmploymentAgency.Class;
-
+/// <summary>
+/// Класс для отклика 
+/// Связывает вакансию и соискателя 
+/// </summary>
 public class Response
 {
-    public int Id { get; set; }
-    public DateTime Date { get; set; }
+    public int IdResponse { get; set; }
+    public DateTime DateResponse { get; set; }
     public int IdVacancy { get; set; }
-    public int IdSlave { get; set; }
+    public int IdApplicant { get; set; }
     /// <summary>
     /// Статус отклика 
     /// <list>
@@ -15,9 +18,8 @@ public class Response
     /// </list>   
     /// </summary>
     public bool? ResponseStatus { get; set; }
-
     /// <summary>
     /// Сообщение соискателя при отклике
     /// </summary>
-    public string? Summary { get; set; }
+    public string? SummaryResponse { get; set; }
 }

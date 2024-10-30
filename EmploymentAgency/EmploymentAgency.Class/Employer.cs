@@ -3,8 +3,8 @@
 /// <summary>
 /// Класс для работодателя
 /// </summary>
-public class Master : User
+public class Employer : User
 {
+    public int IdEmployer { get; set; }
     public string? Company { get; set; }
-    public virtual ICollection<Vacancy> Offers { get; set; } = new List<Vacancy>();
 }

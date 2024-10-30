@@ -1,28 +1,25 @@
 ﻿namespace EmploymentAgency.Class;
 
+/// <summary>
+/// Класс Вакансия.
+/// </summary>
 public class Vacancy
 {
-    public int Id { get; set; }
-    public int IdMaster { get; set; }
-    public int IdJob { get; set; }
+    public int IdVacancy { get; set; }
+    public int IdEmployer { get; set; }
+    public int IdJobPosition { get; set; }
     public string NameVacancy { get; set; }
-    public DateTime Date { get; set; }
+    /// <summary>
+    /// Дата создания вакансии
+    /// </summary>
+    public DateTime DateVacancy { get; set; }
     public bool IsActive { get; set; }
     public uint? Salary { get; set; }
     /// <summary>
     /// опыть работы в годах
     /// </summary>
-    public decimal Exp { get; set; }
+    public decimal Experience { get; set; }
     public byte MinAge { get; set; }
     public byte MaxAge { get; set; }
-    /// <summary>
-    /// по дефолту берется из Master
-    /// </summary>
-    public string? PhoneNumber { get; set; }
-    /// <summary>
-    /// по дефолту берется из Master
-    /// </summary>
-    public string? Email { get; set; }
     public string? Summary { get; set; }
-    public JobPosition Job { get; set; }
 }
