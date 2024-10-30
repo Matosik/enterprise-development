@@ -9,7 +9,7 @@ public class Resume
     /// <summary>
     /// Опыт работы в годах
     /// </summary>
-    public decimal Experience { get; set; }
+    public float Experience { get; set; }
     public int IdPosition { get; set;}
     public uint? WantSalary { get; set; }
     /// <summary>

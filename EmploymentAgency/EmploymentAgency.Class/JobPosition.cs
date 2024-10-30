@@ -9,7 +9,7 @@ public class JobPosition
     /// <summary>
     /// Раздел (IT, финансы, реклама и т.д.)
     /// </summary>
-    public string Section { get; set; }
+    public string?Section { get; set; }
     /// <summary>
     /// должность (программист, дизайнер и т.д.)
     /// </summary>

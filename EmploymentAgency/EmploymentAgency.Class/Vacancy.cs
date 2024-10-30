@@ -18,7 +18,7 @@ public class Vacancy
     /// <summary>
     /// опыть работы в годах
     /// </summary>
-    public decimal Experience { get; set; }
+    public float Experience { get; set; }
     public byte MinAge { get; set; }
     public byte MaxAge { get; set; }
     public string? Summary { get; set; }
