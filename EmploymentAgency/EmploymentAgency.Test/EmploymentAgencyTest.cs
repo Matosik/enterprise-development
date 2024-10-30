@@ -28,7 +28,7 @@ public class EmploymentAgencyTest
     [Fact]
     public void TestGetSlavesByResponsesWithinPeriod()
     {
-        DateTime startDate = new DateTime(2023, 1, 1);
+        DateTime startDate = new DateTime(2023, 1, 1) ;
         DateTime endDate = new DateTime(2023, 12, 31);
         var applicants = data.Applicants
             .Where(a => data.Responses.Any(r => r.IdApplicant == a.IdApplicant && r.DateResponse >= startDate && r.DateResponse <= endDate))
