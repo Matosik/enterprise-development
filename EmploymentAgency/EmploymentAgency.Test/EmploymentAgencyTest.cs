@@ -10,7 +10,7 @@ public class EmploymentAgencyTest
     /// 1.Вывести сведения о всех соискателях, ищущих работу по заданной позиции, отсортированные по имени.
     /// </summary>
     [Fact]
-    public void TestGetAllSlavesByJobPositionSortedByName()
+    public void TestGetAllApplicantByJobPosition()
     {
         int jobPositionId = 1;
         var applicants = data.Applicants
@@ -26,7 +26,7 @@ public class EmploymentAgencyTest
     /// 2. Вывести всех соискателей, оставивших заявки за заданный период.
     /// </summary>
     [Fact]
-    public void TestGetSlavesByResponsesWithinPeriod()
+    public void TestGetApplicantByResponsesWithinPeriod()
     {
         DateTime startDate = new DateTime(2023, 1, 1) ;
         DateTime endDate = new DateTime(2023, 12, 31);
@@ -42,7 +42,7 @@ public class EmploymentAgencyTest
     /// 3. Вывести сведения о соискателях, соответствующих определенной заявке работодателя.
     /// </summary>
     [Fact]
-    public void TestGetSlavesForSpecificVacancy()
+    public void TestGetApplicantForSpecificVacancy()
     {
         int vacancyId = 2;
         var vacancy = data.Vacancies.FirstOrDefault(v => v.IdVacancy == vacancyId);
