@@ -1,36 +1,34 @@
-using EmploymentAgency.Class;
+п»їusing EmploymentAgency.Class;
 
 namespace EmploymentAgency.Test;
 public class EmploymentAgencyTest
 {
     /// <summary>
-    /// 1.Вывести сведения о всех соискателях, ищущих работу по заданной 
+    /// 1.Р’С‹РІРµСЃС‚Рё СЃРІРµРґРµРЅРёСЏ Рѕ РІСЃРµС… СЃРѕРёСЃРєР°С‚РµР»СЏС…, РёС‰СѓС‰РёС… СЂР°Р±РѕС‚Сѓ РїРѕ Р·Р°РґР°РЅРЅРѕР№ 
     /// </summary>
     [Fact]
-    public void Test_GetAllSlavesByJobPosition_SortedByName()
+    public void TestGetAllSlavesByJobPositionSortedByName()
     {
 
-        var jobPosition = new JobPosition { Id = 1, Section = "IT", PositionName = "Программист" };
-        var slaves = new List<Slave>
+        var jobPosition = new JobPosition { IdJobPosition = 1, Section = "IT", PositionName = "РџСЂРѕРіСЂР°РјРјРёСЃС‚" };
+        var slaves = new List<Applicant>
         {
-            new Slave { Id = 1, FullName = "Иванов Иван", Age = 30, Resumes = new List<Resume> { new Resume { Position = jobPosition } } },
-            new Slave { Id = 2, FullName = "Петров Петр", Age = 25, Resumes = new List<Resume> { new Resume { Position = jobPosition } } },
-            new Slave { Id = 3, FullName = "Сидоров Сидор", Age = 35, Resumes = new List<Resume> { new Resume { Position = new JobPosition { Id = 2, Section = "Финансы", PositionName = "Бухгалтер" } } } },
-            new Slave { Id = 3, FullName = "Сидоров Сидор", Age = 35, Resumes = new List<Resume> { new Resume { Position = new JobPosition { Id = 2, Section = "Финансы", PositionName = "Бухгалтер" } } } }
+            new Applicant { IdApplicant = 1, LastName = "РРІР°РЅРѕРІ", FirstName = "РРІР°РЅ", Age = 30, Resumes = new List<Resume> { new Resume { Position = jobPosition } } },
+            new Applicant { IdApplicant = 2, LastName = "РџРµС‚СЂРѕРІ", FirstName = "РџРµС‚СЂ", Age = 25, Resumes = new List<Resume> { new Resume { Position = jobPosition } } },
+            new Applicant { IdApplicant = 3, LastName = "РЎРёРґРѕСЂРѕРІ", FirstName = "РЎРёРґРѕСЂ", Age = 35, Resumes = new List<Resume> { new Resume { Position = new JobPosition { Id = 2, Section = "Р¤РёРЅР°РЅСЃС‹", PositionName = "Р‘СѓС…РіР°Р»С‚РµСЂ" } } } },
+            new Applicant { IdApplicant = 3, LastName = "РЎРёРґРѕСЂРѕРІ", FirstName = "РЎРёРґРѕСЂ", Age = 35, Resumes = new List<Resume> { new Resume { Position = new JobPosition { Id = 2, Section = "Р¤РёРЅР°РЅСЃС‹", PositionName = "Р‘СѓС…РіР°Р»С‚РµСЂ" } } } }
         };
-
-
         var result = slaves
-            .Where(s => s.Resumes.Any(r => r.Position.PositionName == "Программист"))
+            .Where(s => s.Resumes.Any(r => r.Position.PositionName == "РџСЂРѕРіСЂР°РјРјРёСЃС‚"))
             .OrderBy(s => s.FullName)
             .ToList();
 
         Assert.Equal(2, result.Count);
-        Assert.Equal("Иванов Иван", result[0].FullName);
-        Assert.Equal("Петров Петр", result[1].FullName);
+        Assert.Equal("РРІР°РЅРѕРІ РРІР°РЅ", result[0].FullName);
+        Assert.Equal("РџРµС‚СЂРѕРІ РџРµС‚СЂ", result[1].FullName);
     }
     /// <summary>
-    /// 2. Вывести всех соискателей, оставивших заявки за заданный период.
+    /// 2. Р’С‹РІРµСЃС‚Рё РІСЃРµС… СЃРѕРёСЃРєР°С‚РµР»РµР№, РѕСЃС‚Р°РІРёРІС€РёС… Р·Р°СЏРІРєРё Р·Р° Р·Р°РґР°РЅРЅС‹Р№ РїРµСЂРёРѕРґ.
     /// </summary>
     [Fact]
     public void Test_GetSlavesByResponsesWithinPeriod()
@@ -38,11 +36,11 @@ public class EmploymentAgencyTest
         var startDate = new DateTime(2023, 1, 1);
         var endDate = new DateTime(2023, 12, 31);
 
-        var slaves = new List<Slave>
+        var slaves = new List<Applicant>
         {
-            new Slave { Id = 1, FullName = "Иванов Иван", Responses = new List<Response> { new Response { Date = new DateTime(2023, 5, 1) } } },
-            new Slave { Id = 2, FullName = "Петров Петр", Responses = new List<Response> { new Response { Date = new DateTime(2022, 10, 1) } } },
-            new Slave { Id = 3, FullName = "Сидоров Сидор", Responses = new List<Response> { new Response { Date = new DateTime(2023, 3, 15) } } }
+            new Applicant { Id = 1, FullName = "РРІР°РЅРѕРІ РРІР°РЅ", Responses = new List<Response> { new Response { Date = new DateTime(2023, 5, 1) } } },
+            new Applicant { Id = 2, FullName = "РџРµС‚СЂРѕРІ РџРµС‚СЂ", Responses = new List<Response> { new Response { Date = new DateTime(2022, 10, 1) } } },
+            new Applicant { Id = 3, FullName = "РЎРёРґРѕСЂРѕРІ РЎРёРґРѕСЂ", Responses = new List<Response> { new Response { Date = new DateTime(2023, 3, 15) } } }
         };
 
         var result = slaves
@@ -51,30 +49,30 @@ public class EmploymentAgencyTest
 
 
         Assert.Equal(2, result.Count);
-        Assert.Contains(result, s => s.FullName == "Иванов Иван");
-        Assert.Contains(result, s => s.FullName == "Сидоров Сидор");
+        Assert.Contains(result, s => s.FullName == "РРІР°РЅРѕРІ РРІР°РЅ");
+        Assert.Contains(result, s => s.FullName == "РЎРёРґРѕСЂРѕРІ РЎРёРґРѕСЂ");
     }
     /// <summary>
-    /// 3. Вывести сведения о соискателях, соответствующих определенной заявке работодателя.
+    /// 3. Р’С‹РІРµСЃС‚Рё СЃРІРµРґРµРЅРёСЏ Рѕ СЃРѕРёСЃРєР°С‚РµР»СЏС…, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёС… РѕРїСЂРµРґРµР»РµРЅРЅРѕР№ Р·Р°СЏРІРєРµ СЂР°Р±РѕС‚РѕРґР°С‚РµР»СЏ.
     /// </summary>
     [Fact]
-    public void Test_GetSlavesForSpecificVacancy()
+    public void TestGetSlavesForSpecificVacancy()
     {
         var vacancy = new Vacancy
         {
             Id = 1,
-            NameVacancy = "Программист",
-            Job = new JobPosition { Id = 1, Section = "IT", PositionName = "Программист" },
+            NameVacancy = "РџСЂРѕРіСЂР°РјРјРёСЃС‚",
+            Job = new JobPosition { Id = 1, Section = "IT", PositionName = "РџСЂРѕРіСЂР°РјРјРёСЃС‚" },
             MinAge = 25,
             MaxAge = 35,
             Salary = 60000
         };
 
-        var slaves = new List<Slave>
+        var slaves = new List<Applicant>
         {
-            new Slave { Id = 1, FullName = "Иванов Иван", Age = 30, Resumes = new List<Resume> { new Resume { Position = vacancy.Job, WantSalary = 55000 } } },
-            new Slave { Id = 2, FullName = "Петров Петр", Age = 25, Resumes = new List<Resume> { new Resume { Position = vacancy.Job, WantSalary = 70000 } } },
-            new Slave { Id = 3, FullName = "Сидоров Сидор", Age = 40, Resumes = new List<Resume> { new Resume { Position = new JobPosition { Id = 2, Section = "Финансы", PositionName = "Бухгалтер" } } } }
+            new Applicant { Id = 1, FullName = "РРІР°РЅРѕРІ РРІР°РЅ", Age = 30, Resumes = new List<Resume> { new Resume { Position = vacancy.Job, WantSalary = 55000 } } },
+            new Applicant { Id = 2, FullName = "РџРµС‚СЂРѕРІ РџРµС‚СЂ", Age = 25, Resumes = new List<Resume> { new Resume { Position = vacancy.Job, WantSalary = 70000 } } },
+            new Applicant { Id = 3, FullName = "РЎРёРґРѕСЂРѕРІ РЎРёРґРѕСЂ", Age = 40, Resumes = new List<Resume> { new Resume { Position = new JobPosition { Id = 2, Section = "Р¤РёРЅР°РЅСЃС‹", PositionName = "Р‘СѓС…РіР°Р»С‚РµСЂ" } } } }
         };
 
         var result = slaves
@@ -83,20 +81,19 @@ public class EmploymentAgencyTest
             .ToList();
 
         Assert.Single(result);
-        Assert.Equal("Иванов Иван", result[0].FullName);
+        Assert.Equal("РРІР°РЅРѕРІ РРІР°РЅ", result[0].FullName);
     }
     /// <summary>
-    ///4. Вывести информацию о количестве заявок по каждому разделу и должности
+    ///4. Р’С‹РІРµСЃС‚Рё РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РєРѕР»РёС‡РµСЃС‚РІРµ Р·Р°СЏРІРѕРє РїРѕ РєР°Р¶РґРѕРјСѓ СЂР°Р·РґРµР»Сѓ Рё РґРѕР»Р¶РЅРѕСЃС‚Рё
     /// </summary>
     [Fact]
     public void Test_GetVacancyCountBySectionAndPosition()
     {
-
         var vacancies = new List<Vacancy>
         {
-            new Vacancy { Id = 1, NameVacancy = "Программист", Job = new JobPosition { Id = 1, Section = "IT", PositionName = "Программист" } },
-            new Vacancy { Id = 2, NameVacancy = "Дизайнер", Job = new JobPosition { Id = 1, Section = "IT", PositionName = "Дизайнер" } },
-            new Vacancy { Id = 3, NameVacancy = "Бухгалтер", Job = new JobPosition { Id = 2, Section = "Финансы", PositionName = "Бухгалтер" } }
+            new Vacancy { Id = 1, NameVacancy = "РџСЂРѕРіСЂР°РјРјРёСЃС‚", Job = new JobPosition { Id = 1, Section = "IT", PositionName = "РџСЂРѕРіСЂР°РјРјРёСЃС‚" } },
+            new Vacancy { Id = 2, NameVacancy = "Р”РёР·Р°Р№РЅРµСЂ", Job = new JobPosition { Id = 1, Section = "IT", PositionName = "Р”РёР·Р°Р№РЅРµСЂ" } },
+            new Vacancy { Id = 3, NameVacancy = "Р‘СѓС…РіР°Р»С‚РµСЂ", Job = new JobPosition { Id = 2, Section = "Р¤РёРЅР°РЅСЃС‹", PositionName = "Р‘СѓС…РіР°Р»С‚РµСЂ" } }
         };
 
         var result = vacancies
@@ -105,24 +102,24 @@ public class EmploymentAgencyTest
             .ToList();
 
         Assert.Equal(3, result.Count);
-        Assert.Contains(result, r => r.Section == "IT" && r.PositionName == "Программист" && r.Count == 1);
-        Assert.Contains(result, r => r.Section == "Финансы" && r.PositionName == "Бухгалтер" && r.Count == 1);
+        Assert.Contains(result, r => r.Section == "IT" && r.PositionName == "РџСЂРѕРіСЂР°РјРјРёСЃС‚" && r.Count == 1);
+        Assert.Contains(result, r => r.Section == "Р¤РёРЅР°РЅСЃС‹" && r.PositionName == "Р‘СѓС…РіР°Р»С‚РµСЂ" && r.Count == 1);
     }
 
     /// <summary>
-    /// 5.Вывести топ 5 работодателей по количеству заявок
+    /// 5.Р’С‹РІРµСЃС‚Рё С‚РѕРї 5 СЂР°Р±РѕС‚РѕРґР°С‚РµР»РµР№ РїРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ Р·Р°СЏРІРѕРє
     /// </summary>
     [Fact]
     public void Test_GetTop5EmployersByVacancyCount()
     {
-        var employers = new List<Master>
+        var employers = new List<Employer>
         {
-            new Master { Id = 1, Company = "Компания A", Offers = new List<Vacancy> { new Vacancy(), new Vacancy() } },
-            new Master { Id = 2, Company = "Компания B", Offers = new List<Vacancy> { new Vacancy(), new Vacancy(), new Vacancy() } },
-            new Master { Id = 3, Company = "Компания C", Offers = new List<Vacancy> { new Vacancy() } },
-            new Master { Id = 4, Company = "Компания D", Offers = new List<Vacancy> { new Vacancy(), new Vacancy(), new Vacancy(), new Vacancy() } },
-            new Master { Id = 5, Company = "Компания E", Offers = new List<Vacancy> { new Vacancy(), new Vacancy() } },
-            new Master { Id = 6, Company = "Компания F", Offers = new List<Vacancy> { new Vacancy(), new Vacancy(), new Vacancy() } }
+            new Employer { Id = 1, Company = "РљРѕРјРїР°РЅРёСЏ A", Offers = new List<Vacancy> { new Vacancy(), new Vacancy() } },
+            new Employer { Id = 2, Company = "РљРѕРјРїР°РЅРёСЏ B", Offers = new List<Vacancy> { new Vacancy(), new Vacancy(), new Vacancy() } },
+            new Employer { Id = 3, Company = "РљРѕРјРїР°РЅРёСЏ C", Offers = new List<Vacancy> { new Vacancy() } },
+            new Employer { Id = 4, Company = "РљРѕРјРїР°РЅРёСЏ D", Offers = new List<Vacancy> { new Vacancy(), new Vacancy(), new Vacancy(), new Vacancy() } },
+            new Employer { Id = 5, Company = "РљРѕРјРїР°РЅРёСЏ E", Offers = new List<Vacancy> { new Vacancy(), new Vacancy() } },
+            new Employer { Id = 6, Company = "РљРѕРјРїР°РЅРёСЏ F", Offers = new List<Vacancy> { new Vacancy(), new Vacancy(), new Vacancy() } }
         };
 
 
@@ -133,23 +130,23 @@ public class EmploymentAgencyTest
             .ToList();
 
         Assert.Equal(5, result.Count);
-        Assert.Equal("Компания D", result[0].Company);
+        Assert.Equal("РљРѕРјРїР°РЅРёСЏ D", result[0].Company);
         Assert.Equal(4, result[0].VacancyCount);
-        Assert.Equal("Компания B", result[1].Company);
+        Assert.Equal("РљРѕРјРїР°РЅРёСЏ B", result[1].Company);
         Assert.Equal(3, result[1].VacancyCount);
     }
     /// <summary>
-    /// 6.Вывести информацию о работодателях, открывших заявки с максимальным уровнем зарплаты.
+    /// 6.Р’С‹РІРµСЃС‚Рё РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ СЂР°Р±РѕС‚РѕРґР°С‚РµР»СЏС…, РѕС‚РєСЂС‹РІС€РёС… Р·Р°СЏРІРєРё СЃ РјР°РєСЃРёРјР°Р»СЊРЅС‹Рј СѓСЂРѕРІРЅРµРј Р·Р°СЂРїР»Р°С‚С‹.
     /// </summary>
     [Fact]
     public void Test_GetEmployersWithMaxSalaryVacancies()
     {
 
-        var employers = new List<Master>
+        var employers = new List<Employer>
         {
-            new Master { Id = 1, Company = "Компания A", Offers = new List<Vacancy> { new Vacancy { Salary = 50000 }, new Vacancy { Salary = 70000 } } },
-            new Master { Id = 2, Company = "Компания B", Offers = new List<Vacancy> { new Vacancy { Salary = 90000 }, new Vacancy { Salary = 80000 } } },
-            new Master { Id = 3, Company = "Компания C", Offers = new List<Vacancy> { new Vacancy { Salary = 90000 } } }
+            new Employer { Id = 1, Company = "РљРѕРјРїР°РЅРёСЏ A", Offers = new List<Vacancy> { new Vacancy { Salary = 50000 }, new Vacancy { Salary = 70000 } } },
+            new Employer { Id = 2, Company = "РљРѕРјРїР°РЅРёСЏ B", Offers = new List<Vacancy> { new Vacancy { Salary = 90000 }, new Vacancy { Salary = 80000 } } },
+            new Employer { Id = 3, Company = "РљРѕРјРїР°РЅРёСЏ C", Offers = new List<Vacancy> { new Vacancy { Salary = 90000 } } }
         };
 
         var maxSalary = employers
@@ -161,10 +158,10 @@ public class EmploymentAgencyTest
             .Select(e => new { e.Company, MaxSalary = maxSalary })
             .ToList();
 
-        // 3. Проверка результатов
+        // 3. РџСЂРѕРІРµСЂРєР° СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ
         Assert.Equal(2, result.Count);
-        Assert.Contains(result, e => e.Company == "Компания B");
-        Assert.Contains(result, e => e.Company == "Компания C");
+        Assert.Contains(result, e => e.Company == "РљРѕРјРїР°РЅРёСЏ B");
+        Assert.Contains(result, e => e.Company == "РљРѕРјРїР°РЅРёСЏ C");
         Assert.All(result, e => Assert.Equal(90000u, e.MaxSalary));
     }
 
