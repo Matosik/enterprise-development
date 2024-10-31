@@ -5,21 +5,48 @@
 /// </summary>
 public class Vacancy
 {
+    /// <summary>
+    /// Уникальный номер вакансии
+    /// </summary>
     public int IdVacancy { get; set; }
+    /// <summary>
+    /// Номер Работодателя к который разместил вакансию
+    /// </summary>
     public int IdEmployer { get; set; }
+    /// <summary>
+    /// Номер рабочей позиции
+    /// </summary>
     public int IdJobPosition { get; set; }
+    /// <summary>
+    /// Название вакансии
+    /// </summary>
     public string NameVacancy { get; set; }
     /// <summary>
     /// Дата создания вакансии
     /// </summary>
     public DateTime DateVacancy { get; set; }
+    /// <summary>
+    /// Статус вакансии активна/неактивна
+    /// </summary>
     public bool IsActive { get; set; }
+    /// <summary>
+    /// Зарплата на данную вакансию
+    /// </summary>
     public uint? Salary { get; set; }
     /// <summary>
-    /// опыть работы в годах
+    /// Опыть работы в годах
     /// </summary>
     public float Experience { get; set; }
+    /// <summary>
+    /// Минимальный возраст для кандидата 
+    /// </summary>
     public byte MinAge { get; set; }
+    /// <summary>
+    /// Максимальный возраст для кандидаиа
+    /// </summary>
     public byte MaxAge { get; set; }
+    /// <summary>
+    ///  Описание вакансии
+    /// </summary>
     public string? Summary { get; set; }
 }

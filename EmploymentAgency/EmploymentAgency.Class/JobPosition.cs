@@ -5,6 +5,9 @@
 /// </summary>
 public class JobPosition
 {
+    /// <summary>
+    /// Уникальный номер рабочей позции 
+    /// </summary>
     public int IdJobPosition { get; set; }
     /// <summary>
     /// Раздел (IT, финансы, реклама и т.д.)
