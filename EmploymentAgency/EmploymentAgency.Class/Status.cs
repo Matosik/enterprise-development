@@ -17,5 +17,5 @@ public class Status
     /// <summary>
     /// Имя статуса
     /// </summary>
-    public string StatusName { get; set; }
+    public required string StatusName { get; set; }
 }

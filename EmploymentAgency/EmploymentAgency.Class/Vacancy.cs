@@ -20,7 +20,7 @@ public class Vacancy
     /// <summary>
     /// Название вакансии
     /// </summary>
-    public string NameVacancy { get; set; }
+    public required string NameVacancy { get; set; }
     /// <summary>
     /// Дата создания вакансии
     /// </summary>

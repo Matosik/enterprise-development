@@ -16,5 +16,5 @@ public class JobPosition
     /// <summary>
     /// должность (программист, дизайнер и т.д.)
     /// </summary>
-    public string PositionName { get; set; }
+    public required string PositionName { get; set; }
 }
