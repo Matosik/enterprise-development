@@ -9,14 +9,6 @@ public class User
     /// </summary>
     public DateTime Registration { get; set; }
     /// <summary>
-    /// Электронная почта пользователя
-    /// </summary>
-    public string Email { get; set; }
-    /// <summary>
-    /// Пароль
-    /// </summary>
-    public string Password { get; set; }
-    /// <summary>
     /// Контактный номер пользователя
     /// </summary>
     public string? Number { get; set; }

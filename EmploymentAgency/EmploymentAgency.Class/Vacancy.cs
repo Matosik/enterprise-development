@@ -38,14 +38,6 @@ public class Vacancy
     /// </summary>
     public float Experience { get; set; }
     /// <summary>
-    /// Минимальный возраст для кандидата 
-    /// </summary>
-    public byte MinAge { get; set; }
-    /// <summary>
-    /// Максимальный возраст для кандидаиа
-    /// </summary>
-    public byte MaxAge { get; set; }
-    /// <summary>
     ///  Описание вакансии
     /// </summary>
     public string? Summary { get; set; }

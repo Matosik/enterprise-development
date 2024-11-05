@@ -22,14 +22,9 @@ public class Response
     /// </summary>
     public int IdApplicant { get; set; }
     /// <summary>
-    /// Статус отклика 
-    /// <list>
-    ///     <item>null - rewiew </item>
-    ///     <item>true - accept</item>
-    ///     <item>fasle - rejected</item>
-    /// </list>   
+    /// ID статуса отклика
     /// </summary>
-    public bool? ResponseStatus { get; set; }
+    public int? IdStatus{ get; set; }
     /// <summary>
     /// Сообщение соискателя при отклике
     /// </summary>
