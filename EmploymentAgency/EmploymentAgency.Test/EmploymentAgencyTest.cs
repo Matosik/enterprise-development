@@ -1,25 +1,59 @@
-﻿namespace EmploymentAgency.Test;
+﻿using EmploymentAgency.Class;
+
+namespace EmploymentAgency.Test;
 public class EmploymentAgencyTest
 {
-    private EmploymentAgencyData data;
-    public EmploymentAgencyTest()
-    {
-        data = new EmploymentAgencyData();
-    }
+    private readonly EmploymentAgencyData data = new EmploymentAgencyData();
     /// <summary>
-    /// 1.Вывести сведения о всех соискателях, ищущих работу по заданной позиции, отсортированные по имени.
+    /// 1.Вывести сведения о всех соискателях, ищущих работу по заданной позиции(JobPosition.PositionName), отсортированные по имени А-Я.
     /// </summary>
     [Fact]
-    public void TestGetAllApplicantByJobPosition()
+    public void TestGetAllApplicantByPositionName()
     {
-        int jobPositionId = 1;
-        var applicants = data.Applicants
-            .Where(a => data.Resumes.Any(r => r.IdApplicant == a.IdApplicant && r.IdPosition == jobPositionId))
-            .OrderBy(a => a.FirstName)
-            .ToList();
-
-        Assert.NotEmpty(applicants);
-        Assert.All(applicants, a => Assert.True(data.Resumes.Any(r => r.IdApplicant == a.IdApplicant && r.IdPosition == jobPositionId)));
+        List<string> expectedData = ["Алексей", "Дмитрий", "Мария"];
+        var positionName = "backend developer C#";
+        var query = (from job in data.Jobs
+                     join resume in data.Resumes on job.IdJobPosition equals resume.IdPosition
+                     join applicant in data.Applicants on resume.IdApplicant equals applicant.IdApplicant
+                     where job.PositionName == positionName
+                     orderby applicant.FirstName
+                     select applicant.FirstName)
+                     .ToList();
+        Assert.Equal(expectedData, query);
+    }
+    /// <summary>
+    ///1.q Или же верхний тест лучше пистаь так, чтобы возвращался список id соискателей, как представленно в этом тесте??????
+    /// </summary>
+    [Fact]
+    public void TestGetAllApplicantByPositionNameTest()
+    {
+        List<int> expectedData = [3, 5, 2];
+        var positionName = "backend developer C#";
+        var query = (from job in data.Jobs
+                     join resume in data.Resumes on job.IdJobPosition equals resume.IdPosition
+                     join applicant in data.Applicants on resume.IdApplicant equals applicant.IdApplicant
+                     where job.PositionName == positionName
+                     orderby applicant.FirstName
+                     select applicant.IdApplicant)
+                     .ToList();
+        Assert.Equal(expectedData, query);
+    }
+    /// <summary>
+    /// 1.1 Custom.Вывести сведения о всех соискателях, ищущих работу по заданному разделу(JobPosition.Section), отсортированные по имени Я-A.
+    /// </summary>
+    [Fact]
+    public void TestGetAllApplicantBySection()
+    {
+        List<int> expectedData = [2, 1, 5, 3];
+        var section = "IT";
+        var query = (from job in data.Jobs
+                     join resume in data.Resumes on job.IdJobPosition equals resume.IdPosition
+                     join applicant in data.Applicants on resume.IdApplicant equals applicant.IdApplicant
+                     where job.Section == section
+                     orderby applicant.FirstName descending
+                     select applicant.IdApplicant)
+                     .ToList();
+        Assert.Equal(expectedData, query);
     }
 
     /// <summary>
@@ -28,14 +62,18 @@ public class EmploymentAgencyTest
     [Fact]
     public void TestGetApplicantByResponsesWithinPeriod()
     {
-        DateTime startDate = new DateTime(2023, 1, 1) ;
-        DateTime endDate = new DateTime(2023, 12, 31);
-        var applicants = data.Applicants
-            .Where(a => data.Responses.Any(r => r.IdApplicant == a.IdApplicant && r.DateResponse >= startDate && r.DateResponse <= endDate))
-            .ToList();
+        List<int> expectedData = [1, 2, 3, 4];
+        var startDate = new DateTime(2023, 3, 1);
+        var endDate = new DateTime(2023, 7, 30);
+        var query = (from response in data.Responses
+                     join applicant in data.Applicants on response.IdApplicant equals applicant.IdApplicant
+                     where response.DateResponse >= startDate && response.DateResponse <= endDate
+                     orderby applicant.IdApplicant
+                     select applicant.IdApplicant)
+                     .Distinct()
+                     .ToList();
 
-        Assert.NotEmpty(applicants);
-        Assert.All(applicants, a => Assert.True(data.Responses.Any(r => r.IdApplicant == a.IdApplicant && r.DateResponse >= startDate && r.DateResponse <= endDate)));
+        Assert.Equal(expectedData, query);
     }
 
     /// <summary>
@@ -44,55 +82,100 @@ public class EmploymentAgencyTest
     [Fact]
     public void TestGetApplicantForSpecificVacancy()
     {
-        int vacancyId = 2;
-        var vacancy = data.Vacancies.FirstOrDefault(v => v.IdVacancy == vacancyId);
-        var matchingApplicants = data.Applicants
-            .Where(a => data.Resumes.Any(r => r.IdApplicant == a.IdApplicant && r.IdPosition == vacancy.IdJobPosition && r.WantSalary <= vacancy.Salary))
-            .ToList();
-
-        Assert.NotNull(vacancy);
-        Assert.NotEmpty(matchingApplicants);
-        Assert.All(matchingApplicants, a => Assert.True(data.Resumes.Any(r => r.IdApplicant == a.IdApplicant && r.IdPosition == vacancy.IdJobPosition && r.WantSalary <= vacancy.Salary)));
+        List<int> expectedData = [1];
+        var vacancyId = 1;
+        var query = (from vacancy in data.Vacancies
+                     join job in data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
+                     join resume in data.Resumes on job.IdJobPosition equals resume.IdPosition
+                     join applicant in data.Applicants on resume.IdApplicant equals applicant.IdApplicant
+                     where resume.WantSalary <= vacancy.Salary && vacancy.IdVacancy == vacancyId
+                     select applicant.IdApplicant)
+                     .ToList();
+        Assert.Equal(expectedData, query);
     }
 
     /// <summary>
     /// 4. Вывести информацию о количестве заявок по каждому разделу и должности.
     /// </summary>
     [Fact]
+    public void TestGetVacancyCountByPosition()
+    {
+        var expectedData = new Dictionary<string, int>()
+        {
+            { "Специалист по цифровому маркетингу", 2},
+            { "backend developer python", 2},
+            { "backend developer C#", 1},
+            { "Финансовый аналитик", 1 }
+        };
+        var query = (from response in data.Responses
+                     join vacancy in data.Vacancies on response.IdVacancy equals vacancy.IdVacancy
+                     join job in data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
+                     group response by new { job.PositionName } into g
+                     select new
+                     {
+                         SectionPosition = g.Key.PositionName,
+                         Count = g.Count()
+                     })
+                     .ToDictionary(x => x.SectionPosition, x => x.Count);
+        Assert.Equal(expectedData, query);
+    }
+    /// <summary>
+    /// 4.1 Вывести информацию о количестве заявок по каждому разделу и должности.
+    /// </summary>
+    [Fact]
     public void TestGetVacancyCountBySectionAndPosition()
     {
-        var vacancyCounts = data.Vacancies
-            .GroupBy(v => new { v.IdJobPosition, Section = data.Jobs.First(j => j.IdJobPosition == v.IdJobPosition).Section })
-            .Select(g => new
-            {
-                Section = g.Key.Section,
-                PositionName = data.Jobs.First(j => j.IdJobPosition == g.Key.IdJobPosition).PositionName,
-                Count = g.Count()
-            })
-            .ToList();
+        var expectedData = new Dictionary<string, int>()
+        {
+            { "Рабочая позиция - Специалист по цифровому маркетингу", 2},
+            { "Рабочая позиция - backend developer python", 2},
+            { "Рабочая позиция - backend developer C#", 1},
+            { "Рабочая позиция - Финансовый аналитик", 1 },
+            { "Раздел - Маркетинг", 2},
+            { "Раздел - IT", 3},
+            { "Раздел - Финансы", 1 }
+        };
+        var queryPositionName = (from response in data.Responses
+                                 join vacancy in data.Vacancies on response.IdVacancy equals vacancy.IdVacancy
+                                 join job in data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
+                                 group response by new { job.PositionName } into g
+                                 select new
+                                 {
+                                     Position = $"Рабочая позиция - {g.Key.PositionName}",
+                                     Count = g.Count()
+                                 })
+                     .ToDictionary(x => x.Position, x => x.Count);
+        var querySection = (from response in data.Responses
+                            join vacancy in data.Vacancies on response.IdVacancy equals vacancy.IdVacancy
+                            join job in data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
+                            group response by new { job.Section } into g
+                            select new
+                            {
+                                SectionAns = $"Раздел - {g.Key.Section}",
+                                Count = g.Count()
+                            })
+                            .ToDictionary(x => x.SectionAns, x => x.Count);
 
-        Assert.NotEmpty(vacancyCounts);
-        Assert.All(vacancyCounts, vc => Assert.True(vc.Count > 0));
+        var query = queryPositionName.Concat(querySection)
+                                     .ToDictionary(x => x.Key, x => x.Value);
+        Assert.Equal(expectedData, query);
     }
-
     /// <summary>
     /// 5. Вывести топ 5 работодателей по количеству заявок.
     /// </summary>
     [Fact]
     public void TestGetTop5EmployersByVacancyCount()
     {
-        var topEmployers = data.Employers
-            .Select(e => new
-            {
-                Employer = e,
-                VacancyCount = data.Vacancies.Count(v => v.IdEmployer == e.IdEmployer)
-            })
-            .OrderByDescending(e => e.VacancyCount)
-            .Take(5)
-            .ToList();
-
-        Assert.True(topEmployers.Count <= 5);
-        Assert.All(topEmployers, te => Assert.True(te.VacancyCount >= 0));
+        List<int> expectedData = [1, 2, 3, 4];
+        var query = (from vacancy in data.Vacancies
+                     join employer in data.Employers on vacancy.IdEmployer equals employer.IdEmployer
+                     group vacancy by new { employer.IdEmployer, employer.Company } into g
+                     orderby g.Count() descending
+                     orderby g.Key.IdEmployer
+                     select g.Key.IdEmployer)
+                     .Take(5)
+                     .ToList();
+        Assert.Equal(expectedData, query);
     }
 
     /// <summary>
@@ -101,12 +184,13 @@ public class EmploymentAgencyTest
     [Fact]
     public void TestGetEmployersWithMaxSalaryVacancies()
     {
-        var maxSalary = data.Vacancies.Max(v => v.Salary);
-        var employersWithMaxSalaryVacancies = data.Employers
-            .Where(e => data.Vacancies.Any(v => v.IdEmployer == e.IdEmployer && v.Salary == maxSalary))
-            .ToList();
-
-        Assert.NotEmpty(employersWithMaxSalaryVacancies);
-        Assert.All(employersWithMaxSalaryVacancies, e => Assert.True(data.Vacancies.Any(v => v.IdEmployer == e.IdEmployer && v.Salary == maxSalary)));
+        List<int> expectedData = [2,3];
+        var query = (from vacancy in data.Vacancies
+                     join employer in data.Employers on vacancy.IdEmployer equals employer.IdEmployer
+                     where vacancy.Salary == data.Vacancies.Max(x => x.Salary)
+                     orderby employer.IdEmployer
+                     select employer.IdEmployer)
+                     .ToList();
+        Assert.Equal(expectedData, query);
     }
 }

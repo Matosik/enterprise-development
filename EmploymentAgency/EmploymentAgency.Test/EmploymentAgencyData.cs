@@ -1,5 +1,4 @@
 ﻿using EmploymentAgency.Class;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EmploymentAgency.Test;
 internal class EmploymentAgencyData
@@ -28,7 +27,7 @@ internal class EmploymentAgencyData
            new Status
            {
                IdStatus = 2,
-               StatusName = "Отклнонено"
+               StatusName = "Отклонено"
            }
         ];
         Applicants = 
@@ -130,12 +129,12 @@ internal class EmploymentAgencyData
             {
                 IdJobPosition = 1,
                 Section = "IT",
-                PositionName = "backend developer C#" },
+                PositionName = "backend developer python" },
             new JobPosition 
             {
                 IdJobPosition = 2,
                 Section = "IT",
-                PositionName = "backend developer python" 
+                PositionName = "backend developer C#" 
             },
             new JobPosition 
             {
@@ -239,7 +238,7 @@ internal class EmploymentAgencyData
                 NameVacancy = "Python Backend Developer",
                 IsActive = true,
                 DateVacancy = DateTime.Now,
-                Salary = 140000,
+                Salary = 150000,
                 Experience = 2.5f,
                 Summary = "Присоединяйтесь к нашей команде Python-разработчиков, работа над масштабными проектами."
             },
@@ -270,14 +269,23 @@ internal class EmploymentAgencyData
         ];
         Resumes = 
         [
-            new Resume 
+            new Resume
             {
-                IdResume = 0,
-                IdApplicant = 1,
+                IdResume = 5,
+                IdApplicant = 5,
                 Experience = 1.5f,
-                IdPosition = 1,
+                IdPosition = 2,
                 WantSalary = 40000,
-                Education = "11 классов МБУ школа 1488"
+                Education = "Среднее специальное, Московский колледж управления и права"
+            },
+            new Resume
+            {
+                IdResume = 6,
+                IdApplicant = 3,
+                Experience = 1.5f,
+                IdPosition = 2,
+                WantSalary = 40000,
+                Education = "Магистр, СпбГУ, ИБАС"
             },
             new Resume 
             {
@@ -287,6 +295,15 @@ internal class EmploymentAgencyData
                 IdPosition = 2,
                 WantSalary = 75000,
                 Education = "Бакалавр, Казанский федеральный университет, Программная инженерия" 
+            },
+            new Resume 
+            {
+                IdResume = 0,
+                IdApplicant = 1,
+                Experience = 1.5f,
+                IdPosition = 1,
+                WantSalary = 40000,
+                Education = "11 классов МБУ школа 1488"
             },
             new Resume 
             {

@@ -18,3 +18,4 @@ public class JobPosition
     /// </summary>
     public required string PositionName { get; set; }
 }
+ 
