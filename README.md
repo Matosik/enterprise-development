@@ -7,44 +7,53 @@
 с использованием LINQ, проверить результаты
 ## Класы:
 ### User
-+ Registration(Время создания)
-+ Email
-+ Password
-+ Number
-+ FirstName
-+ LastName
++ **Registration** - <ins>время регистрации пользователя</ins> _необязательное свойство_ 
++ **Number** - <ins>контактный номер пользователя</ins> _необязательное свойство_ 
++ **FirstName** - <ins>Имя прользователя</ins>
++ **LastName** - <ins>Фамилия пользователя</ins>
 
-#### Applicant(соискатель)
-+ IdApplicant
-+ Birthday
-  
+#### Applicant(соискатель) наследуется от класса User
++ **IdApplicant** <ins>Уникальный номер соискателя</ins>
++ **Birthday** <ins>Дата рождения соискателя, чтобы работодатель мог определить возрас кандидата</ins>
 
-#### Employer(Работодатель)
-+ Company
-+ IdEmployer
+#### Employer(Работодатель) наследуется от класса User
++ **IdEmployer** <ins>Уникальный номер работодателя</ins>
++ **Company** <ins>Название компании</ins>
 
 ### JobPosition
-+ IdJobPosition
-+ Section
-+ PositionName
++ **IdJobPosition** - <ins>Уникальный номер рабочей позции</ins> 
++ **Section** - <ins>Раздел (IT, финансы, реклама и т.д.)</ins> _необязательное свойство_ 
++ **PositionName** - <ins>Должность(программист, дизайнер и т.д.)</ins>
 
-### Response - отклик
-+ IdResponse
-+ DateResponse
-+ IdVacancy
-+ IdApplicant
-+ ResponseStatus
-+ SummaryResponse
+### Resume(резюме)
++ **IdResume** - <ins>Уникальный номер резюме</ins>
++ **IdApplicant** - <ins>Номер соискателя к которому относится резюме</ins>
++ **IdPosition** - <ins>Номер рабочей позиции на которой работал/(хочет работать) соискатель</ins>
++ **Experience** - <ins>Опыт работы в годах</ins> 
++ **WantSalary** - <ins>Желаемая зарплата</ins> _необязательное свойство_
++ **Education** - <ins>Информация об образовании</ins> _необязательное свойство_
 
 #### Vacancy
-+ IdVacancy
-+ IdEmployer
-+ IdJobPosition
-+ NameVacancy
-+ DateVacancy
-+ IsActive
-+ Salary
-+ Experience
-+ MinAge
-+ MaxAge
-+ Summary
++ **IdVacancy** - <ins>Уникальный номер вакансии</ins>
++ **IdEmployer** - <ins>Номер Работодателя который разместил вакансию</ins>
++ **IdJobPosition** - <ins>Номер рабочей позиции</ins>
++ **NameVacancy** - <ins>Название вакансии(да, можно было взять из</ins> **JobPosition**<ins>, но мне кажется лучше сделать так, чтобы работодатель мог называть объявление/вакансию как он хочет, типа делать кликбейтные названия [OOOOmg](https://www.youtube.com/shorts/3oAjuEW_kso)⭕)</ins>
++ **DateVacancy** - <ins>Дата создания вакансии, данное свойство помогает кандидатом сортировать/искать объявления по дате</ins>
++ **IsActive** - <ins>Статус вакансии активна/неактивна. Работодатель моджет не удалять вакансию со своего акаунта, а просто закрыть(скрыть) ее, чтобы кандидатам не попадалость это объявление.</ins>
++ **Salary** - <ins>Зарплата на данную должность в этой компании. Если работодатель не указал зарплату ставится статус по договоренности</ins> _необязательное свойство_
++ **Experience** - <ins>Требуемый опыть работы в годах</ins>
++ **Summary** - <ins>Описание вакансии.</ins> _необязательное свойство_
+
+### Status
++ <ins>Уникальный номер статуса</ins>
++<ins>Имя статуса</ins>
+
+### Response - отклик
++ **IdResponse** - <ins>Уникальный номер отклика</ins>
++ **DateResponse** - <ins>Дата создания отклика</ins> _необязательное свойство_ 
++ **IdVacancy** - <ins>Номер вакансии, к которой относится отклик</ins>
++ **IdApplicant** - <ins>Номер кандидата</ins>**(Applicant)** <ins>работы, который оставил отклик</ins>
++ **IdStatus** - <ins>Номер статуса отклика</ins>
++ **SummaryResponse** - <ins>Сообщение соискателя при отклике.</ins>  _необязательное свойство_ 
+
+
