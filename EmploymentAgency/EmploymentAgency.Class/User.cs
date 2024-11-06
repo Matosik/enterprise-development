@@ -9,7 +9,7 @@ public class User
     /// <summary>
     /// Дата регистрации пользователя
     /// </summary>
-    public DateTime Registration { get; set; }
+    public DateTime? Registration { get; set; }
     /// <summary>
     /// Контактный номер пользователя
     /// </summary>

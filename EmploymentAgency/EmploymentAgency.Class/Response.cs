@@ -12,7 +12,7 @@ public class Response
     /// <summary>
     /// Дато создания отклика
     /// </summary>
-    public DateTime DateResponse { get; set; }
+    public DateTime? DateResponse { get; set; }
     /// <summary>
     /// Номер вакансии, к которой относится отклик
     /// </summary>
