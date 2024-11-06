@@ -10,7 +10,7 @@ public class Vacancy
     /// </summary>
     public int IdVacancy { get; set; }
     /// <summary>
-    /// Номер Работодателя к который разместил вакансию
+    /// Номер Работодателя который разместил вакансию
     /// </summary>
     public int IdEmployer { get; set; }
     /// <summary>

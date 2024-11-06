@@ -9,7 +9,7 @@ public class Resume
     /// </summary>
     public int IdResume { get; set; }
     /// <summary>
-    /// Номер соискателы к которому относится резюме
+    /// Номер соискателя к которому относится резюме
     /// </summary>
     public int IdApplicant { get; set; }
     /// <summary>

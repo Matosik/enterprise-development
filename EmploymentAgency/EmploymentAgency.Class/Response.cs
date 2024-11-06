@@ -10,7 +10,7 @@ public class Response
     /// </summary>
     public int IdResponse { get; set; }
     /// <summary>
-    /// Дато создания отклика
+    /// Дата создания отклика
     /// </summary>
     public DateTime? DateResponse { get; set; }
     /// <summary>
@@ -18,7 +18,7 @@ public class Response
     /// </summary>
     public int IdVacancy { get; set; }
     /// <summary>
-    /// Номер Соискателя работы, к который оставил отклик
+    /// Номер Соискателя работы, который оставил отклик
     /// </summary>
     public int IdApplicant { get; set; }
     /// <summary>
