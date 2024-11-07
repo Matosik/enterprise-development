@@ -1,37 +1,18 @@
-﻿using EmploymentAgency.Class;
-
-namespace EmploymentAgency.Test;
+﻿namespace EmploymentAgency.Test;
 public class EmploymentAgencyTest
 {
-    private readonly EmploymentAgencyData data = new EmploymentAgencyData();
+    private readonly EmploymentAgencyData _data = new EmploymentAgencyData();  
     /// <summary>
     /// 1.Вывести сведения о всех соискателях, ищущих работу по заданной позиции(JobPosition.PositionName), отсортированные по имени А-Я.
     /// </summary>
     [Fact]
     public void TestGetAllApplicantByPositionName()
     {
-        List<string> expectedData = ["Алексей", "Дмитрий", "Мария"];
-        var positionName = "backend developer C#";
-        var query = (from job in data.Jobs
-                     join resume in data.Resumes on job.IdJobPosition equals resume.IdPosition
-                     join applicant in data.Applicants on resume.IdApplicant equals applicant.IdApplicant
-                     where job.PositionName == positionName
-                     orderby applicant.FirstName
-                     select applicant.FirstName)
-                     .ToList();
-        Assert.Equal(expectedData, query);
-    }
-    /// <summary>
-    ///1.q Или же верхний тест лучше пистаь так, чтобы возвращался список id соискателей, как представленно в этом тесте??????
-    /// </summary>
-    [Fact]
-    public void TestGetAllApplicantByPositionNameTest()
-    {
         List<int> expectedData = [3, 5, 2];
         var positionName = "backend developer C#";
-        var query = (from job in data.Jobs
-                     join resume in data.Resumes on job.IdJobPosition equals resume.IdPosition
-                     join applicant in data.Applicants on resume.IdApplicant equals applicant.IdApplicant
+        var query = (from job in _data.Jobs
+                     join resume in _data.Resumes on job.IdJobPosition equals resume.IdPosition
+                     join applicant in _data.Applicants on resume.IdApplicant equals applicant.IdApplicant
                      where job.PositionName == positionName
                      orderby applicant.FirstName
                      select applicant.IdApplicant)
@@ -46,9 +27,9 @@ public class EmploymentAgencyTest
     {
         List<int> expectedData = [2, 1, 5, 3];
         var section = "IT";
-        var query = (from job in data.Jobs
-                     join resume in data.Resumes on job.IdJobPosition equals resume.IdPosition
-                     join applicant in data.Applicants on resume.IdApplicant equals applicant.IdApplicant
+        var query = (from job in _data.Jobs
+                     join resume in _data.Resumes on job.IdJobPosition equals resume.IdPosition
+                     join applicant in _data.Applicants on resume.IdApplicant equals applicant.IdApplicant
                      where job.Section == section
                      orderby applicant.FirstName descending
                      select applicant.IdApplicant)
@@ -65,8 +46,8 @@ public class EmploymentAgencyTest
         List<int> expectedData = [1, 2, 3, 4];
         var startDate = new DateTime(2023, 3, 1);
         var endDate = new DateTime(2023, 7, 30);
-        var query = (from response in data.Responses
-                     join applicant in data.Applicants on response.IdApplicant equals applicant.IdApplicant
+        var query = (from response in _data.Responses
+                     join applicant in _data.Applicants on response.IdApplicant equals applicant.IdApplicant
                      where response.DateResponse >= startDate && response.DateResponse <= endDate
                      orderby applicant.IdApplicant
                      select applicant.IdApplicant)
@@ -84,10 +65,10 @@ public class EmploymentAgencyTest
     {
         List<int> expectedData = [1];
         var vacancyId = 1;
-        var query = (from vacancy in data.Vacancies
-                     join job in data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
-                     join resume in data.Resumes on job.IdJobPosition equals resume.IdPosition
-                     join applicant in data.Applicants on resume.IdApplicant equals applicant.IdApplicant
+        var query = (from vacancy in _data.Vacancies
+                     join job in _data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
+                     join resume in _data.Resumes on job.IdJobPosition equals resume.IdPosition
+                     join applicant in _data.Applicants on resume.IdApplicant equals applicant.IdApplicant
                      where resume.WantSalary <= vacancy.Salary && vacancy.IdVacancy == vacancyId
                      select applicant.IdApplicant)
                      .ToList();
@@ -107,9 +88,9 @@ public class EmploymentAgencyTest
             { "backend developer C#", 1},
             { "Финансовый аналитик", 1 }
         };
-        var query = (from response in data.Responses
-                     join vacancy in data.Vacancies on response.IdVacancy equals vacancy.IdVacancy
-                     join job in data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
+        var query = (from response in _data.Responses
+                     join vacancy in _data.Vacancies on response.IdVacancy equals vacancy.IdVacancy
+                     join job in _data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
                      group response by new { job.PositionName } into g
                      select new
                      {
@@ -135,9 +116,9 @@ public class EmploymentAgencyTest
             { "Раздел - IT", 3},
             { "Раздел - Финансы", 1 }
         };
-        var queryPositionName = (from response in data.Responses
-                                 join vacancy in data.Vacancies on response.IdVacancy equals vacancy.IdVacancy
-                                 join job in data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
+        var queryPositionName = (from response in _data.Responses
+                                 join vacancy in _data.Vacancies on response.IdVacancy equals vacancy.IdVacancy
+                                 join job in _data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
                                  group response by new { job.PositionName } into g
                                  select new
                                  {
@@ -145,9 +126,9 @@ public class EmploymentAgencyTest
                                      Count = g.Count()
                                  })
                      .ToDictionary(x => x.Position, x => x.Count);
-        var querySection = (from response in data.Responses
-                            join vacancy in data.Vacancies on response.IdVacancy equals vacancy.IdVacancy
-                            join job in data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
+        var querySection = (from response in _data.Responses
+                            join vacancy in _data.Vacancies on response.IdVacancy equals vacancy.IdVacancy
+                            join job in _data.Jobs on vacancy.IdJobPosition equals job.IdJobPosition
                             group response by new { job.Section } into g
                             select new
                             {
@@ -167,8 +148,8 @@ public class EmploymentAgencyTest
     public void TestGetTop5EmployersByVacancyCount()
     {
         List<int> expectedData = [1, 2, 3, 4];
-        var query = (from vacancy in data.Vacancies
-                     join employer in data.Employers on vacancy.IdEmployer equals employer.IdEmployer
+        var query = (from vacancy in _data.Vacancies
+                     join employer in _data.Employers on vacancy.IdEmployer equals employer.IdEmployer
                      group vacancy by new { employer.IdEmployer, employer.Company } into g
                      orderby g.Count() descending
                      orderby g.Key.IdEmployer
@@ -185,9 +166,9 @@ public class EmploymentAgencyTest
     public void TestGetEmployersWithMaxSalaryVacancies()
     {
         List<int> expectedData = [2,3];
-        var query = (from vacancy in data.Vacancies
-                     join employer in data.Employers on vacancy.IdEmployer equals employer.IdEmployer
-                     where vacancy.Salary == data.Vacancies.Max(x => x.Salary)
+        var query = (from vacancy in _data.Vacancies
+                     join employer in _data.Employers on vacancy.IdEmployer equals employer.IdEmployer
+                     where vacancy.Salary == _data.Vacancies.Max(x => x.Salary)
                      orderby employer.IdEmployer
                      select employer.IdEmployer)
                      .ToList();
