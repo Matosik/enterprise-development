@@ -152,10 +152,10 @@ public class EmploymentAgencyTest
                      join employer in _data.Employers on vacancy.IdEmployer equals employer.IdEmployer
                      group vacancy by new { employer.IdEmployer, employer.Company } into g
                      orderby g.Count() descending
-                     orderby g.Key.IdEmployer
                      select g.Key.IdEmployer)
                      .Take(5)
                      .ToList();
+        query.Sort();
         Assert.Equal(expectedData, query);
     }
 
