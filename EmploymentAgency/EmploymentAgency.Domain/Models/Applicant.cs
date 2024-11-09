@@ -1,4 +1,4 @@
-﻿using EmploymentAgency.ClassDomain.Models;
+﻿using EmploymentAgency.Domain.Models;
 
 namespace EmploymentAgency.Domain.Models;
 

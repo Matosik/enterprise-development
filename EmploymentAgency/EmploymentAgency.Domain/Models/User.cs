@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EmploymentAgency.ClassDomain.Models;
+namespace EmploymentAgency.Domain.Models;
 /// <summary>
 /// Базовый класс пользователь
 /// </summary>
