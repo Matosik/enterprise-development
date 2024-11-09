@@ -1,4 +1,4 @@
-﻿using EmploymentAgency.Class;
+﻿using EmploymentAgency.Domain.Models;
 
 namespace EmploymentAgency.Test;
 internal class EmploymentAgencyData

@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmploymentAgency.Class\EmploymentAgency.Class.csproj" />
+    <ProjectReference Include="..\EmploymentAgency.Domain\EmploymentAgency.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

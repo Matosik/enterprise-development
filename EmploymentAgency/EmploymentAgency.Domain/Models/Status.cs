@@ -1,4 +1,4 @@
-﻿namespace EmploymentAgency.Class;
+﻿namespace EmploymentAgency.Domain.Models;
 /// <summary>
 /// Класс статус заявки на вакансию
 /// </summary>

@@ -3,12 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmploymentAgency.Class", "EmploymentAgency.Class\EmploymentAgency.Class.csproj", "{3E5E252F-5A35-4408-A319-FDA36C16840B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmploymentAgency.Test", "EmploymentAgency.Test\EmploymentAgency.Test.csproj", "{A3C55423-1C00-42CA-A572-B9E29381AD33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmploymentAgency.Test", "EmploymentAgency.Test\EmploymentAgency.Test.csproj", "{A3C55423-1C00-42CA-A572-B9E29381AD33}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3E5E252F-5A35-4408-A319-FDA36C16840B} = {3E5E252F-5A35-4408-A319-FDA36C16840B}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmploymentAgency.Domain", "EmploymentAgency.Domain\EmploymentAgency.Domain.csproj", "{817E3AA8-16B5-4893-A035-BFC087B483AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3E5E252F-5A35-4408-A319-FDA36C16840B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E5E252F-5A35-4408-A319-FDA36C16840B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E5E252F-5A35-4408-A319-FDA36C16840B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E5E252F-5A35-4408-A319-FDA36C16840B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3C55423-1C00-42CA-A572-B9E29381AD33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A3C55423-1C00-42CA-A572-B9E29381AD33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3C55423-1C00-42CA-A572-B9E29381AD33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3C55423-1C00-42CA-A572-B9E29381AD33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{817E3AA8-16B5-4893-A035-BFC087B483AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{817E3AA8-16B5-4893-A035-BFC087B483AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{817E3AA8-16B5-4893-A035-BFC087B483AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{817E3AA8-16B5-4893-A035-BFC087B483AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
