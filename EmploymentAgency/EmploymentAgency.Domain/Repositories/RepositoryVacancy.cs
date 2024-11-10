@@ -6,9 +6,10 @@ public class RepositoryVacancy : IRepository<Vacancy>
     private readonly List<Vacancy> _vacancies = [];
     public IEnumerable<Vacancy> GetAll() => _vacancies;
     public Vacancy? GetById(int id) => _vacancies.Find(v => v.IdVacancy == id);
-    public void Post(Vacancy entity)
+    public void Post(Vacancy vacancy)
     {
-        _vacancies.Add(entity);
+        vacancy.IdVacancy = _id++;
+        _vacancies.Add(vacancy);
     }
     public void Overwrite(ref Vacancy old, Vacancy update)
     {

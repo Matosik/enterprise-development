@@ -22,6 +22,7 @@ public class RepositoryResponse : IRepository<Response>
 
     public void Post(Response response)
     {
+        response.IdResponse = _id++;
         _responses.Add(response);
     }
     public bool Delete(int id)

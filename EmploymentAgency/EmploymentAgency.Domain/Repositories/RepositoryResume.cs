@@ -19,9 +19,10 @@ public class RepositoryResume : IRepository<Resume>
         old.WantSalary = update.WantSalary;
     }
 
-    public void Post(Resume entity)
+    public void Post(Resume resume)
     {
-        _resumes.Add(entity);
+        resume.IdPosition = _id++;
+        _resumes.Add(resume);
     }
     public bool Delete(int id)
     {

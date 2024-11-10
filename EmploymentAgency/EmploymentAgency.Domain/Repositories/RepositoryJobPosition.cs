@@ -18,6 +18,7 @@ public class RepositoryJobPosition : IRepository<JobPosition>
     }
     public void Post(JobPosition jobPosition)
     {
+        jobPosition.IdJobPosition = _id++;
         _jobs.Add(jobPosition);
     }
     public bool Delete(int id)
