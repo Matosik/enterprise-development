@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace EmploymentAgency.Domain.Repositories;
 
-internal class RepositoryResponse : IRepository<Response>
+public class RepositoryResponse : IRepository<Response>
 {
     private readonly List<Response> _responses = [];
 

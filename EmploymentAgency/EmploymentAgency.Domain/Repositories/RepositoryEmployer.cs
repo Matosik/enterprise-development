@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmploymentAgency.Domain.Repositories;
 
-internal class RepositoryEmployer : IRepository<Employer>
+public class RepositoryEmployer : IRepository<Employer>
 {
     private readonly List<Employer> _employers = [];
     public Employer? GetById(int id) => _employers.Find(e => e.IdEmployer == id);

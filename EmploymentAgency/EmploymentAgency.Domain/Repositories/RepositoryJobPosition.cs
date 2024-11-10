@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmploymentAgency.Domain.Repositories;
 
-internal class RepositoryJobPosition : IRepository<JobPosition>
+public class RepositoryJobPosition : IRepository<JobPosition>
 {
     private readonly List<JobPosition> _jobs = [];
 
