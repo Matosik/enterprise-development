@@ -1,5 +1,6 @@
 
 using EmploymentAgency.Server.DTO;
+using EmploymentAgency.Domain;
 using EmploymentAgency.Domain.Models;
 using EmploymentAgency.Domain.Repositories;
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddSingleton<RepositoryApplicant>();
+builder.Services.AddSingleton<IRepository<Applicant>, RepositoryApplicant>();
 builder.Services.AddAutoMapper(typeof(Mapper));
 var app = builder.Build();
 
