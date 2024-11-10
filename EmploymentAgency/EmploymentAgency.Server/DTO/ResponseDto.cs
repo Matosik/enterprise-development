@@ -1,4 +1,5 @@
 ﻿using EmploymentAgency.Domain.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace EmploymentAgency.Server.DTO;
 
@@ -17,9 +18,10 @@ public class ResponseDto
     /// </summary>
     public int IdApplicant { get; set; }
     /// <summary>
-    /// ID статуса отклика
+    /// Cтатуса отклика
     /// </summary>
-    public Status Stat { get; set; }
+    [EnumDataType(typeof(StatusType))]
+    public required string Status { get; set; }
     /// <summary>
     /// Сообщение соискателя при отклике
     /// </summary>
