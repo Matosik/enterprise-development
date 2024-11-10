@@ -24,7 +24,7 @@ public class Response
     /// <summary>
     /// ID статуса отклика
     /// </summary>
-    public int IdStatus{ get; set; }
+    public Status Stat{ get; set; }
     /// <summary>
     /// Сообщение соискателя при отклике
     /// </summary>

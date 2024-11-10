@@ -9,27 +9,8 @@ internal class EmploymentAgencyData
     public List<Vacancy> Vacancies { get; set; }
     public List<Resume> Resumes { get; set; }
     public List<Response> Responses { get; set; }
-    public List<Status> Statuses { get; set; }
     public EmploymentAgencyData()
     {
-        Statuses =
-        [
-           new Status
-           {
-               IdStatus = 0,
-               StatusName = "На рассмотрении"
-           },
-           new Status
-           {
-               IdStatus = 1,
-               StatusName = "Принято"
-           },
-           new Status
-           {
-               IdStatus = 2,
-               StatusName = "Отклонено"
-           }
-        ];
         Applicants = 
         [
             new Applicant 
@@ -341,7 +322,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 1,
                 IdApplicant = 2,
                 DateResponse = new DateTime(2022, 2, 15),
-                IdStatus = 0,
+                Stat = Status.Requested,
                 SummaryResponse = "Очень нужна работа иначе дети умрут"
             },
             new Response
@@ -350,7 +331,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 2,
                 IdApplicant = 3,
                 DateResponse = new DateTime(2023, 3, 12),
-                IdStatus = 1,
+                Stat = Status.Rejected,
                 SummaryResponse = "Опыт и навыки идеально подходят для данной позиции."
             },
             new Response
@@ -359,7 +340,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 3,
                 IdApplicant = 4,
                 DateResponse = new DateTime(2023, 4, 8),
-                IdStatus = 2,
+                Stat = Status.Rejected,
                 SummaryResponse = "Ищу работу в вашей компании, так как хочу развиваться в данной области."
             },
             new Response
@@ -368,7 +349,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 1,
                 IdApplicant = 1,
                 DateResponse = new DateTime(2023, 5, 21),
-                IdStatus = 2,
+                Stat = Status.Rejected,
                 SummaryResponse = "Готов на любые условия, работа в этой сфере — мечта."
             },
             new Response
@@ -377,7 +358,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 4,
                 IdApplicant = 2,
                 DateResponse = new DateTime(2023, 6, 17),
-                IdStatus = 2,
+                Stat = Status.Rejected,
                 SummaryResponse = "Имею большой опыт, уверен, что подхожу на эту должность."
             },
             new Response
@@ -386,7 +367,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 2,
                 IdApplicant = 4,
                 DateResponse = new DateTime(2023, 7, 19),
-                IdStatus = 0,
+                Stat = Status.Rejected,
                 SummaryResponse = "Ваши условия совпадают с моими ожиданиями, жду вашего ответа."
             }
         ];

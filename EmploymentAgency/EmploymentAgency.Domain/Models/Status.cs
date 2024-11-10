@@ -1,15 +1,22 @@
 ﻿namespace EmploymentAgency.Domain.Models;
 /// <summary>
-/// Класс статус заявки на вакансию
+/// Enum заявки на вакансию
 /// </summary>
-public class Status
+public enum Status
 {
     /// <summary>
-    /// Уникальный номер статуса
+    /// Отклонено
+    /// value = 0 
     /// </summary>
-    public int IdStatus { get; set; }
+    Rejected,
     /// <summary>
-    /// Имя статуса
+    /// Заявка принята
+    /// value = 1
     /// </summary>
-    public required string StatusName { get; set; }
+    Accepted,
+    /// <summary>
+    /// Заявка на рассмотрении
+    /// value = 2
+    /// </summary>
+    Requested
 }
