@@ -22,9 +22,9 @@ public class Response
     /// </summary>
     public int IdApplicant { get; set; }
     /// <summary>
-    /// ID статуса отклика
+    /// Cтатуса отклика
     /// </summary>
-    public Status Stat{ get; set; }
+    public required StatusType Ststus{ get; set; }
     /// <summary>
     /// Сообщение соискателя при отклике
     /// </summary>

@@ -2,7 +2,7 @@
 /// <summary>
 /// Enum заявки на вакансию
 /// </summary>
-public enum Status
+public enum StatusType
 {
     /// <summary>
     /// Отклонено

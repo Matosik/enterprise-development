@@ -21,11 +21,11 @@ public class RepositoryEmployer : IRepository<Employer>
         old.LastName = update.LastName;
         old.FirstName = update.FirstName;
         old.Company = update.Company;
-        old.Registration = update.Registration;
     }
 
     public void Post(Employer employer)
     {
+        employer.IdEmployer = _id++;
         _employers.Add(employer);
     }
     public bool Delete(int id)
