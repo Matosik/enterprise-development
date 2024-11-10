@@ -18,6 +18,9 @@ public class Mapper : Profile
         CreateMap<Response, ResponsePutDto>().ReverseMap();
         CreateMap<Resume, ResumeDto>().ReverseMap();
         CreateMap<Resume, ResumePutDto>().ReverseMap();
+        CreateMap<Vacancy, VacancyDto>().ReverseMap();
+        CreateMap<Vacancy, VacancyPutDto>().ReverseMap();
+
 
     }
 }
