@@ -24,7 +24,7 @@ public class Response
     /// <summary>
     /// Cтатуса отклика
     /// </summary>
-    public required StatusType Ststus{ get; set; }
+    public required StatusType Status{ get; set; }
     /// <summary>
     /// Сообщение соискателя при отклике
     /// </summary>

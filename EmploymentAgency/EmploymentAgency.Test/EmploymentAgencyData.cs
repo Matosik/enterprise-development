@@ -322,7 +322,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 1,
                 IdApplicant = 2,
                 DateResponse = new DateTime(2022, 2, 15),
-                Stat = Status.Requested,
+                Status = StatusType.Requested,
                 SummaryResponse = "Очень нужна работа иначе дети умрут"
             },
             new Response
@@ -331,7 +331,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 2,
                 IdApplicant = 3,
                 DateResponse = new DateTime(2023, 3, 12),
-                Stat = Status.Rejected,
+                Status = StatusType.Rejected,
                 SummaryResponse = "Опыт и навыки идеально подходят для данной позиции."
             },
             new Response
@@ -340,7 +340,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 3,
                 IdApplicant = 4,
                 DateResponse = new DateTime(2023, 4, 8),
-                Stat = Status.Rejected,
+                Status = StatusType.Rejected,
                 SummaryResponse = "Ищу работу в вашей компании, так как хочу развиваться в данной области."
             },
             new Response
@@ -349,7 +349,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 1,
                 IdApplicant = 1,
                 DateResponse = new DateTime(2023, 5, 21),
-                Stat = Status.Rejected,
+                Status = StatusType.Rejected,
                 SummaryResponse = "Готов на любые условия, работа в этой сфере — мечта."
             },
             new Response
@@ -358,7 +358,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 4,
                 IdApplicant = 2,
                 DateResponse = new DateTime(2023, 6, 17),
-                Stat = Status.Rejected,
+                Status = StatusType.Rejected,
                 SummaryResponse = "Имею большой опыт, уверен, что подхожу на эту должность."
             },
             new Response
@@ -367,7 +367,7 @@ internal class EmploymentAgencyData
                 IdVacancy = 2,
                 IdApplicant = 4,
                 DateResponse = new DateTime(2023, 7, 19),
-                Stat = Status.Rejected,
+                Status = StatusType.Rejected,
                 SummaryResponse = "Ваши условия совпадают с моими ожиданиями, жду вашего ответа."
             }
         ];

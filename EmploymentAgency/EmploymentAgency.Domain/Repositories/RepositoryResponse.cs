@@ -19,7 +19,7 @@ public class RepositoryResponse : IRepository<Response>
 
     public void Overwrite(ref Response old, Response update)
     {
-        old.Stat = update.Stat;
+        old.Status = update.Status;
         old.SummaryResponse = update.SummaryResponse;
         old.IdApplicant = update.IdApplicant; // Организовать проверку существует ли такой Id Vacancy
         old.IdVacancy = update.IdVacancy;// Организовать проверку существует ли такой Id Vacancy
