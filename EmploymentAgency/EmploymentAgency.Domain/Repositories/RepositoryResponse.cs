@@ -10,11 +10,12 @@ namespace EmploymentAgency.Domain.Repositories;
 
 public class RepositoryResponse : IRepository<Response>
 {
+    private int _id = 0;
     private readonly List<Response> _responses = [];
 
     public Response? GetById(int id) => _responses.Find(r => r.IdResponse == id);
 
-    public IEnumerable<Response> Gets()=> _responses;
+    public IEnumerable<Response> GetAll()=> _responses;
 
     public void Overwrite(ref Response old, Response update)
     {

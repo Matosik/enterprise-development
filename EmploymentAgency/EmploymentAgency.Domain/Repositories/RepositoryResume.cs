@@ -9,11 +9,11 @@ namespace EmploymentAgency.Domain.Repositories;
 
 public class RepositoryResume : IRepository<Resume>
 {
-
+    private int _id = 0;
     private readonly List<Resume> _resumes = [];
     public Resume? GetById(int id) => _resumes.Find(r => r.IdResume == id);
 
-    public IEnumerable<Resume> Gets() => _resumes;
+    public IEnumerable<Resume> GetAll() => _resumes;
 
     public void Overwrite(ref Resume old, Resume update)
     {

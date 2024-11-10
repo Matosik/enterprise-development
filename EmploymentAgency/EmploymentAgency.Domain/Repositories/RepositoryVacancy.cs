@@ -9,8 +9,9 @@ namespace EmploymentAgency.Domain.Repositories;
 
 public class RepositoryVacancy : IRepository<Vacancy>
 {
+    private int _id = 0;
     private readonly List<Vacancy> _vacancies = [];
-    public IEnumerable<Vacancy> Gets() => _vacancies;
+    public IEnumerable<Vacancy> GetAll() => _vacancies;
     public Vacancy? GetById(int id) => _vacancies.Find(v=> v.IdVacancy == id);
     public void Post(Vacancy entity)
     {
