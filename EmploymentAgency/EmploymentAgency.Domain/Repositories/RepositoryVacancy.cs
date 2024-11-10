@@ -10,29 +10,28 @@ namespace EmploymentAgency.Domain.Repositories;
 public class RepositoryVacancy : IRepository<Vacancy>
 {
     private readonly List<Vacancy> _vacancies = [];
-
-    public bool Delete(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IEnumerable<Vacancy> Gets()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Vacancy? GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
+    public IEnumerable<Vacancy> Gets() => _vacancies;
+    public Vacancy? GetById(int id) => _vacancies.Find(v=> v.IdVacancy == id);
     public void Post(Vacancy entity)
     {
-        throw new NotImplementedException();
+        _vacancies.Add(entity);
     }
-
-    public bool Put(int id, Vacancy entity)
+    public void Overwrite(ref Vacancy old, Vacancy update)
     {
-        throw new NotImplementedException();
+        old.DateVacancy = update.DateVacancy;
+        old.NameVacancy = update.NameVacancy;
+        old.Salary = update.Salary;
+        old.Summary = update.Summary;
+        old.IdEmployer = update.IdEmployer;
+        old.IdJobPosition = update.IdJobPosition;
+        old.IsActive = update.IsActive;
+        old.Experience = update.Experience;
+    }
+    public bool Delete(int id)
+    {
+        var vacancy = GetById(id);
+        if (vacancy == null) { return false; }
+        _vacancies.Remove(vacancy);
+        return true;
     }
 }
