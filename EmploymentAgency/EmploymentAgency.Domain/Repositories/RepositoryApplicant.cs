@@ -9,18 +9,26 @@ namespace EmploymentAgency.Domain.Repositories;
 
 public class RepositoryApplicant : IRepository<Applicant>
 {
+    private int _id = 0;
     private readonly List<Applicant> _applicants = [];
-    public IEnumerable<Applicant> Gets() => _applicants;
+    public IEnumerable<Applicant> GetAll() => _applicants;
     public Applicant? GetById(int id) => _applicants.Find(v => v.IdApplicant == id);
-    public void Post(Applicant entity)
+    public void Post(Applicant applicant)
     {
-        _applicants.Add(entity);
+        applicant.IdApplicant = _id++;
+        _applicants.Add(applicant);
     }
     public void Overwrite(ref Applicant old, Applicant update)
     {
-        old.Birthday = update.Birthday;
+        if (update.Birthday != DateOnly.MinValue)
+        {
+            old.Birthday = update.Birthday;
+        }
         old.Number = update.Number;
-        old.Registration = update.Registration;
+        if (update.Registration != null)
+        {
+            old.Registration = update.Registration;
+        }
         old.FirstName = update.FirstName;
         old.LastName = update.LastName;
     }
