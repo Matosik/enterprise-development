@@ -1,5 +1,4 @@
-﻿using EmploymentAgency.Domain.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 namespace EmploymentAgency.Server.DTO;
 
 public class ApplicantPutDto

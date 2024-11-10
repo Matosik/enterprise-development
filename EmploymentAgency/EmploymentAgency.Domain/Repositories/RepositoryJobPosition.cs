@@ -1,9 +1,4 @@
 ﻿using EmploymentAgency.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmploymentAgency.Domain.Repositories;
 
@@ -12,7 +7,7 @@ public class RepositoryJobPosition : IRepository<JobPosition>
     private int _id = 0;
     private readonly List<JobPosition> _jobs = [];
 
-    public JobPosition? GetById(int id) => _jobs.Find(j=> j.IdJobPosition == id);
+    public JobPosition? GetById(int id) => _jobs.Find(j => j.IdJobPosition == id);
 
     public IEnumerable<JobPosition> GetAll() => _jobs;
 

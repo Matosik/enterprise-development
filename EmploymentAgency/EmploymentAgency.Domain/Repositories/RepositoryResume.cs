@@ -1,9 +1,4 @@
 ﻿using EmploymentAgency.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmploymentAgency.Domain.Repositories;
 
@@ -31,7 +26,7 @@ public class RepositoryResume : IRepository<Resume>
     public bool Delete(int id)
     {
         var resume = GetById(id);
-        if(resume == null) { return false; }
+        if (resume == null) { return false; }
         _resumes.Remove(resume);
         return true;
     }
