@@ -1,5 +1,8 @@
 ﻿namespace EmploymentAgency.Server.DTO;
 
+/// <summary>
+/// DTO для Рабочей позиции
+/// </summary>
 public class JobPositionDto
 {
     /// <summary>

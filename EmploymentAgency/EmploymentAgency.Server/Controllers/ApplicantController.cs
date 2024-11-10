@@ -9,7 +9,10 @@ namespace EmploymentAgency.Server.Controllers;
 [ApiController]
 public class ApplicantController(IRepository<Applicant> repository, IMapper mapper) : ControllerBase
 {
-    // GET ALL
+    /// <summary>
+    /// Получает список соискателей работы из репозитория, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <returns>Возвращает HTTP-код ответа и коллекцию объектов ApplicantDto</returns>
     [HttpGet]
     public ActionResult<IEnumerable<ApplicantDto>> Get()
     {
@@ -17,7 +20,11 @@ public class ApplicantController(IRepository<Applicant> repository, IMapper mapp
         return Ok(repoDto);
     }
 
-    // GET id
+    /// <summary>
+    /// Получает соискателя работы из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Возвращает код HTTP-код ответа и найденое значение соискателя работы по id</returns>
     [HttpGet("{id}")]
     public ActionResult<ApplicantDto> Get(int id)
     {
@@ -30,7 +37,11 @@ public class ApplicantController(IRepository<Applicant> repository, IMapper mapp
         return Ok(mapper.Map<ApplicantDto>(applicant));
     }
 
-    // POST 
+    /// <summary>
+    /// Добавляет нового соискателя работы в репозиторий в формате DTO
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
     [HttpPost]
     public IActionResult Post([FromBody] ApplicantDto value)
     {
@@ -41,8 +52,12 @@ public class ApplicantController(IRepository<Applicant> repository, IMapper mapp
         return Ok();
     }
 
-    // PUT 
-    [HttpPut("{id}")]
+    /// <summary>
+    /// Обновляет существующую соискателя работы в репозитории на основе переданных данных в формате DTO
+    /// </summary>
+    /// <param name="id">Идентификатор соискателя работы для обновления</param>
+    /// <param name="value">Объект ApplicantPutDto с обновленными данными соискателя работы</param>
+    /// <returns>Возвращает HTTP-код  выполнения операции </returns>     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] ApplicantPutDto value)
     {
         if (repository.Put(id, mapper.Map<Applicant>(value)))
@@ -52,7 +67,11 @@ public class ApplicantController(IRepository<Applicant> repository, IMapper mapp
         return NotFound();
     }
 
-    // DELETE 
+    /// <summary>
+    /// Удаляет соискателя работы из репозитория по указанному идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор соискателя работы для удаления</param>
+    /// <returns>Возвращает HTTP-код операции</returns>
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

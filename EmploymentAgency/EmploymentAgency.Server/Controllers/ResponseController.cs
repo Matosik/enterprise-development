@@ -9,7 +9,10 @@ namespace EmploymentAgency.Server.Controllers;
 [ApiController]
 public class ResponseController(IRepository<Response> repository, IMapper mapper) : ControllerBase
 {
-    // GET ALL
+    /// <summary>
+    /// Получает список откликов из репозитория, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <returns>Возвращает HTTP-код ответа и коллекцию объектов ResponseDto</returns>
     [HttpGet]
     public ActionResult<IEnumerable<ResponseDto>> Get()
     {
@@ -17,7 +20,11 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
         return Ok(repoDto);
     }
 
-    // GET id
+    /// <summary>
+    /// Получает отклик из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Возвращает код HTTP-код ответа и найденое значение отклик по id</returns>
     [HttpGet("{id}")]
     public ActionResult<ResponseDto> Get(int id)
     {
@@ -30,7 +37,11 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
         return Ok(mapper.Map<ResponseDto>(job));
     }
 
-    // POST 
+    /// <summary>
+    /// Добавляет новое отклик в репозиторий в формате DTO
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
     [HttpPost]
     public IActionResult Post([FromBody] ResponseDto value)
     {
@@ -39,7 +50,12 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
         return Ok();
     }
 
-    // PUT 
+    /// <summary>
+    /// Обновляет существующую отклик в репозитории на основе переданных данных в формате DTO
+    /// </summary>
+    /// <param name="id">Идентификатор отклик для обновления</param>
+    /// <param name="value">Объект ResponsePutDto с обновленными данными отклик</param>
+    /// <returns>Возвращает HTTP-код  выполнения операции </returns>   
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] ResponsePutDto value)
     {
@@ -50,7 +66,11 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
         return NotFound();
     }
 
-    // DELETE 
+    /// <summary>
+    /// Удаляет отклик из репозитория по указанному идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор отклик для удаления</param>
+    /// <returns>Возвращает HTTP-код операции</returns> 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

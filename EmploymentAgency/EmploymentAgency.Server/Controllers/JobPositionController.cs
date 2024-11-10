@@ -9,7 +9,10 @@ namespace EmploymentAgency.Server.Controllers;
 [ApiController]
 public class JobPositionController(IRepository<JobPosition> repository, IMapper mapper) : ControllerBase
 {
-    // GET ALL
+    /// <summary>
+    /// Получает список рабочих позиций из репозитория, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <returns>Возвращает HTTP-код ответа и коллекцию объектов JobPosition</returns>
     [HttpGet]
     public ActionResult<IEnumerable<JobPositionDto>> Get()
     {
@@ -17,7 +20,11 @@ public class JobPositionController(IRepository<JobPosition> repository, IMapper 
         return Ok(repoDto);
     }
 
-    // GET id
+    /// <summary>
+    /// Получает рабочую позицию из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Возвращает код HTTP-код ответа и найденое значение рабочая позиция по id</returns>
     [HttpGet("{id}")]
     public ActionResult<JobPositionDto> Get(int id)
     {
@@ -30,7 +37,11 @@ public class JobPositionController(IRepository<JobPosition> repository, IMapper 
         return Ok(mapper.Map<JobPositionDto>(job));
     }
 
-    // POST 
+    /// <summary>
+    /// Добавляет новую рабочую позицию в репозиторий в формате DTO
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns>Возвращает HTTP-код  выполнения операции</returns>
     [HttpPost]
     public IActionResult Post([FromBody] JobPositionDto value)
     {
@@ -39,7 +50,12 @@ public class JobPositionController(IRepository<JobPosition> repository, IMapper 
         return Ok();
     }
 
-    // PUT 
+    /// <summary>
+    /// Обновляет существующую рабочую позицию в репозитории на основе переданных данных в формате DTO
+    /// </summary>
+    /// <param name="id">Идентификатор рабочей позиции для обновления</param>
+    /// <param name="value">Объект JobPositionDto с обновленными данными рабочая позиция</param>
+    /// <returns>Возвращает HTTP-код  выполнения операции </returns> 
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] JobPositionDto value)
     {
@@ -50,7 +66,11 @@ public class JobPositionController(IRepository<JobPosition> repository, IMapper 
         return NotFound();
     }
 
-    // DELETE 
+    /// <summary>
+    /// Удаляет рабочую позицию из репозитория по указанному идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор рабочей позиции для удаления</param>
+    /// <returns>Возвращает HTTP-код операции</returns> 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

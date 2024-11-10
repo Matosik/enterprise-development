@@ -1,5 +1,8 @@
 ﻿namespace EmploymentAgency.Server.DTO;
 
+/// <summary>
+/// DTO для класса Резюме
+/// </summary
 public class ResumeDto
 {
     /// <summary>

@@ -9,7 +9,10 @@ namespace EmploymentAgency.Server.Controllers;
 [ApiController]
 public class EmployerController(IRepository<Employer> repository, IMapper mapper) : ControllerBase
 {
-    // GET ALL
+    /// <summary>
+    /// Получает список Работодателей из репозитория, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <returns>Возвращает HTTP-код ответа и коллекцию объектов EmployerDto</returns>
     [HttpGet]
     public ActionResult<IEnumerable<EmployerDto>> Get()
     {
@@ -17,7 +20,11 @@ public class EmployerController(IRepository<Employer> repository, IMapper mapper
         return Ok(repoDto);
     }
 
-    // GET id
+    /// <summary>
+    /// Получает работадателя из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Возвращает код HTTP-код ответа и найденое значение работадатель по id</returns>
     [HttpGet("{id}")]
     public ActionResult<EmployerDto> Get(int id)
     {
@@ -30,7 +37,11 @@ public class EmployerController(IRepository<Employer> repository, IMapper mapper
         return Ok(mapper.Map<EmployerDto>(applicant));
     }
 
-    // POST 
+    /// <summary>
+    /// Добавляет нового работадателя в репозиторий в формате DTO
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
     [HttpPost]
     public IActionResult Post([FromBody] EmployerDto value)
     {
@@ -39,7 +50,12 @@ public class EmployerController(IRepository<Employer> repository, IMapper mapper
         return Ok();
     }
 
-    // PUT 
+    /// <summary>
+    /// Обновляет существующего работадателя в репозитории на основе переданных данных в формате DTO
+    /// </summary>
+    /// <param name="id">Идентификатор работадателя для обновления</param>
+    /// <param name="value">Объект EmployerPutDto с обновленными данными работадателя</param>
+    /// <returns>Возвращает HTTP-код  выполнения операции </returns>   
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] EmployerPutDto value)
     {
@@ -50,7 +66,11 @@ public class EmployerController(IRepository<Employer> repository, IMapper mapper
         return NotFound();
     }
 
-    // DELETE 
+    /// <summary>
+    /// Удаляет работадателя из репозитория по указанному идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор работадателя для удаления</param>
+    /// <returns>Возвращает HTTP-код операции</returns> 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

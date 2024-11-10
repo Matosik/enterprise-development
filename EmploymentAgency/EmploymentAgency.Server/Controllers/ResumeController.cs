@@ -9,7 +9,10 @@ namespace EmploymentAgency.Server.Controllers;
 [ApiController]
 public class ResumeController(IRepository<Resume> repository, IMapper mapper) : ControllerBase
 {
-    // GET ALL
+    /// <summary>
+    /// Получает список резюме из репозитория, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <returns>Возвращает HTTP-код ответа и коллекцию объектов ResumeDto</returns>
     [HttpGet]
     public ActionResult<IEnumerable<ResumeDto>> Get()
     {
@@ -17,7 +20,11 @@ public class ResumeController(IRepository<Resume> repository, IMapper mapper) : 
         return Ok(repoDto);
     }
 
-    // GET id
+    /// <summary>
+    /// Получает резюме из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Возвращает код HTTP-код ответа и найденое значение резюме по id</returns>
     [HttpGet("{id}")]
     public ActionResult<ResumeDto> Get(int id)
     {
@@ -30,7 +37,11 @@ public class ResumeController(IRepository<Resume> repository, IMapper mapper) : 
         return Ok(mapper.Map<ResumeDto>(job));
     }
 
-    // POST 
+    /// <summary>
+    /// Добавляет новое резюме в репозиторий в формате DTO
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns>Возвращает HTTP-код  выполнения операции</returns>
     [HttpPost]
     public IActionResult Post([FromBody] ResumeDto value)
     {
@@ -39,7 +50,12 @@ public class ResumeController(IRepository<Resume> repository, IMapper mapper) : 
         return Ok();
     }
 
-    // PUT 
+    /// <summary>
+    /// Обновляет существующую резюме в репозитории на основе переданных данных в формате DTO
+    /// </summary>
+    /// <param name="id">Идентификатор резюме для обновления</param>
+    /// <param name="value">Объект ResumePutDto с обновленными данными резюме</param>
+    /// <returns>Возвращает HTTP-код  выполнения операции </returns>   
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] ResumePutDto value)
     {
@@ -50,7 +66,11 @@ public class ResumeController(IRepository<Resume> repository, IMapper mapper) : 
         return NotFound();
     }
 
-    // DELETE 
+    /// <summary>
+    /// Удаляет резюме из репозитория по указанному идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор резюме для удаления</param>
+    /// <returns>Возвращает HTTP-код операции</returns> 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

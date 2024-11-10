@@ -2,7 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace EmploymentAgency.Server.DTO;
-
+/// <summary>
+/// DTO для изменения данных класса Отклика
+/// </summary
 public class ResponsePutDto
 {
     /// <summary>

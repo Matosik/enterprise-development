@@ -9,7 +9,10 @@ namespace EmploymentAgency.Server.Controllers;
 [ApiController]
 public class VacancyController(IRepository<Vacancy> repository, IMapper mapper) : ControllerBase
 {
-    // GET ALL
+    /// <summary>
+    /// Получает список вакансий из репозитория, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <returns>Возвращает HTTP-код ответа и коллекцию объектов VacancyDto</returns>
     [HttpGet]
     public ActionResult<IEnumerable<VacancyDto>> Get()
     {
@@ -17,7 +20,11 @@ public class VacancyController(IRepository<Vacancy> repository, IMapper mapper) 
         return Ok(repoDto);
     }
 
-    // GET id
+    /// <summary>
+    /// Получает вакансию из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Возвращает код HTTP-код ответа и найденое значение вакансии по id</returns>
     [HttpGet("{id}")]
     public ActionResult<VacancyDto> Get(int id)
     {
@@ -30,7 +37,11 @@ public class VacancyController(IRepository<Vacancy> repository, IMapper mapper) 
         return Ok(mapper.Map<VacancyDto>(job));
     }
 
-    // POST 
+    /// <summary>
+    /// Добавляет новую вакансию в репозиторий в формате DTO
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns>Возвращает HTTP-код  выполнения операции</returns>
     [HttpPost]
     public IActionResult Post([FromBody] VacancyDto value)
     {
@@ -39,7 +50,13 @@ public class VacancyController(IRepository<Vacancy> repository, IMapper mapper) 
         return Ok();
     }
 
-    // PUT 
+
+    /// <summary>
+    /// Обновляет существующую вакансию в репозитории на основе переданных данных в формате DTO
+    /// </summary>
+    /// <param name="id">Идентификатор вакансии для обновления</param>
+    /// <param name="value">Объект VacancyPutDto с обновленными данными вакансии</param>
+    /// <returns>Возвращает HTTP-код  выполнения операции </returns>    
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] VacancyPutDto value)
     {
@@ -50,7 +67,11 @@ public class VacancyController(IRepository<Vacancy> repository, IMapper mapper) 
         return NotFound();
     }
 
-    // DELETE 
+    /// <summary>
+    /// Удаляет вакансию из репозитория по указанному идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор вакансии для удаления</param>
+    /// <returns>Возвращает HTTP-код операции</returns>    
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

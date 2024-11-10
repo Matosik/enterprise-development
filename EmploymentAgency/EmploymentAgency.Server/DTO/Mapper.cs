@@ -2,7 +2,9 @@
 using EmploymentAgency.Domain.Models;
 namespace EmploymentAgency.Server.DTO;
 
-
+/// <summary>
+/// Маппер для конвертации обычных данных в DTO и обратно 
+/// </summary>
 public class Mapper : Profile
 {
     public Mapper()

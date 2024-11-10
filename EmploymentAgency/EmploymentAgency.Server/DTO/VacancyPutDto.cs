@@ -1,5 +1,8 @@
 ﻿namespace EmploymentAgency.Server.DTO;
 
+/// <summary>
+/// DTO для изменения данных класса Вакансия
+/// </summary
 public class VacancyPutDto
 {
     /// <summary>

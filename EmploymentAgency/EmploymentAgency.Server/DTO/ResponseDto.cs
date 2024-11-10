@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EmploymentAgency.Server.DTO;
 
+/// <summary>
+/// DTO для отклика
+/// </summary>
 public class ResponseDto
 {
     /// <summary>

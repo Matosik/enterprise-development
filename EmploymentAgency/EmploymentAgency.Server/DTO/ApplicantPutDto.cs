@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace EmploymentAgency.Server.DTO;
-
+/// <summary>
+/// DTO для изменения данных Соискателя/кандидата
+/// </summary>
 public class ApplicantPutDto
 {
     /// <summary>
