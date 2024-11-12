@@ -8,10 +8,11 @@ public class RepositoryApplicant : IRepository<Applicant>
     private readonly List<Applicant> _applicants = [];
     public IEnumerable<Applicant> GetAll() => _applicants;
     public Applicant? GetById(int id) => _applicants.Find(v => v.IdApplicant == id);
-    public void Post(Applicant applicant)
+    public Applicant Post(Applicant applicant)
     {
         applicant.IdApplicant = _id++;
         _applicants.Add(applicant);
+        return applicant;
     }
     public void Overwrite(ref Applicant old, Applicant update)
     {
@@ -26,6 +27,10 @@ public class RepositoryApplicant : IRepository<Applicant>
         }
         old.FirstName = update.FirstName;
         old.LastName = update.LastName;
+    }
+    public void Delete(Applicant applicant)
+    {
+        _applicants.Remove(applicant);
     }
     public bool Delete(int id)
     {

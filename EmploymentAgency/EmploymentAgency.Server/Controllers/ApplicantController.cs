@@ -1,14 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Server.DTO;
+using EmploymentAgency.Domain.DTO;
 using AutoMapper;
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ApplicantController(IRepository<Applicant> repository, IMapper mapper) : ControllerBase
+public class ApplicantController(IRepository<Applicant> repository, IRepository<Resume> repositoryResume, IRepository<Response> repositoryResponse, IMapper mapper) : ControllerBase
 {
+
+    private readonly IRepository<Resume> _repositoryResume = repositoryResume;
+
+    private readonly IRepository<Response> _repositoryResponse = repositoryResponse;
     /// <summary>
     /// Получает список соискателей работы из репозитория, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
@@ -45,10 +49,8 @@ public class ApplicantController(IRepository<Applicant> repository, IMapper mapp
     [HttpPost]
     public IActionResult Post([FromBody] ApplicantDto value)
     {
-
         var applicant = mapper.Map<Applicant>(value);
         repository.Post(applicant);
-
         return Ok();
     }
 
@@ -57,7 +59,8 @@ public class ApplicantController(IRepository<Applicant> repository, IMapper mapp
     /// </summary>
     /// <param name="id">Идентификатор соискателя работы для обновления</param>
     /// <param name="value">Объект ApplicantPutDto с обновленными данными соискателя работы</param>
-    /// <returns>Возвращает HTTP-код  выполнения операции </returns>     [HttpPut("{id}")]
+    /// <returns>Возвращает HTTP-код  выполнения операции </returns>     
+    [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] ApplicantPutDto value)
     {
         if (repository.Put(id, mapper.Map<Applicant>(value)))
@@ -75,6 +78,22 @@ public class ApplicantController(IRepository<Applicant> repository, IMapper mapp
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
+        var resumes = _repositoryResume.GetAll();
+        var responses = _repositoryResponse.GetAll();
+        foreach (var response in responses)
+        {
+            if (response.IdApplicant == id)
+            {
+                _repositoryResponse.Delete(response);
+            }
+        }
+        foreach (var resume in resumes)
+        {
+            if(resume.IdApplicant == id)
+            {
+                _repositoryResume.Delete(resume);
+            }
+        }
         if (repository.Delete(id)) { return Ok(); }
         return NotFound();
     }

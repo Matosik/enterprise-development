@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Server.DTO;
+using EmploymentAgency.Domain.DTO;
 using AutoMapper;
 namespace EmploymentAgency.Server.Controllers;
 

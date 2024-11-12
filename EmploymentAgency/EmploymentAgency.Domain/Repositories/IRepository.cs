@@ -4,7 +4,7 @@ public interface IRepository<T>
 {
     public IEnumerable<T> GetAll();
     public T? GetById(int id);
-    public void Post(T entity);
+    public T Post(T entity);
     public void Overwrite(ref T old, T update);
     public bool Put(int id, T entity)
     {
@@ -14,5 +14,6 @@ public interface IRepository<T>
         Overwrite(ref oldEntity, entity);
         return true;
     }
+    public void Delete(T entity);
     public bool Delete(int id);
 }

@@ -18,10 +18,15 @@ public class RepositoryEmployer : IRepository<Employer>
         old.Company = update.Company;
     }
 
-    public void Post(Employer employer)
+    public Employer Post(Employer employer)
     {
         employer.IdEmployer = _id++;
         _employers.Add(employer);
+        return employer;
+    }
+    public void Delete(Employer employer)
+    {
+        _employers.Remove(employer);
     }
     public bool Delete(int id)
     {

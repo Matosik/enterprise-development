@@ -20,16 +20,21 @@ public class RepositoryResponse : IRepository<Response>
         old.DateResponse = update.DateResponse;
     }
 
-    public void Post(Response response)
+    public Response Post(Response response)
     {
         response.IdResponse = _id++;
         _responses.Add(response);
+        return response;
+    }
+    public void Delete(Response response)
+    {
+        _responses.Remove(response);
     }
     public bool Delete(int id)
     {
         var response = GetById(id);
         if (response == null) return false;
-        _responses.Remove(response);
+        Delete(response);
         return true;
     }
 }

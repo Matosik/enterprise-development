@@ -1,5 +1,4 @@
-
-using EmploymentAgency.Server.DTO;
+using EmploymentAgency.Domain.DTO;
 using EmploymentAgency.Domain.Models;
 using EmploymentAgency.Domain.Repositories;
 var builder = WebApplication.CreateBuilder(args);

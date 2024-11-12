@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Server.DTO;
+using EmploymentAgency.Domain.DTO;
 using AutoMapper;
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ResumeController(IRepository<Resume> repository, IMapper mapper) : ControllerBase
+public class ResumeController(IRepository<Resume> repository, IRepository<JobPosition> repositoryJob, IRepository<Applicant> repositoryApplicant, IMapper mapper) : ControllerBase
 {
+    private readonly IRepository<Applicant> _repositoryApplicant = repositoryApplicant;
+    private readonly IRepository<JobPosition> _repositoryJob = repositoryJob;
     /// <summary>
     /// Получает список резюме из репозитория, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
@@ -28,13 +30,13 @@ public class ResumeController(IRepository<Resume> repository, IMapper mapper) : 
     [HttpGet("{id}")]
     public ActionResult<ResumeDto> Get(int id)
     {
-        var job = repository.GetById(id);
-        if (job == null)
+        var resume = repository.GetById(id);
+        if (resume == null)
         {
             NotFound();
         }
 
-        return Ok(mapper.Map<ResumeDto>(job));
+        return Ok(mapper.Map<ResumeDto>(resume));
     }
 
     /// <summary>
@@ -43,11 +45,27 @@ public class ResumeController(IRepository<Resume> repository, IMapper mapper) : 
     /// <param name="value"></param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns>
     [HttpPost]
-    public IActionResult Post([FromBody] ResumeDto value)
+    public IActionResult Post([FromBody] ResumePostDto value)
     {
+        var message = "Резюме добавлено";
+        if (_repositoryApplicant.GetById(value.IdApplicant) == null)
+        {
+            return NotFound("Кандидат на работу с таким ID не найден");
+        };
+        var jobs = _repositoryJob.GetAll();
+        var cur = value.Job;
+        JobPosition? job;
+        job = jobs.FirstOrDefault(s => s.PositionName == cur.PositionName && s.Section == cur.Section);
+        
         repository.Post(mapper.Map<Resume>(value));
-
-        return Ok();
+        if(job == null)
+        {
+            job = _repositoryJob.Post(mapper.Map<JobPosition>(value.Job));
+            message += "Похоже на нашей площадке еще нет такой профессии. Но специально для вас мы добавили";
+        }
+        var added = mapper.Map<Resume>(value);
+        repository.Post(added);
+        return Ok(message);
     }
 
     /// <summary>

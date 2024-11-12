@@ -1,14 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Server.DTO;
+using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+using static System.Reflection.Metadata.BlobBuilder;
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class VacancyController(IRepository<Vacancy> repository, IMapper mapper) : ControllerBase
+public class VacancyController(IRepository<Vacancy> repository, IRepository<Employer> repositoryEmployer, IRepository<JobPosition> repositoryJob, IRepository<Response> repositoryResponse, IMapper mapper) : ControllerBase
 {
+    private readonly IRepository<Employer> _repositoryEmployer = repositoryEmployer;
+    private readonly IRepository<JobPosition> _repositoryJob = repositoryJob;
+    private readonly IRepository<Response> _repositoryResponse = repositoryResponse;
+
     /// <summary>
     /// Получает список вакансий из репозитория, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
@@ -28,13 +33,13 @@ public class VacancyController(IRepository<Vacancy> repository, IMapper mapper) 
     [HttpGet("{id}")]
     public ActionResult<VacancyDto> Get(int id)
     {
-        var job = repository.GetById(id);
-        if (job == null)
+        var vacancy = repository.GetById(id);
+        if (vacancy == null)
         {
             NotFound();
         }
 
-        return Ok(mapper.Map<VacancyDto>(job));
+        return Ok(mapper.Map<VacancyDto>(vacancy));
     }
 
     /// <summary>
@@ -43,11 +48,27 @@ public class VacancyController(IRepository<Vacancy> repository, IMapper mapper) 
     /// <param name="value"></param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns>
     [HttpPost]
-    public IActionResult Post([FromBody] VacancyDto value)
+    public IActionResult Post([FromBody] VacancyPostDto value)
     {
-        repository.Post(mapper.Map<Vacancy>(value));
+        string message = "Создание Вакансии прошло успешно";
+        if (_repositoryEmployer.GetById(value.IdEmployer) == null)
+        {
+            return NotFound("Работодатель с таким ID не найден");
+        };
+        var jobs = _repositoryJob.GetAll();
+        var cur = value.Job;
+        JobPosition? job;
 
-        return Ok();
+        job = jobs.FirstOrDefault(s => s.PositionName == cur.PositionName && s.Section == cur.Section);
+        if (job == null)
+        {
+            job = _repositoryJob.Post(mapper.Map<JobPosition>(value.Job));
+            message += "\nТакой рабочей позиции нет, но спецально для вас добавили";
+        }
+        var added = mapper.Map<Vacancy>(value);
+        added.IdJobPosition = job.IdJobPosition;
+        repository.Post(mapper.Map<Vacancy>(added));
+        return Ok(message);
     }
 
 
@@ -75,6 +96,14 @@ public class VacancyController(IRepository<Vacancy> repository, IMapper mapper) 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
+        var responses = _repositoryResponse.GetAll();
+        foreach (var response in responses)
+        {
+            if(response.IdVacancy == id)
+            {
+                _repositoryResponse.Delete(response);
+            }
+        }
         if (repository.Delete(id)) { return Ok(); }
         return NotFound();
     }

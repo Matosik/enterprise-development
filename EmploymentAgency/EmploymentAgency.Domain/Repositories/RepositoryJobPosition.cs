@@ -1,4 +1,5 @@
-﻿using EmploymentAgency.Domain.Models;
+﻿using EmploymentAgency.Domain.DTO;
+using EmploymentAgency.Domain.Models;
 
 namespace EmploymentAgency.Domain.Repositories;
 
@@ -16,16 +17,32 @@ public class RepositoryJobPosition : IRepository<JobPosition>
         old.Section = update.Section;
         old.PositionName = update.PositionName;
     }
-    public void Post(JobPosition jobPosition)
+    public JobPosition Post(JobPosition jobPosition)
     {
         jobPosition.IdJobPosition = _id++;
         _jobs.Add(jobPosition);
+        return jobPosition;
+    }
+    public JobPosition? Have(JobPositionDto entity)
+    {
+        if (entity.Section != null)
+        {
+            return _jobs.Find(s => s.PositionName == entity.PositionName && s.Section == entity.Section);
+        }
+        else
+        {
+            return _jobs.Find(s => s.PositionName == entity.PositionName);
+        }
+    }
+    public void Delete(JobPosition job)
+    {
+        _jobs.Remove(job);
     }
     public bool Delete(int id)
     {
         var job = GetById(id);
         if (job == null) { return false; }
-        _jobs.Remove(job);
+        Delete(job);
         return true;
     }
 }

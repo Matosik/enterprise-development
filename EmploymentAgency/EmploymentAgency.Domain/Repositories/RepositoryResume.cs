@@ -19,16 +19,21 @@ public class RepositoryResume : IRepository<Resume>
         old.WantSalary = update.WantSalary;
     }
 
-    public void Post(Resume resume)
+    public Resume Post(Resume resume)
     {
         resume.IdPosition = _id++;
         _resumes.Add(resume);
+        return resume;
+    }
+    public void Delete(Resume resume)
+    {
+        _resumes.Remove(resume);
     }
     public bool Delete(int id)
     {
         var resume = GetById(id);
         if (resume == null) { return false; }
-        _resumes.Remove(resume);
+        Delete(resume);
         return true;
     }
 }

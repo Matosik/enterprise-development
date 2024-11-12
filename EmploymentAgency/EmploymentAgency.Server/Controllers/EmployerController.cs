@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Server.DTO;
+using EmploymentAgency.Domain.DTO;
 using AutoMapper;
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployerController(IRepository<Employer> repository, IMapper mapper) : ControllerBase
+public class EmployerController(IRepository<Employer> repository, IRepository<Vacancy> repositoryVacancy, IRepository<Response> repositoryResponse IRepository<Response>, IMapper mapper) : ControllerBase
 {
+    private readonly IRepository<Vacancy> _repositoryVacancy = repositoryVacancy;
+    private readonly IRepository<Response> _repositoryResponse = repositoryResponse;
     /// <summary>
     /// Получает список Работодателей из репозитория, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
@@ -74,6 +76,22 @@ public class EmployerController(IRepository<Employer> repository, IMapper mapper
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
+        var responses = _repositoryResponse.GetAll();
+        var vacancyes = _repositoryVacancy.GetAll();
+        foreach (var vacancy in vacancyes)
+        {
+            if(vacancy.IdEmployer == id)
+            {
+                foreach (var response in responses)
+                {
+                    if(response.IdVacancy == vacancy.IdVacancy)
+                    {
+                        _repositoryResponse.Delete(response);
+                    }
+                }
+                _repositoryVacancy.Delete(vacancy);
+            }
+        }
         if (repository.Delete(id)) { return Ok(); }
         return NotFound();
     }

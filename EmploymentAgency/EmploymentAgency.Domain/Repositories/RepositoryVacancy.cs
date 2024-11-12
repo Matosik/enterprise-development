@@ -6,21 +6,33 @@ public class RepositoryVacancy : IRepository<Vacancy>
     private readonly List<Vacancy> _vacancies = [];
     public IEnumerable<Vacancy> GetAll() => _vacancies;
     public Vacancy? GetById(int id) => _vacancies.Find(v => v.IdVacancy == id);
-    public void Post(Vacancy vacancy)
+    public Vacancy Post(Vacancy vacancy)
     {
         vacancy.IdVacancy = _id++;
         _vacancies.Add(vacancy);
+        return vacancy;
     }
+
     public void Overwrite(ref Vacancy old, Vacancy update)
     {
-        old.DateVacancy = update.DateVacancy;
-        old.NameVacancy = update.NameVacancy;
+        if (update.DateVacancy != DateTime.MinValue)
+        {
+            old.DateVacancy = update.DateVacancy;
+        }
+        if (update != null)
+        {
+            old.NameVacancy = update.NameVacancy;
+        }
         old.Salary = update.Salary;
-        old.Summary = update.Summary;
-        old.IdEmployer = update.IdEmployer;
-        old.IdJobPosition = update.IdJobPosition;
         old.IsActive = update.IsActive;
         old.Experience = update.Experience;
+        old.Summary = update.Summary;
+        // old.IdEmployer = update.IdEmployer; по идее же мы не можем изменять/подменять такие данные ?  
+        // old.IdJobPosition = update.IdJobPosition;
+    }
+    public void Delete(Vacancy vacancy)
+    {
+        _vacancies.Remove(vacancy);
     }
     public bool Delete(int id)
     {
