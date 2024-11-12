@@ -7,7 +7,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployerController(IRepository<Employer> repository, IRepository<Vacancy> repositoryVacancy, IRepository<Response> repositoryResponse IRepository<Response>, IMapper mapper) : ControllerBase
+public class EmployerController(IRepository<Employer> repository, IRepository<Vacancy> repositoryVacancy, IRepository<Response> repositoryResponse, IMapper mapper) : ControllerBase
 {
     private readonly IRepository<Vacancy> _repositoryVacancy = repositoryVacancy;
     private readonly IRepository<Response> _repositoryResponse = repositoryResponse;

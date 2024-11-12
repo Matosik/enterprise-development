@@ -9,7 +9,7 @@ public class VacancyPostDto
     /// <summary>
     /// Название рабочей позиции
     /// </summary>
-    public JobPositionDto Job { get; set; }
+    public required JobPositionDto Job { get; set; }
     /// <summary>
     /// Название рабочей 
     /// </summary>
