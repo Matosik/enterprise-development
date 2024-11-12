@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace EmploymentAgency.Server.DTO;
+
+namespace EmploymentAgency.Domain.DTO;
 /// <summary>
-/// DTO для изменения данных Соискателя/кандидата
+/// DTO для изменения данных Работадателя
 /// </summary>
-public class ApplicantPutDto
+public class EmployerPutDto
 {
     /// <summary>
     /// Контактный номер пользователя
     /// </summary>
-    [Phone(ErrorMessage = "Неправильно набран номер")]
+    [Phone(ErrorMessage = "Неверный формат")]
     public string? Number { get; set; }
     /// <summary>
     /// Имя Пользователя
@@ -18,4 +19,5 @@ public class ApplicantPutDto
     /// Фамилия пользователя
     /// </summary>
     public required string LastName { get; set; }
+    public string? Company { get; set; }
 }

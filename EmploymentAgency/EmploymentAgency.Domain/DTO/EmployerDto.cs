@@ -1,5 +1,5 @@
 ﻿using EmploymentAgency.Domain.Models;
-namespace EmploymentAgency.Server.DTO;
+namespace EmploymentAgency.Domain.DTO;
 /// <summary>
 /// DTO для работадателя
 /// </summary>

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EmploymentAgency.Domain.Models;
-namespace EmploymentAgency.Server.DTO;
+namespace EmploymentAgency.Domain.DTO;
 
 /// <summary>
 /// Маппер для конвертации обычных данных в DTO и обратно 
@@ -20,7 +20,6 @@ public class Mapper : Profile
         CreateMap<Resume, ResumePutDto>().ReverseMap();
         CreateMap<Vacancy, VacancyDto>().ReverseMap();
         CreateMap<Vacancy, VacancyPutDto>().ReverseMap();
-
-
+        CreateMap<Vacancy, VacancyPostDto>().ReverseMap();
     }
 }

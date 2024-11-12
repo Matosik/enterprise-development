@@ -1,20 +1,17 @@
-﻿namespace EmploymentAgency.Server.DTO;
+﻿namespace EmploymentAgency.Domain.DTO;
 
-/// <summary>
-/// DTO для класса Вакансия
-/// </summary
-public class VacancyDto
+public class VacancyPostDto
 {
     /// <summary>
     /// Номер Работодателя который разместил вакансию
     /// </summary>
-    public int IdEmployer { get; set; }
+    public int IdEmployer { get; set; } 
     /// <summary>
-    /// Номер рабочей позиции
+    /// Название рабочей позиции
     /// </summary>
-    public int IdJobPosition { get; set; }
+    public JobPositionDto Job { get; set; }
     /// <summary>
-    /// Название вакансии
+    /// Название рабочей 
     /// </summary>
     public required string NameVacancy { get; set; }
     /// <summary>
