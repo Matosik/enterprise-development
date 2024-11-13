@@ -7,10 +7,8 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployerController(IRepository<Employer> repository, IRepository<Vacancy> repositoryVacancy, IRepository<Response> repositoryResponse, IMapper mapper) : ControllerBase
+public class EmployerController(ServiseRepository repository, IMapper mapper) : ControllerBase
 {
-    private readonly IRepository<Vacancy> _repositoryVacancy = repositoryVacancy;
-    private readonly IRepository<Response> _repositoryResponse = repositoryResponse;
     /// <summary>
     /// Получает список Работодателей из репозитория, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
@@ -18,7 +16,7 @@ public class EmployerController(IRepository<Employer> repository, IRepository<Va
     [HttpGet]
     public ActionResult<IEnumerable<EmployerDto>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<EmployerDto>>(repository.GetAll());
+        var repoDto = mapper.Map<IEnumerable<EmployerDto>>(repository.Employers.GetAll());
         return Ok(repoDto);
     }
 
@@ -30,7 +28,7 @@ public class EmployerController(IRepository<Employer> repository, IRepository<Va
     [HttpGet("{id}")]
     public ActionResult<EmployerDto> Get(int id)
     {
-        var applicant = repository.GetById(id);
+        var applicant = repository.Employers.GetById(id);
         if (applicant == null)
         {
             NotFound();
@@ -47,7 +45,7 @@ public class EmployerController(IRepository<Employer> repository, IRepository<Va
     [HttpPost]
     public IActionResult Post([FromBody] EmployerDto value)
     {
-        repository.Post(mapper.Map<Employer>(value));
+        repository.Employers.Post(mapper.Map<Employer>(value));
 
         return Ok();
     }
@@ -61,7 +59,7 @@ public class EmployerController(IRepository<Employer> repository, IRepository<Va
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] EmployerPutDto value)
     {
-        if (repository.Put(id, mapper.Map<Employer>(value)))
+        if (repository.Employers.Put(id, mapper.Map<Employer>(value)))
         {
             return Ok();
         }
@@ -76,8 +74,8 @@ public class EmployerController(IRepository<Employer> repository, IRepository<Va
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var responses = _repositoryResponse.GetAll();
-        var vacancyes = _repositoryVacancy.GetAll();
+        var responses = repository.Responses.GetAll();
+        var vacancyes = repository.Vacancies.GetAll();
         foreach (var vacancy in vacancyes.ToList())
         {
             if(vacancy.IdEmployer == id)
@@ -86,13 +84,13 @@ public class EmployerController(IRepository<Employer> repository, IRepository<Va
                 {
                     if(response.IdVacancy == vacancy.IdVacancy)
                     {
-                        _repositoryResponse.Delete(response);
+                        repository.Responses.Delete(response);
                     }
                 }
-                _repositoryVacancy.Delete(vacancy);
+                repository.Vacancies.Delete(vacancy);
             }
         }
-        if (repository.Delete(id)) { return Ok(); }
+        if (repository.Employers.Delete(id)) { return Ok(); }
         return NotFound();
     }
 }

@@ -7,12 +7,8 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ApplicantController(IRepository<Applicant> repository, IRepository<Resume> repositoryResume, IRepository<Response> repositoryResponse, IMapper mapper) : ControllerBase
+public class ApplicantController(ServiseRepository repository, IMapper mapper) : ControllerBase
 {
-
-    private readonly IRepository<Resume> _repositoryResume = repositoryResume;
-
-    private readonly IRepository<Response> _repositoryResponse = repositoryResponse;
     /// <summary>
     /// Получает список соискателей работы из репозитория, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
@@ -20,7 +16,7 @@ public class ApplicantController(IRepository<Applicant> repository, IRepository<
     [HttpGet]
     public ActionResult<IEnumerable<ApplicantDto>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<ApplicantDto>>(repository.GetAll());
+        var repoDto = mapper.Map<IEnumerable<ApplicantDto>>(repository.Applicants.GetAll());
         return Ok(repoDto);
     }
 
@@ -32,7 +28,7 @@ public class ApplicantController(IRepository<Applicant> repository, IRepository<
     [HttpGet("{id}")]
     public ActionResult<ApplicantDto> Get(int id)
     {
-        var applicant = repository.GetById(id);
+        var applicant = repository.Applicants.GetById(id);
         if (applicant == null)
         {
             NotFound();
@@ -50,7 +46,7 @@ public class ApplicantController(IRepository<Applicant> repository, IRepository<
     public IActionResult Post([FromBody] ApplicantDto value)
     {
         var applicant = mapper.Map<Applicant>(value);
-        repository.Post(applicant);
+        repository.Applicants.Post(applicant);
         return Ok();
     }
 
@@ -63,7 +59,7 @@ public class ApplicantController(IRepository<Applicant> repository, IRepository<
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] ApplicantPutDto value)
     {
-        if (repository.Put(id, mapper.Map<Applicant>(value)))
+        if (repository.Applicants.Put(id, mapper.Map<Applicant>(value)))
         {
             return Ok();
         }
@@ -78,23 +74,23 @@ public class ApplicantController(IRepository<Applicant> repository, IRepository<
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var resumes = _repositoryResume.GetAll();
-        var responses = _repositoryResponse.GetAll();
+        var responses = repository.Responses.GetAll();
+        var resumes = repository.Resumes.GetAll();
         foreach (var response in responses.ToList())
         {
             if (response.IdApplicant == id)
             {
-                _repositoryResponse.Delete(response);
+                repository.Responses.Delete(response);
             }
         }
         foreach (var resume in resumes.ToList())
         {
             if(resume.IdApplicant == id)
             {
-                _repositoryResume.Delete(resume);
+                repository.Resumes.Delete(resume);
             }
         }
-        if (repository.Delete(id)) { return Ok(); }
+        if (repository.Applicants.Delete(id)) { return Ok(); }
         return NotFound();
     }
 }

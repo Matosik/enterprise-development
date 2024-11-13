@@ -7,7 +7,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class JobPositionController(IRepository<JobPosition> repository, IRepository<Vacancy> repositoryVacancy, IRepository<Response> repositoryResponse, IMapper mapper) : ControllerBase
+public class JobPositionController(ServiseRepository repository, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список рабочих позиций из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -16,7 +16,7 @@ public class JobPositionController(IRepository<JobPosition> repository, IReposit
     [HttpGet]
     public ActionResult<IEnumerable<JobPositionDto>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<JobPositionDto>>(repository.GetAll());
+        var repoDto = mapper.Map<IEnumerable<JobPositionDto>>(repository.Jobs.GetAll());
         return Ok(repoDto);
     }
 
@@ -28,7 +28,7 @@ public class JobPositionController(IRepository<JobPosition> repository, IReposit
     [HttpGet("{id}")]
     public ActionResult<JobPositionDto> Get(int id)
     {
-        var job = repository.GetById(id);
+        var job = repository.Jobs.GetById(id);
         if (job == null)
         {
             NotFound();
@@ -45,7 +45,7 @@ public class JobPositionController(IRepository<JobPosition> repository, IReposit
     [HttpPost]
     public IActionResult Post([FromBody] JobPositionDto value)
     {
-        repository.Post(mapper.Map<JobPosition>(value));
+        repository.Jobs.Post(mapper.Map<JobPosition>(value));
 
         return Ok();
     }
@@ -59,7 +59,7 @@ public class JobPositionController(IRepository<JobPosition> repository, IReposit
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] JobPositionDto value)
     {
-        if (repository.Put(id, mapper.Map<JobPosition>(value)))
+        if (repository.Jobs.Put(id, mapper.Map<JobPosition>(value)))
         {
             return Ok();
         }
@@ -75,8 +75,8 @@ public class JobPositionController(IRepository<JobPosition> repository, IReposit
     public IActionResult Delete(int id)
     {
 
-        var vacancyes = repositoryVacancy.GetAll();
-        var responses = repositoryResponse.GetAll();
+        var vacancyes = repository.Vacancies.GetAll();
+        var responses = repository.Responses.GetAll();
         foreach (var vacancy in vacancyes.ToList())
         {
             if (vacancy.IdJobPosition == id)
@@ -85,14 +85,14 @@ public class JobPositionController(IRepository<JobPosition> repository, IReposit
                 {
                     if(response.IdVacancy == vacancy.IdVacancy)
                     {
-                        repositoryResponse.Delete(response);
+                        repository.Responses.Delete(response);
                     }
                 }
-                repositoryVacancy.Delete(vacancy);
+                repository.Vacancies.Delete(vacancy);
             }
         }
 
-        if (repository.Delete(id)) { return Ok(); }
+        if (repository.Jobs.Delete(id)) { return Ok(); }
         return NotFound();
     }
 }
