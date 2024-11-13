@@ -71,7 +71,20 @@ public class VacancyController(IRepository<Vacancy> repository, IRepository<Empl
         return Ok(message);
     }
 
+    private bool addJobPosition(VacancyPutDto value)
+    {
+        var jobs = _repositoryJob.GetAll();
+        var cur = value.Job;
+        JobPosition? job;
 
+        job = jobs.FirstOrDefault(s => s.PositionName == cur.PositionName && s.Section == cur.Section);
+        if (job == null)
+        {
+            job = _repositoryJob.Post(mapper.Map<JobPosition>(value.Job));
+            return true;
+        }
+        return false;
+    }
     /// <summary>
     /// Обновляет существующую вакансию в репозитории на основе переданных данных в формате DTO
     /// </summary>
@@ -81,7 +94,13 @@ public class VacancyController(IRepository<Vacancy> repository, IRepository<Empl
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] VacancyPutDto value)
     {
-        if (repository.Put(id, mapper.Map<Vacancy>(value)))
+        var message = "Вакансия успешно изменена";
+        if(addJobPosition(value))
+        {
+            message+="\nДобавлена новая рабочая позиция";
+        }
+        var vacancy = mapper.Map<Vacancy>(value);
+        if (repository.Put(id, vacancy))
         {
             return Ok();
         }
@@ -97,9 +116,9 @@ public class VacancyController(IRepository<Vacancy> repository, IRepository<Empl
     public IActionResult Delete(int id)
     {
         var responses = _repositoryResponse.GetAll();
-        foreach (var response in responses)
+        foreach (var response in responses.ToList())
         {
-            if(response.IdVacancy == id)
+            if (response.IdVacancy == id)
             {
                 _repositoryResponse.Delete(response);
             }

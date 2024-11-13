@@ -80,14 +80,14 @@ public class ApplicantController(IRepository<Applicant> repository, IRepository<
     {
         var resumes = _repositoryResume.GetAll();
         var responses = _repositoryResponse.GetAll();
-        foreach (var response in responses)
+        foreach (var response in responses.ToList())
         {
             if (response.IdApplicant == id)
             {
                 _repositoryResponse.Delete(response);
             }
         }
-        foreach (var resume in resumes)
+        foreach (var resume in resumes.ToList())
         {
             if(resume.IdApplicant == id)
             {

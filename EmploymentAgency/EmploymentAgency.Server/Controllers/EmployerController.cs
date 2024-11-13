@@ -78,11 +78,11 @@ public class EmployerController(IRepository<Employer> repository, IRepository<Va
     {
         var responses = _repositoryResponse.GetAll();
         var vacancyes = _repositoryVacancy.GetAll();
-        foreach (var vacancy in vacancyes)
+        foreach (var vacancy in vacancyes.ToList())
         {
             if(vacancy.IdEmployer == id)
             {
-                foreach (var response in responses)
+                foreach (var response in responses.ToList())
                 {
                     if(response.IdVacancy == vacancy.IdVacancy)
                     {

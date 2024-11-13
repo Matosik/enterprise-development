@@ -7,7 +7,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class JobPositionController(IRepository<JobPosition> repository, IMapper mapper) : ControllerBase
+public class JobPositionController(IRepository<JobPosition> repository, IRepository<Vacancy> repositoryVacancy, IRepository<Response> repositoryResponse, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список рабочих позиций из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -74,6 +74,24 @@ public class JobPositionController(IRepository<JobPosition> repository, IMapper 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
+
+        var vacancyes = repositoryVacancy.GetAll();
+        var responses = repositoryResponse.GetAll();
+        foreach (var vacancy in vacancyes.ToList())
+        {
+            if (vacancy.IdJobPosition == id)
+            {
+                foreach (var response in responses.ToList())
+                {
+                    if(response.IdVacancy == vacancy.IdVacancy)
+                    {
+                        repositoryResponse.Delete(response);
+                    }
+                }
+                repositoryVacancy.Delete(vacancy);
+            }
+        }
+
         if (repository.Delete(id)) { return Ok(); }
         return NotFound();
     }
