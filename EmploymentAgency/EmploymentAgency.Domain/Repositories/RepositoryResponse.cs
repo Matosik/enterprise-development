@@ -4,9 +4,13 @@ namespace EmploymentAgency.Domain.Repositories;
 
 public class RepositoryResponse : IRepository<Response>
 {
-    private int _id = 0;
+    private int _id;
     private readonly List<Response> _responses = [];
-
+    public RepositoryResponse()
+    {
+        _responses = new EmploymentAgencyData().Responses;
+        _id = _id = _responses.Any() ? _responses.Max(a => a.IdResponse) : 0;
+    }
     public Response? GetById(int id) => _responses.Find(r => r.IdResponse == id);
 
     public IEnumerable<Response> GetAll() => _responses;

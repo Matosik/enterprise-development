@@ -5,9 +5,13 @@ namespace EmploymentAgency.Domain.Repositories;
 
 public class RepositoryJobPosition : IRepository<JobPosition>
 {
-    private int _id = 0;
+    private int _id;
     private readonly List<JobPosition> _jobs = [];
-
+    public RepositoryJobPosition()
+    {
+        _jobs = new EmploymentAgencyData().Jobs;
+        _id = _jobs.Any() ? _jobs.Max(a => a.IdJobPosition) : 0;
+    }
     public JobPosition? GetById(int id) => _jobs.Find(j => j.IdJobPosition == id);
 
     public IEnumerable<JobPosition> GetAll() => _jobs;

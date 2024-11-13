@@ -4,8 +4,13 @@ namespace EmploymentAgency.Domain.Repositories;
 
 public class RepositoryResume : IRepository<Resume>
 {
-    private int _id = 0;
+    private int _id;
     private readonly List<Resume> _resumes = [];
+    public RepositoryResume()
+    {
+        _resumes = new EmploymentAgencyData().Resumes;
+        _id = _resumes.Any() ? _resumes.Max(a => a.IdResume) : 0;
+    }
     public Resume? GetById(int id) => _resumes.Find(r => r.IdResume == id);
 
     public IEnumerable<Resume> GetAll() => _resumes;

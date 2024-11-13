@@ -1,11 +1,15 @@
 ﻿using EmploymentAgency.Domain.Models;
-
 namespace EmploymentAgency.Domain.Repositories;
 
 public class RepositoryApplicant : IRepository<Applicant>
 {
-    private int _id = 0;
-    private readonly List<Applicant> _applicants = [];
+    private int _id;
+    private readonly List<Applicant> _applicants= [];
+    public RepositoryApplicant()
+    {
+        _applicants = new EmploymentAgencyData().Applicants;
+        _id = _applicants.Any() ? _applicants.Max(a => a.IdApplicant) : 0;
+    }
     public IEnumerable<Applicant> GetAll() => _applicants;
     public Applicant? GetById(int id) => _applicants.Find(v => v.IdApplicant == id);
     public Applicant Post(Applicant applicant)

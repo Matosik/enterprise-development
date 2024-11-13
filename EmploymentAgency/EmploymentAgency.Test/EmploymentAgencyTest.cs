@@ -1,4 +1,5 @@
-﻿namespace EmploymentAgency.Test;
+﻿using EmploymentAgency.Domain;
+namespace EmploymentAgency.Test;
 public class EmploymentAgencyTest
 {
     private readonly EmploymentAgencyData _data = new EmploymentAgencyData();  

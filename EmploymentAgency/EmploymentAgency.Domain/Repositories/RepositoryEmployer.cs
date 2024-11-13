@@ -4,10 +4,15 @@ namespace EmploymentAgency.Domain.Repositories;
 
 public class RepositoryEmployer : IRepository<Employer>
 {
-    private int _id = 0;
+    private int _id ;
     private readonly List<Employer> _employers = [];
+    public RepositoryEmployer()
+    {
+        _employers = new EmploymentAgencyData().Employers;
+        _id = _employers.Any() ? _employers.Max(a => a.IdEmployer) : 0;
+        _id++;
+    }
     public Employer? GetById(int id) => _employers.Find(e => e.IdEmployer == id);
-
     public IEnumerable<Employer> GetAll() => _employers;
 
     public void Overwrite(ref Employer old, Employer update)
