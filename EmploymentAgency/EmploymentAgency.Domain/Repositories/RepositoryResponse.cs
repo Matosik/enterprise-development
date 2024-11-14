@@ -9,7 +9,7 @@ public class RepositoryResponse : IRepository<Response>
     public RepositoryResponse()
     {
         _responses = new EmploymentAgencyData().Responses;
-        _id = _id = _responses.Any() ? _responses.Max(a => a.IdResponse) : 0;
+        _id = _responses.Count > 0 ? _responses.Max(a => a.IdResponse) + 1 : 0;
     }
     public Response? GetById(int id) => _responses.Find(r => r.IdResponse == id);
 
@@ -37,7 +37,8 @@ public class RepositoryResponse : IRepository<Response>
     public bool Delete(int id)
     {
         var response = GetById(id);
-        if (response == null) return false;
+        if (response == null) 
+            return false;
         Delete(response);
         return true;
     }

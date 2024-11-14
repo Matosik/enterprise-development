@@ -3,6 +3,7 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
@@ -30,9 +31,8 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     {
         var vacancy = repository.Vacancies.GetById(id);
         if (vacancy == null)
-        {
-            NotFound();
-        }
+            return NotFound();
+
 
         return Ok(mapper.Map<VacancyDto>(vacancy));
     }
@@ -47,9 +47,7 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     {
         string message = "Создание Вакансии прошло успешно";
         if (repository.Employers.GetById(value.IdEmployer) == null)
-        {
             return NotFound("Работодатель с таким ID не найден");
-        };
         var jobs = repository.Jobs.GetAll();
         var cur = value.Job;
         JobPosition? job;
@@ -89,9 +87,7 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
         }
         var vacancy = mapper.Map<Vacancy>(value);
         if (repository.Vacancies.Put(id, vacancy))
-        {
             return Ok();
-        }
         return NotFound();
     }
 
@@ -103,15 +99,15 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var responses = repository.Responses.GetAll();
-        foreach (var response in responses.ToList())
+        var responsesToDelete = (from response in repository.Responses.GetAll()
+                                 where response.IdVacancy == id
+                                 select response);
+        foreach (var response in responsesToDelete)
         {
-            if (response.IdVacancy == id)
-            {
-                repository.Responses.Delete(response);
-            }
+            repository.Responses.Delete(response);
         }
-        if (repository.Vacancies.Delete(id)) { return Ok(); }
+        if (repository.Vacancies.Delete(id)) 
+            return Ok();
         return NotFound();
     }
 }

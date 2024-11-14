@@ -3,6 +3,7 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
@@ -30,9 +31,7 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     {
         var applicant = repository.Applicants.GetById(id);
         if (applicant == null)
-        {
-            NotFound();
-        }
+            return NotFound();
 
         return Ok(mapper.Map<ApplicantDto>(applicant));
     }
@@ -60,9 +59,7 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     public IActionResult Put(int id, [FromBody] ApplicantPutDto value)
     {
         if (repository.Applicants.Put(id, mapper.Map<Applicant>(value)))
-        {
             return Ok();
-        }
         return NotFound();
     }
 
@@ -74,23 +71,27 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var responses = repository.Responses.GetAll();
-        var resumes = repository.Resumes.GetAll();
-        foreach (var response in responses.ToList())
+
+        var responseToDelete = (from response in repository.Responses.GetAll()
+                                where response.IdApplicant == id
+                                select response);
+
+        var resumeToDelete = (from resume in repository.Resumes.GetAll()
+                              where resume.IdApplicant == id
+                              select resume);
+
+        foreach (var response in responseToDelete)
         {
-            if (response.IdApplicant == id)
-            {
-                repository.Responses.Delete(response);
-            }
+            repository.Responses.Delete(response.IdResponse);
         }
-        foreach (var resume in resumes.ToList())
+
+        foreach (var resume in resumeToDelete)
         {
-            if(resume.IdApplicant == id)
-            {
-                repository.Resumes.Delete(resume);
-            }
+            repository.Resumes.Delete(resume.IdResume);
         }
-        if (repository.Applicants.Delete(id)) { return Ok(); }
+
+        if (repository.Applicants.Delete(id)) 
+            return Ok();
         return NotFound();
     }
 }

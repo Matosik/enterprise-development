@@ -10,7 +10,7 @@ public class RepositoryJobPosition : IRepository<JobPosition>
     public RepositoryJobPosition()
     {
         _jobs = new EmploymentAgencyData().Jobs;
-        _id = _jobs.Any() ? _jobs.Max(a => a.IdJobPosition) : 0;
+        _id = _jobs.Count > 0 ? _jobs.Max(a => a.IdJobPosition) + 1 : 0;
     }
     public JobPosition? GetById(int id) => _jobs.Find(j => j.IdJobPosition == id);
 
@@ -27,17 +27,6 @@ public class RepositoryJobPosition : IRepository<JobPosition>
         _jobs.Add(jobPosition);
         return jobPosition;
     }
-    public JobPosition? Have(JobPositionDto entity)
-    {
-        if (entity.Section != null)
-        {
-            return _jobs.Find(s => s.PositionName == entity.PositionName && s.Section == entity.Section);
-        }
-        else
-        {
-            return _jobs.Find(s => s.PositionName == entity.PositionName);
-        }
-    }
     public void Delete(JobPosition job)
     {
         _jobs.Remove(job);
@@ -45,7 +34,8 @@ public class RepositoryJobPosition : IRepository<JobPosition>
     public bool Delete(int id)
     {
         var job = GetById(id);
-        if (job == null) { return false; }
+        if (job == null) 
+            return false; 
         Delete(job);
         return true;
     }

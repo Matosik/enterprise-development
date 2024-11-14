@@ -8,7 +8,7 @@ public class RepositoryApplicant : IRepository<Applicant>
     public RepositoryApplicant()
     {
         _applicants = new EmploymentAgencyData().Applicants;
-        _id = _applicants.Any() ? _applicants.Max(a => a.IdApplicant) : 0;
+        _id = _applicants.Count > 0 ? _applicants.Max(a => a.IdApplicant) + 1 : 0;
     }
     public IEnumerable<Applicant> GetAll() => _applicants;
     public Applicant? GetById(int id) => _applicants.Find(v => v.IdApplicant == id);
@@ -38,9 +38,10 @@ public class RepositoryApplicant : IRepository<Applicant>
     }
     public bool Delete(int id)
     {
-        var vacancy = GetById(id);
-        if (vacancy == null) { return false; }
-        _applicants.Remove(vacancy);
+        var applicant = GetById(id);
+        if (applicant == null) 
+            return false; 
+        _applicants.Remove(applicant);
         return true;
     }
 }

@@ -9,7 +9,7 @@ public class RepositoryResume : IRepository<Resume>
     public RepositoryResume()
     {
         _resumes = new EmploymentAgencyData().Resumes;
-        _id = _resumes.Any() ? _resumes.Max(a => a.IdResume) : 0;
+        _id = _resumes.Count > 0 ? _resumes.Max(a => a.IdResume) + 1 : 0;
     }
     public Resume? GetById(int id) => _resumes.Find(r => r.IdResume == id);
 
@@ -37,7 +37,8 @@ public class RepositoryResume : IRepository<Resume>
     public bool Delete(int id)
     {
         var resume = GetById(id);
-        if (resume == null) { return false; }
+        if (resume == null) 
+            return false;
         Delete(resume);
         return true;
     }

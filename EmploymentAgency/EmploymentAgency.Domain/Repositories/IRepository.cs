@@ -9,7 +9,8 @@ public interface IRepository<T>
     public bool Put(int id, T entity)
     {
         var oldEntity = GetById(id);
-        if (oldEntity == null) { return false; }
+        if (oldEntity == null) 
+            return false;
 
         Overwrite(ref oldEntity, entity);
         return true;

@@ -8,7 +8,7 @@ public class ApplicantPutDto
     /// <summary>
     /// Контактный номер пользователя
     /// </summary>
-    [Phone(ErrorMessage = "Неправильно набран номер")]
+    [Phone(ErrorMessage = "Неверный формат номера телефона")]
     public string? Number { get; set; }
     /// <summary>
     /// Имя Пользователя

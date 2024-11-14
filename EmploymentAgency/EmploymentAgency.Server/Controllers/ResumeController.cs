@@ -3,6 +3,7 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
@@ -30,9 +31,7 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     {
         var resume = repository.Resumes.GetById(id);
         if (resume == null)
-        {
-            NotFound();
-        }
+            return NotFound();
 
         return Ok(mapper.Map<ResumeDto>(resume));
     }
@@ -47,9 +46,7 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     {
         var message = "Резюме добавлено";
         if (repository.Applicants.GetById(value.IdApplicant) == null)
-        {
             return NotFound("Кандидат на работу с таким ID не найден");
-        };
         var jobs = repository.Jobs.GetAll();
         var cur = value.Job;
         JobPosition? job;
@@ -76,9 +73,7 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     public IActionResult Put(int id, [FromBody] ResumePutDto value)
     {
         if (repository.Resumes.Put(id, mapper.Map<Resume>(value)))
-        {
             return Ok();
-        }
         return NotFound();
     }
 
@@ -90,7 +85,8 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        if (repository.Resumes.Delete(id)) { return Ok(); }
+        if (repository.Resumes.Delete(id)) 
+            return Ok();
         return NotFound();
     }
 }

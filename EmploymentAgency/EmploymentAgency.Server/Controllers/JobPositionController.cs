@@ -3,6 +3,7 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
@@ -30,9 +31,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     {
         var job = repository.Jobs.GetById(id);
         if (job == null)
-        {
-            NotFound();
-        }
+           return NotFound();
 
         return Ok(mapper.Map<JobPositionDto>(job));
     }
@@ -46,7 +45,6 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     public IActionResult Post([FromBody] JobPositionDto value)
     {
         repository.Jobs.Post(mapper.Map<JobPosition>(value));
-
         return Ok();
     }
 
@@ -60,9 +58,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     public IActionResult Put(int id, [FromBody] JobPositionDto value)
     {
         if (repository.Jobs.Put(id, mapper.Map<JobPosition>(value)))
-        {
             return Ok();
-        }
         return NotFound();
     }
 
@@ -74,25 +70,26 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
+        var vacancyesToDelete = (from vacancy in repository.Vacancies.GetAll()
+                                 where vacancy.IdEmployer == id
+                                 select vacancy);
 
-        var vacancyes = repository.Vacancies.GetAll();
-        var responses = repository.Responses.GetAll();
-        foreach (var vacancy in vacancyes.ToList())
+        var responsesToDelete = (from response in repository.Responses.GetAll()
+                                 join vacancy in vacancyesToDelete on response.IdVacancy equals vacancy.IdVacancy
+                                 select response);
+
+        foreach (var response in responsesToDelete)
         {
-            if (vacancy.IdJobPosition == id)
-            {
-                foreach (var response in responses.ToList())
-                {
-                    if(response.IdVacancy == vacancy.IdVacancy)
-                    {
-                        repository.Responses.Delete(response);
-                    }
-                }
-                repository.Vacancies.Delete(vacancy);
-            }
+            repository.Responses.Delete(response);
         }
 
-        if (repository.Jobs.Delete(id)) { return Ok(); }
+        foreach (var vacancy in vacancyesToDelete)
+        {
+            repository.Vacancies.Delete(vacancy);
+        }
+
+        if (repository.Jobs.Delete(id)) 
+            return Ok();
         return NotFound();
     }
 }

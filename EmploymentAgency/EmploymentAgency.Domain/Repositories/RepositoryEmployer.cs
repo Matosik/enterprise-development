@@ -9,8 +9,7 @@ public class RepositoryEmployer : IRepository<Employer>
     public RepositoryEmployer()
     {
         _employers = new EmploymentAgencyData().Employers;
-        _id = _employers.Any() ? _employers.Max(a => a.IdEmployer) : 0;
-        _id++;
+        _id = _employers.Count > 0 ? _employers.Max(a => a.IdEmployer) + 1 : 0;
     }
     public Employer? GetById(int id) => _employers.Find(e => e.IdEmployer == id);
     public IEnumerable<Employer> GetAll() => _employers;
@@ -36,7 +35,8 @@ public class RepositoryEmployer : IRepository<Employer>
     public bool Delete(int id)
     {
         var employer = GetById(id);
-        if (employer == null) { return false; }
+        if (employer == null) 
+            return false; 
         _employers.Remove(employer);
         return true;
     }

@@ -3,6 +3,7 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
@@ -29,10 +30,8 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     {
         var job = repository.GetById(id);
         if (job == null)
-        {
-            NotFound();
-        }
-
+            return NotFound();
+        
         return Ok(mapper.Map<ResponseDto>(job));
     }
 
@@ -45,7 +44,6 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     public IActionResult Post([FromBody] ResponseDto value)
     {
         repository.Post(mapper.Map<Response>(value));
-
         return Ok();
     }
 
@@ -59,9 +57,7 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     public IActionResult Put(int id, [FromBody] ResponsePutDto value)
     {
         if (repository.Put(id, mapper.Map<Response>(value)))
-        {
             return Ok();
-        }
         return NotFound();
     }
 
@@ -73,7 +69,8 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        if (repository.Delete(id)) { return Ok(); }
+        if (repository.Delete(id)) 
+            return Ok();
         return NotFound();
     }
 }

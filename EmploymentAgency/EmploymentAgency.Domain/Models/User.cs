@@ -13,7 +13,7 @@ public class User
     /// <summary>
     /// Контактный номер пользователя
     /// </summary>
-    [Phone(ErrorMessage = "Неверный формат")]
+    [Phone(ErrorMessage = "Неверный формат номера телефона")]
     public string? Number { get; set; }
     /// <summary>
     /// Имя Пользователя

@@ -14,7 +14,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     ///Выводит сведения о всех соискателях, ищущих работу по заданной позиции. По дефолту ищет "backend developer C#"
     /// </summary>
     [HttpGet("applicants-by-position")]
-    public ActionResult<IEnumerable<ApplicantDto>> Get1(string? positionName = null)
+    public ActionResult<IEnumerable<ApplicantDto>> GetApplicantByPoition(string? positionName = null)
     {
         positionName ??= "backend developer C#";
         var query = (from job in repository.Jobs.GetAll()
@@ -31,7 +31,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     /// </summary>
     /// <returns></returns>
     [HttpGet("applicants-by-date")]
-    public ActionResult<IEnumerable<ApplicantDto>> Get2(DateTime? startDate = null, DateTime? endDate = null)
+    public ActionResult<IEnumerable<ApplicantDto>> GetApplicantByDate(DateTime? startDate = null, DateTime? endDate = null)
     {
         startDate ??= new DateTime(2023, 5, 1);
         endDate ??= new DateTime(2023, 7, 30);
@@ -49,7 +49,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     /// <param name="vacancyId"></param>
     /// <returns></returns>
     [HttpGet("applicants-by-vacancy")]
-    public ActionResult<IEnumerable<ApplicantDto>> Get3(int? vacancyId = 1)
+    public ActionResult<IEnumerable<ApplicantDto>> GetApplicantByVacancyId(int? vacancyId = 1)
     {
         var query = (from vacancy in repository.Vacancies.GetAll()
                      join job in repository.Jobs.GetAll() on vacancy.IdJobPosition equals job.IdJobPosition
@@ -64,7 +64,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     /// </summary>
     /// <returns></returns>
     [HttpGet("get-response")]
-    public Dictionary<string, int> Get4()
+    public Dictionary<string, int> GetCountResponse()
     {
         var query = (from response in repository.Responses.GetAll()
                      join vacancy in repository.Vacancies.GetAll() on response.IdVacancy equals vacancy.IdVacancy
@@ -83,7 +83,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     /// </summary>
     /// <returns></returns>
     [HttpGet("get-response-All")]
-    public Dictionary<string, int> Get4p1()
+    public Dictionary<string, int> GetCountResponseAll()
     {
         var queryPositionName = (from response in repository.Responses.GetAll()
                                  join vacancy in repository.Vacancies.GetAll() on response.IdVacancy equals vacancy.IdVacancy
@@ -115,7 +115,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     /// </summary>
     /// <returns></returns>
     [HttpGet("top-five-employers")]
-    public IEnumerable<EmployerDto> Get5()
+    public IEnumerable<EmployerDto> GetTopFiveEmployerByVacancy()
     {
         var query = (from vacancy in repository.Vacancies.GetAll()
                      join employer in repository.Employers.GetAll() on vacancy.IdEmployer equals employer.IdEmployer
@@ -131,7 +131,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     /// </summary>
     /// <returns></returns>
     [HttpGet("min-salary-vacancy")]
-    public IEnumerable<EmployerDto> Get6()
+    public IEnumerable<EmployerDto> GetEmployersByMaxSalary()
     {
         var query = (from vacancy in repository.Vacancies.GetAll()
                      join employer in repository.Employers.GetAll() on vacancy.IdEmployer equals employer.IdEmployer

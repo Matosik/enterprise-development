@@ -3,11 +3,11 @@ namespace EmploymentAgency.Domain.Repositories;
 public class RepositoryVacancy : IRepository<Vacancy>
 {
     private int _id;
-    public  readonly List<Vacancy> _vacancies;
+    public readonly List<Vacancy> _vacancies;
     public RepositoryVacancy()
     {
         _vacancies = new EmploymentAgencyData().Vacancies;
-        _id = _vacancies.Any() ? _vacancies.Max(a => a.IdVacancy) : 0;
+        _id = _vacancies.Count > 0 ? _vacancies.Max(a => a.IdVacancy) + 1 : 0;
     }
     public IEnumerable<Vacancy> GetAll() => _vacancies;
     public Vacancy? GetById(int id) => _vacancies.Find(v => v.IdVacancy == id);
@@ -42,7 +42,8 @@ public class RepositoryVacancy : IRepository<Vacancy>
     public bool Delete(int id)
     {
         var vacancy = GetById(id);
-        if (vacancy == null) { return false; }
+        if (vacancy == null) 
+            return false; 
         _vacancies.Remove(vacancy);
         return true;
     }
