@@ -1,10 +1,15 @@
-﻿namespace EmploymentAgency.Domain.DTO;
+﻿namespace EmploymentAgency.Domain.DTO.ResumeD;
 
 /// <summary>
-/// DTO для изменения данных класса Резюме
+/// DTO для класса Резюме
+/// использоуется для Get по ID
 /// </summary
-public class ResumePutDto
+public class ResumeDto
 {
+    /// <summary>
+    /// Номер соискателя к которому относится резюме
+    /// </summary>
+    public int IdApplicant { get; set; }
     /// <summary>
     /// Опыт работы в годах
     /// </summary>

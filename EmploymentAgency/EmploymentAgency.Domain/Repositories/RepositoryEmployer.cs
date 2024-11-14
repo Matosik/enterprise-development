@@ -24,6 +24,7 @@ public class RepositoryEmployer : IRepository<Employer>
 
     public Employer Post(Employer employer)
     {
+        employer.Registration = DateTime.UtcNow;
         employer.IdEmployer = _id++;
         _employers.Add(employer);
         return employer;

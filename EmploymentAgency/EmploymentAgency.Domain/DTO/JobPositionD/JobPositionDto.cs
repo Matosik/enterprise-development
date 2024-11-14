@@ -1,4 +1,4 @@
-﻿namespace EmploymentAgency.Domain.DTO;
+﻿namespace EmploymentAgency.Domain.DTO.JobPositionD;
 
 /// <summary>
 /// DTO для Рабочей позиции

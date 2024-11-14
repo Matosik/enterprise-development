@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+using EmploymentAgency.Domain.DTO.VacancyD;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -13,12 +13,11 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     /// <summary>
     /// Получает список вакансий из репозитория, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
-    /// <returns>Возвращает HTTP-код ответа и коллекцию объектов VacancyDto</returns>
+    /// <returns>Возвращает HTTP-код ответа и коллекцию объектов Vacancy</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<VacancyDto>> Get()
+    public ActionResult<IEnumerable<VacancyGetDto>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<VacancyDto>>(repository.Vacancies.GetAll());
-        return Ok(repoDto);
+        return Ok(mapper.Map<VacancyGetDto>(repository.Vacancies.GetAll()));
     }
 
     /// <summary>
@@ -32,7 +31,6 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
         var vacancy = repository.Vacancies.GetById(id);
         if (vacancy == null)
             return NotFound();
-
 
         return Ok(mapper.Map<VacancyDto>(vacancy));
     }
@@ -73,18 +71,6 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] VacancyPutDto value)
     {
-        var message = "Вакансия успешно изменена";
-
-
-        var jobs = repository.Jobs.GetAll();
-        var cur = value.Job;
-        JobPosition? job;
-        job = jobs.FirstOrDefault(s => s.PositionName == cur.PositionName && s.Section == cur.Section);
-        if (job == null)
-        {
-            job = repository.Jobs.Post(mapper.Map<JobPosition>(value.Job));
-            message += "\nДобавлена новая рабочая позиция";
-        }
         var vacancy = mapper.Map<Vacancy>(value);
         if (repository.Vacancies.Put(id, vacancy))
             return Ok();

@@ -19,13 +19,14 @@ public class RepositoryResponse : IRepository<Response>
     {
         old.Status = update.Status;
         old.SummaryResponse = update.SummaryResponse;
-        old.IdApplicant = update.IdApplicant; // Организовать проверку существует ли такой Id Vacancy
-        old.IdVacancy = update.IdVacancy;// Организовать проверку существует ли такой Id Vacancy
+        old.IdApplicant = update.IdApplicant; 
+        old.IdVacancy = update.IdVacancy;
         old.DateResponse = update.DateResponse;
     }
 
     public Response Post(Response response)
     {
+        response.DateResponse = DateTime.UtcNow;
         response.IdResponse = _id++;
         _responses.Add(response);
         return response;

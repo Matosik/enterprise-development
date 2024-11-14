@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+using EmploymentAgency.Domain.DTO.JobPositionD;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -15,7 +15,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     /// </summary>
     /// <returns>Возвращает HTTP-код ответа и коллекцию объектов JobPosition</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<JobPositionDto>> Get()
+    public ActionResult<IEnumerable<JobPositionGetDto>> Get()
     {
         var repoDto = mapper.Map<IEnumerable<JobPositionDto>>(repository.Jobs.GetAll());
         return Ok(repoDto);
@@ -42,7 +42,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     /// <param name="value"></param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns>
     [HttpPost]
-    public IActionResult Post([FromBody] JobPositionDto value)
+    public IActionResult Post([FromBody] JobPositionPostDto value)
     {
         repository.Jobs.Post(mapper.Map<JobPosition>(value));
         return Ok();
@@ -55,7 +55,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     /// <param name="value">Объект JobPositionDto с обновленными данными рабочая позиция</param>
     /// <returns>Возвращает HTTP-код  выполнения операции </returns> 
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] JobPositionDto value)
+    public IActionResult Put(int id, [FromBody] JobPositionPutDto value)
     {
         if (repository.Jobs.Put(id, mapper.Map<JobPosition>(value)))
             return Ok();

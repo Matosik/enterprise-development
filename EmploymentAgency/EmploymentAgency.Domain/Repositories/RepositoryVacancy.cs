@@ -13,6 +13,7 @@ public class RepositoryVacancy : IRepository<Vacancy>
     public Vacancy? GetById(int id) => _vacancies.Find(v => v.IdVacancy == id);
     public Vacancy Post(Vacancy vacancy)
     {
+        vacancy.DateVacancy = DateTime.UtcNow;
         vacancy.IdVacancy = _id++;
         _vacancies.Add(vacancy);
         return vacancy;
@@ -32,8 +33,6 @@ public class RepositoryVacancy : IRepository<Vacancy>
         old.IsActive = update.IsActive;
         old.Experience = update.Experience;
         old.Summary = update.Summary;
-        // old.IdEmployer = update.IdEmployer; по идее же мы не можем изменять/подменять такие данные ?  
-        // old.IdJobPosition = update.IdJobPosition;
     }
     public void Delete(Vacancy vacancy)
     {

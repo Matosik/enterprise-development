@@ -18,8 +18,8 @@ public class RepositoryResume : IRepository<Resume>
     public void Overwrite(ref Resume old, Resume update)
     {
         old.Education = update.Education;
-        old.IdPosition = update.IdPosition; // Организовать проверку существует ли такой IDPosition
-        old.IdApplicant = update.IdApplicant; // Организовать проверку существует ли такой IdApplicant
+        old.IdPosition = update.IdPosition; 
+        old.IdApplicant = update.IdApplicant;
         old.Experience = update.Experience;
         old.WantSalary = update.WantSalary;
     }

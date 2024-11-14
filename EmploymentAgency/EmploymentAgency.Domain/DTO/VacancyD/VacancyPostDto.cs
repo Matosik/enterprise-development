@@ -1,18 +1,19 @@
-﻿using EmploymentAgency.Domain.Models;
+﻿using EmploymentAgency.Domain.DTO.JobPositionD;
 
-namespace EmploymentAgency.Domain.DTO;
+namespace EmploymentAgency.Domain.DTO.VacancyD;
 
-/// <summary>
-/// DTO для изменения данных класса Вакансия
-/// </summary
-public class VacancyPutDto
+public class VacancyPostDto
 {
     /// <summary>
-    /// Номер рабочей позиции
+    /// Номер Работодателя который разместил вакансию
+    /// </summary>
+    public int IdEmployer { get; set; }
+    /// <summary>
+    /// Название рабочей позиции
     /// </summary>
     public required JobPositionDto Job { get; set; }
     /// <summary>
-    /// Название вакансии
+    /// Название рабочей 
     /// </summary>
     public required string NameVacancy { get; set; }
     /// <summary>

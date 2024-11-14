@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Domain.DTO;
+using EmploymentAgency.Domain.DTO.ResumeD;
 using AutoMapper;
 
 namespace EmploymentAgency.Server.Controllers;
@@ -15,10 +15,9 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     /// </summary>
     /// <returns>Возвращает HTTP-код ответа и коллекцию объектов ResumeDto</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<ResumeDto>> Get()
+    public ActionResult<IEnumerable<ResumeGetDto>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<ResumeDto>>(repository.Resumes.GetAll());
-        return Ok(repoDto);
+        return Ok(mapper.Map<ResumeGetDto>(repository.Resumes.GetAll()));
     }
 
     /// <summary>

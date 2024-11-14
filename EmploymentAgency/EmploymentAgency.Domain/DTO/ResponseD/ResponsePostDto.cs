@@ -1,17 +1,10 @@
 ﻿using EmploymentAgency.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace EmploymentAgency.Domain.DTO;
+namespace EmploymentAgency.Domain.DTO.ResponseD;
 
-/// <summary>
-/// DTO для отклика
-/// </summary>
-public class ResponseDto
+public class ResponsePostDto
 {
-    /// <summary>
-    /// Дата создания отклика
-    /// </summary>
-    public DateTime? DateResponse { get; set; }
     /// <summary>
     /// Номер вакансии, к которой относится отклик
     /// </summary>

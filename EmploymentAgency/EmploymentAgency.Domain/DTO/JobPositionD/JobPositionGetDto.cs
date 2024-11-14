@@ -1,8 +1,5 @@
-﻿namespace EmploymentAgency.Domain.Models;
-/// <summary>
-/// Класс для определения должности
-/// </summary>
-public class JobPosition
+﻿namespace EmploymentAgency.Domain.DTO.JobPositionD;
+public class JobPositionGetDto
 {
     /// <summary>
     /// Уникальный номер рабочей позции 
@@ -11,10 +8,9 @@ public class JobPosition
     /// <summary>
     /// Раздел (IT, финансы, реклама и т.д.)
     /// </summary>
-    public string?Section { get; set; }
+    public string? Section { get; set; }
     /// <summary>
     /// должность (программист, дизайнер и т.д.)
     /// </summary>
     public required string PositionName { get; set; }
 }
- 

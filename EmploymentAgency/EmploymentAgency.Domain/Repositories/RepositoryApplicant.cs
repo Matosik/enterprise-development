@@ -14,6 +14,7 @@ public class RepositoryApplicant : IRepository<Applicant>
     public Applicant? GetById(int id) => _applicants.Find(v => v.IdApplicant == id);
     public Applicant Post(Applicant applicant)
     {
+        applicant.Registration = DateTime.UtcNow;
         applicant.IdApplicant = _id++;
         _applicants.Add(applicant);
         return applicant;

@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace EmploymentAgency.Domain.DTO;
+
+namespace EmploymentAgency.Domain.DTO.EmployerD;
 /// <summary>
-/// DTO для изменения данных Соискателя/кандидата
+/// DTO для Put Employer
 /// </summary>
-public class ApplicantPutDto
+public class EmployerPutDto
 {
     /// <summary>
     /// Контактный номер пользователя
@@ -18,4 +19,8 @@ public class ApplicantPutDto
     /// Фамилия пользователя
     /// </summary>
     public required string LastName { get; set; }
+    /// <summary>
+    /// Название компании
+    /// </summary>
+    public string? Company { get; set; }
 }

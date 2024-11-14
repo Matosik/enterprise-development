@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+using EmploymentAgency.Domain.DTO.ApplicantD;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -15,9 +15,9 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     /// </summary>
     /// <returns>Возвращает HTTP-код ответа и коллекцию объектов ApplicantDto</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<ApplicantDto>> Get()
+    public ActionResult<IEnumerable<ApplicantGetDto>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<ApplicantDto>>(repository.Applicants.GetAll());
+        var repoDto = mapper.Map<IEnumerable<ApplicantGetDto>>(repository.Applicants.GetAll());
         return Ok(repoDto);
     }
 
@@ -42,7 +42,7 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     /// <param name="value"></param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
     [HttpPost]
-    public IActionResult Post([FromBody] ApplicantDto value)
+    public IActionResult Post([FromBody] ApplicantPostDto value)
     {
         var applicant = mapper.Map<Applicant>(value);
         repository.Applicants.Post(applicant);

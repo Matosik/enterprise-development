@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
-using EmploymentAgency.Domain.DTO;
 using AutoMapper;
+using EmploymentAgency.Domain.DTO.ResponseD;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -15,7 +15,7 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     /// </summary>
     /// <returns>Возвращает HTTP-код ответа и коллекцию объектов ResponseDto</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<ResponseDto>> Get()
+    public ActionResult<IEnumerable<ResponseGetDto>> Get()
     {
         return Ok(mapper.Map<IEnumerable<ResponseDto>>(repository.GetAll()));
     }
@@ -41,7 +41,7 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     /// <param name="value"></param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
     [HttpPost]
-    public IActionResult Post([FromBody] ResponseDto value)
+    public IActionResult Post([FromBody] ResponsePostDto value)
     {
         repository.Post(mapper.Map<Response>(value));
         return Ok();

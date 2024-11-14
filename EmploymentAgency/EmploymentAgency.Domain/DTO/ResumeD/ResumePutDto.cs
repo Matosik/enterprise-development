@@ -1,14 +1,12 @@
-﻿namespace EmploymentAgency.Domain.DTO;
+﻿namespace EmploymentAgency.Domain.DTO.ResumeD;
 
 /// <summary>
-/// DTO для класса Резюме
+/// DTO для изменения данных класса Резюме
+/// использоуется для Put
+/// не можем поменять ID соискателя работы
 /// </summary
-public class ResumeDto
+public class ResumePutDto
 {
-    /// <summary>
-    /// Номер соискателя к которому относится резюме
-    /// </summary>
-    public int IdApplicant { get; set; }
     /// <summary>
     /// Опыт работы в годах
     /// </summary>
@@ -16,7 +14,7 @@ public class ResumeDto
     /// <summary>
     ///  Номер рабочей позиции на которой работал соискатель
     /// </summary>
-    public int IdPosition { get; set; }
+    public int IdPosition { get; set; } // Можно по идее сделать тип JobPosition, но оставлю так нарочно
     /// <summary>
     /// Желаемая зарплата соискателя
     /// </summary>

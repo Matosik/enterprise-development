@@ -1,17 +1,21 @@
-﻿namespace EmploymentAgency.Domain.DTO;
+﻿namespace EmploymentAgency.Domain.DTO.VacancyD;
 
-public class VacancyPostDto
+public class VacancyGetDto
 {
+    /// <summary>
+    /// Уникальный номер вакансии
+    /// </summary>
+    public int IdVacancy { get; set; }
     /// <summary>
     /// Номер Работодателя который разместил вакансию
     /// </summary>
-    public int IdEmployer { get; set; } 
+    public int IdEmployer { get; set; }
     /// <summary>
-    /// Название рабочей позиции
+    /// Номер рабочей позиции
     /// </summary>
-    public required JobPositionDto Job { get; set; }
+    public int IdJobPosition { get; set; }
     /// <summary>
-    /// Название рабочей 
+    /// Название вакансии
     /// </summary>
     public required string NameVacancy { get; set; }
     /// <summary>

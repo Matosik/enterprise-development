@@ -1,7 +1,16 @@
-﻿namespace EmploymentAgency.Domain.DTO;
-
-public class ResumePostDto
+﻿
+namespace EmploymentAgency.Domain.DTO.ResumeD;
+/// <summary>
+/// Данная DTO идентичная классу Resume, но если в классе Resume,
+/// когда-то появится свойство, которое мы захотим сокрыть от клиентской части
+/// то нам пригодится эта DTO-шка
+/// </summary>
+public class ResumeGetDto
 {
+    /// <summary>
+    ///  Уникальный номер резюме
+    /// </summary>
+    public int IdResume { get; set; }
     /// <summary>
     /// Номер соискателя к которому относится резюме
     /// </summary>
@@ -13,7 +22,7 @@ public class ResumePostDto
     /// <summary>
     ///  Номер рабочей позиции на которой работал соискатель
     /// </summary>
-    public required JobPositionDto Job { get; set; }
+    public int IdPosition { get; set; }
     /// <summary>
     /// Желаемая зарплата соискателя
     /// </summary>
