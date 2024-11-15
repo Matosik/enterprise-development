@@ -24,6 +24,7 @@ public class Mapper : Profile
         CreateMap<Employer, EmployerPutDto>().ReverseMap();
         CreateMap<Employer, EmployerGetDto>().ReverseMap();
         CreateMap<Employer, EmployerPostDto>().ReverseMap();
+        CreateMap<Employer, EmployerWithVacancyCountDto>().ReverseMap();
 
         CreateMap<JobPosition, JobPositionDto>().ReverseMap();
         CreateMap<JobPosition, JobPositionPutDto>().ReverseMap();

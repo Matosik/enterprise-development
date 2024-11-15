@@ -17,7 +17,7 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     [HttpGet]
     public ActionResult<IEnumerable<ResumeGetDto>> Get()
     {
-        return Ok(mapper.Map<ResumeGetDto>(repository.Resumes.GetAll()));
+        return Ok(mapper.Map<IEnumerable<ResumeGetDto>>(repository.Resumes.GetAll()));
     }
 
     /// <summary>

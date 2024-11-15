@@ -17,7 +17,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     [HttpGet]
     public ActionResult<IEnumerable<JobPositionGetDto>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<JobPositionDto>>(repository.Jobs.GetAll());
+        var repoDto = mapper.Map<IEnumerable<JobPositionGetDto>>(repository.Jobs.GetAll());
         return Ok(repoDto);
     }
 

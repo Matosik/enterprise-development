@@ -17,7 +17,7 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     [HttpGet]
     public ActionResult<IEnumerable<VacancyGetDto>> Get()
     {
-        return Ok(mapper.Map<VacancyGetDto>(repository.Vacancies.GetAll()));
+        return Ok(mapper.Map<IEnumerable<VacancyGetDto>>(repository.Vacancies.GetAll()));
     }
 
     /// <summary>

@@ -17,7 +17,7 @@ public class EmployerController(ServiseRepository repository, IMapper mapper) : 
     [HttpGet]
     public ActionResult<IEnumerable<EmployerGetDto>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<EmployerDto>>(repository.Employers.GetAll());
+        var repoDto = mapper.Map<IEnumerable<EmployerGetDto>>(repository.Employers.GetAll());
         return Ok(repoDto);
     }
 

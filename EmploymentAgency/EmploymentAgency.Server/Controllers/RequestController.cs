@@ -112,33 +112,43 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
         return query;
     }
     /// <summary>
-    /// Вывод топ 5 Работадателей по количеству вакансий
+    /// Вывод топ Работадателей по количеству вакансий
     /// </summary>
     /// <returns></returns>
     [HttpGet("top-five-employers")]
-    public IEnumerable<EmployerDto> GetTopFiveEmployerByVacancy()
+    public IEnumerable<EmployerWithVacancyCountDto> GetTopFiveEmployerByVacancy(int Top = 5)
     {
         var query = (from vacancy in repository.Vacancies.GetAll()
                      join employer in repository.Employers.GetAll() on vacancy.IdEmployer equals employer.IdEmployer
                      group employer by employer into g
                      orderby g.Count() descending
-                     select g.Key)
-             .Take(5);
+                     select new EmployerWithVacancyCountDto
+                     {
+                         Employerr = mapper.Map<EmployerGetDto>(g.Key),
+                         Count = g.Count()
+                     })
+             .Take(Top);
 
-        return mapper.Map<IEnumerable<EmployerDto>>(query);
+        return mapper.Map<IEnumerable<EmployerWithVacancyCountDto>>(query);
     }
     /// <summary>
     /// Выводит информацию о работодателях, открывших заявки с максимальным уровнем зарплаты.
     /// </summary>
     /// <returns></returns>
     [HttpGet("min-salary-vacancy")]
-    public IEnumerable<EmployerDto> GetEmployersByMaxSalary()
+    public IEnumerable<EmployerWithSalaryVacancyDto> GetEmployersByMaxSalary()
     {
+        var maxSalary = repository.Vacancies.GetAll().Max(x => x.Salary);
         var query = (from vacancy in repository.Vacancies.GetAll()
                      join employer in repository.Employers.GetAll() on vacancy.IdEmployer equals employer.IdEmployer
-                     where vacancy.Salary == repository.Vacancies.GetAll().Max(x => x.Salary)
+                     where vacancy.Salary == maxSalary
                      orderby employer.IdEmployer
-                     select employer);
-        return mapper.Map<IEnumerable<EmployerDto>>(query);
+                     select new EmployerWithSalaryVacancyDto
+                     {
+                         Employerr = mapper.Map<EmployerGetDto>(employer),
+                         Salary = maxSalary
+                     });
+
+        return mapper.Map<IEnumerable<EmployerWithSalaryVacancyDto>>(query);
     }
 }

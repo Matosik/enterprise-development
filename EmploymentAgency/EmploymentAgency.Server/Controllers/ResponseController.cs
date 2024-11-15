@@ -17,7 +17,7 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     [HttpGet]
     public ActionResult<IEnumerable<ResponseGetDto>> Get()
     {
-        return Ok(mapper.Map<IEnumerable<ResponseDto>>(repository.GetAll()));
+        return Ok(mapper.Map<IEnumerable<ResponseGetDto>>(repository.GetAll()));
     }
 
     /// <summary>
