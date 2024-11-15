@@ -8,7 +8,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ResponseController(IRepository<Response> repository, IMapper mapper) : ControllerBase
+public class ResponseController(ServiseRepository repository, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список откликов из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -17,7 +17,7 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     [HttpGet]
     public ActionResult<IEnumerable<ResponseGetDto>> Get()
     {
-        return Ok(mapper.Map<IEnumerable<ResponseGetDto>>(repository.GetAll()));
+        return Ok(mapper.Map<IEnumerable<ResponseGetDto>>(repository.Responses.GetAll()));
     }
 
     /// <summary>
@@ -28,10 +28,10 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     [HttpGet("{id}")]
     public ActionResult<ResponseDto> Get(int id)
     {
-        var job = repository.GetById(id);
+        var job = repository.Responses.GetById(id);
         if (job == null)
             return NotFound();
-        
+
         return Ok(mapper.Map<ResponseDto>(job));
     }
 
@@ -43,7 +43,16 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     [HttpPost]
     public IActionResult Post([FromBody] ResponsePostDto value)
     {
-        repository.Post(mapper.Map<Response>(value));
+        if(repository.Resumes.GetById(value.IdResume) == null)
+            return NotFound("Резюме с таким ID не найден");
+
+        if (repository.Applicants.GetById(value.IdApplicant) == null)
+            return NotFound("Applicant с таким ID не найден");
+
+        if (repository.Vacancies.GetById(value.IdVacancy) == null)
+            return NotFound("Вакансяи с таким ID не найден");
+        repository.Responses.Post(mapper.Map<Response>(value));
+
         return Ok();
     }
 
@@ -56,7 +65,7 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] ResponsePutDto value)
     {
-        if (repository.Put(id, mapper.Map<Response>(value)))
+        if (repository.Responses.Put(id, mapper.Map<Response>(value)))
             return Ok();
         return NotFound();
     }
@@ -69,7 +78,7 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        if (repository.Delete(id)) 
+        if (repository.Responses.Delete(id))
             return Ok();
         return NotFound();
     }
