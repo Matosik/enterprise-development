@@ -17,6 +17,7 @@ public class RepositoryResponse : IRepository<Response>
 
     public void Overwrite(ref Response old, Response update)
     {
+        old.IdResume = update.IdResume;
         old.Status = update.Status;
         old.SummaryResponse = update.SummaryResponse;
         old.IdApplicant = update.IdApplicant; 

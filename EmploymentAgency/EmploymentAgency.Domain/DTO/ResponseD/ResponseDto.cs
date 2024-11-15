@@ -29,4 +29,8 @@ public class ResponseDto
     /// Сообщение соискателя при отклике
     /// </summary>
     public string? SummaryResponse { get; set; }
+    /// <summary>
+    /// Номер резюме, которыей соискатель прикрепил к отклику
+    /// </summary>
+    public int IdResume { get; set; }
 }
