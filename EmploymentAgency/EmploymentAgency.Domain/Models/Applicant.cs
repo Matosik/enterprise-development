@@ -1,6 +1,4 @@
-﻿using EmploymentAgency.Domain.Models;
-
-namespace EmploymentAgency.Domain.Models;
+﻿namespace EmploymentAgency.Domain.Models;
 
 /// <summary>
 ///  Класс для соискателя работы, наследуемый от User

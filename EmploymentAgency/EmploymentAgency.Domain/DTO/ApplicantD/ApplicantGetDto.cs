@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EmploymentAgency.Domain.DTO.ApplicantD;
+namespace EmploymentAgency.Domain.Dto.ApplicantD;
 /// <summary>
 /// Пока что данная DTO идентичная классу Applicant, но если в классе Applicant,
 /// когда-то появится свойство, которое мы захотим сокрыть от клиентской части

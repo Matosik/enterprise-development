@@ -1,4 +1,4 @@
-﻿namespace EmploymentAgency.Domain.DTO.JobPositionD;
+﻿namespace EmploymentAgency.Domain.Dto.JobPositionD;
 public class JobPositionGetDto
 {
     /// <summary>

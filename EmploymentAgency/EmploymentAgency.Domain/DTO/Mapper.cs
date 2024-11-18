@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using EmploymentAgency.Domain.DTO.ApplicantD;
-using EmploymentAgency.Domain.DTO.EmployerD;
-using EmploymentAgency.Domain.DTO.JobPositionD;
-using EmploymentAgency.Domain.DTO.ResponseD;
-using EmploymentAgency.Domain.DTO.ResumeD;
-using EmploymentAgency.Domain.DTO.VacancyD;
+using EmploymentAgency.Domain.Dto.ApplicantD;
+using EmploymentAgency.Domain.Dto.EmployerD;
+using EmploymentAgency.Domain.Dto.JobPositionD;
+using EmploymentAgency.Domain.Dto.ResponseD;
+using EmploymentAgency.Domain.Dto.ResumeD;
+using EmploymentAgency.Domain.Dto.VacancyD;
 using EmploymentAgency.Domain.Models;
 
-namespace EmploymentAgency.Domain.DTO;
+namespace EmploymentAgency.Domain.Dto;
 /// <summary>
 /// Маппер для конвертации обычных данных в DTO и обратно 
 /// </summary>

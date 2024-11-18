@@ -1,4 +1,4 @@
-﻿namespace EmploymentAgency.Domain.DTO.EmployerD;
+﻿namespace EmploymentAgency.Domain.Dto.EmployerD;
 
 public class EmployerWithSalaryVacancyDto
 {

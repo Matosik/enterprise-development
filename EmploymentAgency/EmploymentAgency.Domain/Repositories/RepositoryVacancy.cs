@@ -4,10 +4,8 @@ public class RepositoryVacancy : IRepository<Vacancy>
 {
     private int _id;
     private readonly List<Vacancy> _vacancies;
-    private IRepository<RepositoryResponse> _repositoryResponse;
-    public RepositoryVacancy(IRepository<RepositoryResponse> repositoryResponse)
+    public RepositoryVacancy()
     {
-        _repositoryResponse = repositoryResponse;
         _vacancies = new EmploymentAgencyData().Vacancies;
         _id = _vacancies.Count > 0 ? _vacancies.Max(a => a.IdVacancy) + 1 : 0;
     }

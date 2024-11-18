@@ -1,7 +1,7 @@
-﻿using EmploymentAgency.Domain.DTO.JobPositionD;
+﻿using EmploymentAgency.Domain.Dto.JobPositionD;
 using EmploymentAgency.Domain.Models;
 
-namespace EmploymentAgency.Domain.DTO.VacancyD;
+namespace EmploymentAgency.Domain.Dto.VacancyD;
 
 /// <summary>
 /// DTO для изменения данных класса Вакансия

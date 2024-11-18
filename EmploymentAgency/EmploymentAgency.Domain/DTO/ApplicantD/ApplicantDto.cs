@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace EmploymentAgency.Domain.DTO.ApplicantD;
+namespace EmploymentAgency.Domain.Dto.ApplicantD;
 
 /// <summary>
 /// DTO для Соискателя/кандидата

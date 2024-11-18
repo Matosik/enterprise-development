@@ -1,4 +1,4 @@
-using EmploymentAgency.Domain.DTO;
+using EmploymentAgency.Domain.Dto;
 using EmploymentAgency.Domain.Models;
 using EmploymentAgency.Domain.Repositories;
 using System.Reflection;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EmploymentAgency.Domain.DTO.EmployerD;
+namespace EmploymentAgency.Domain.Dto.EmployerD;
 /// <summary>
 /// DTO для Put Employer
 /// </summary>

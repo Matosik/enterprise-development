@@ -1,5 +1,4 @@
-﻿using EmploymentAgency.Domain.DTO;
-using EmploymentAgency.Domain.Models;
+﻿using EmploymentAgency.Domain.Models;
 
 namespace EmploymentAgency.Domain.Repositories;
 

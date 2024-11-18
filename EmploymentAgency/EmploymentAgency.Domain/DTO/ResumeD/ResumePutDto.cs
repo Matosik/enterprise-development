@@ -1,4 +1,4 @@
-﻿namespace EmploymentAgency.Domain.DTO.ResumeD;
+﻿namespace EmploymentAgency.Domain.Dto.ResumeD;
 
 /// <summary>
 /// DTO для изменения данных класса Резюме

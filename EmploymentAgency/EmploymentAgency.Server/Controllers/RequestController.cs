@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using System.Data;
-using EmploymentAgency.Domain.DTO.ApplicantD;
-using EmploymentAgency.Domain.DTO.JobPositionD;
-using EmploymentAgency.Domain.DTO.EmployerD;
+using EmploymentAgency.Domain.Dto.ApplicantD;
+using EmploymentAgency.Domain.Dto.JobPositionD;
+using EmploymentAgency.Domain.Dto.EmployerD;
 
 namespace EmploymentAgency.Server.Controllers;
 
