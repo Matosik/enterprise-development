@@ -5,7 +5,6 @@ using System.Data;
 using EmploymentAgency.Domain.DTO.ApplicantD;
 using EmploymentAgency.Domain.DTO.JobPositionD;
 using EmploymentAgency.Domain.DTO.EmployerD;
-using EmploymentAgency.Domain.Models;
 
 namespace EmploymentAgency.Server.Controllers;
 
