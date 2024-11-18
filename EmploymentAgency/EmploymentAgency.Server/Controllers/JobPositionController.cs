@@ -31,7 +31,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     {
         var job = repository.Jobs.GetById(id);
         if (job == null)
-           return NotFound();
+            return NotFound();
 
         return Ok(mapper.Map<JobPositionDto>(job));
     }
@@ -70,25 +70,21 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var vacancyesToDelete = (from vacancy in repository.Vacancies.GetAll()
-                                 where vacancy.IdEmployer == id
-                                 select vacancy);
+        // по мне так раньше было лучше(именно здесь и в EmployerController)
+        repository.Responses.GetAll()
+            .Where(r => repository.Vacancies.GetAll()
+                .Where(v => v.IdJobPosition == id)
+                .Select(v => v.IdVacancy)
+                .Contains(r.IdVacancy))
+            .ToList()
+            .ForEach(r=> repository.Responses.Delete(r.IdResponse));
 
-        var responsesToDelete = (from response in repository.Responses.GetAll()
-                                 join vacancy in vacancyesToDelete on response.IdVacancy equals vacancy.IdVacancy
-                                 select response);
-
-        foreach (var response in responsesToDelete)
-        {
-            repository.Responses.Delete(response);
-        }
-
-        foreach (var vacancy in vacancyesToDelete)
-        {
-            repository.Vacancies.Delete(vacancy);
-        }
-
-        if (repository.Jobs.Delete(id)) 
+        repository.Vacancies.GetAll()
+            .Where(v => v.IdJobPosition == id)
+            .ToList()
+            .ForEach(v => repository.Vacancies.Delete(v.IdVacancy));
+      
+        if (repository.Jobs.Delete(id))
             return Ok();
         return NotFound();
     }

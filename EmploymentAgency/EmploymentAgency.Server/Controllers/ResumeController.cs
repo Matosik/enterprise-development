@@ -45,20 +45,14 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     {
         var message = "Резюме добавлено";
         if (repository.Applicants.GetById(value.IdApplicant) == null)
-            return NotFound("Кандидат на работу с таким ID не найден");
-        var jobs = repository.Jobs.GetAll();
-        var cur = value.Job;
-        JobPosition? job;
-        job = jobs.FirstOrDefault(s => s.PositionName == cur.PositionName && s.Section == cur.Section);
-        
-        repository.Resumes.Post(mapper.Map<Resume>(value));
-        if(job == null)
+            return NotFound("Кандидат на работу с таким ID не найден");        
+        var job = repository.Jobs.GetAll().FirstOrDefault(s => s.PositionName == value.Job.PositionName && s.Section == value.Job.Section);
+        if (job == null)
         {
             job = repository.Jobs.Post(mapper.Map<JobPosition>(value.Job));
-            message += "Похоже на нашей площадке еще нет такой профессии. Но специально для вас мы добавили";
+            message += "\nПохоже на нашей площадке еще нет такой профессии. Но специально для вас мы добавили";
         }
-        var added = mapper.Map<Resume>(value);
-        repository.Resumes.Post(added);
+        repository.Resumes.Post(mapper.Map<Resume>(value));
         return Ok(message);
     }
 

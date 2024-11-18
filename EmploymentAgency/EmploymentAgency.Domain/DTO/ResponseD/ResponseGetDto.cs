@@ -1,6 +1,4 @@
-﻿
-
-using EmploymentAgency.Domain.Models;
+﻿using EmploymentAgency.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace EmploymentAgency.Domain.DTO.ResponseD;

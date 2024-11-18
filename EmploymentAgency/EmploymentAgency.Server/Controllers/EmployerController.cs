@@ -70,25 +70,21 @@ public class EmployerController(ServiseRepository repository, IMapper mapper) : 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var vacancyToDelete = (from vacancy in repository.Vacancies.GetAll()
-                               where vacancy.IdEmployer == id
-                               select vacancy);
+        repository.Responses.GetAll()
+            .Where(r => repository.Vacancies.GetAll()
+                .Where(v => v.IdEmployer == id)
+                .Select(v => v.IdVacancy)
+                .Contains(r.IdVacancy))
+            .ToList()
+            .ForEach(r=> repository.Responses.Delete(r.IdResponse));
 
-        var responsesToDelete = (from response in repository.Responses.GetAll()
-                                 join vacancy in vacancyToDelete on response.IdVacancy equals vacancy.IdVacancy
-                                 select response);
-        foreach (var response in responsesToDelete)
-        {
-            repository.Responses.Delete(response);
-        }
-
-        foreach (var vacancy in vacancyToDelete)
-        {
-            repository.Vacancies.Delete(vacancy.IdVacancy);
-        }
+        repository.Vacancies.GetAll()
+            .Where(r => r.IdEmployer == id)
+            .ToList()
+            .ForEach(r=> repository.Vacancies.Delete(r.IdVacancy));
 
         if (repository.Employers.Delete(id))
-            return Ok(); 
+            return Ok();
         return NotFound();
     }
 }

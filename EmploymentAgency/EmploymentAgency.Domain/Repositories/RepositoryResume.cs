@@ -26,7 +26,7 @@ public class RepositoryResume : IRepository<Resume>
 
     public Resume Post(Resume resume)
     {
-        resume.IdPosition = _id++;
+        resume.IdResume = _id++;
         _resumes.Add(resume);
         return resume;
     }

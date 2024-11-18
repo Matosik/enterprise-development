@@ -71,26 +71,17 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
+        repository.Responses.GetAll()
+            .Where(r => r.IdApplicant == id)
+            .ToList()
+            .ForEach(r => repository.Responses.Delete(r.IdResponse));
 
-        var responseToDelete = (from response in repository.Responses.GetAll()
-                                where response.IdApplicant == id
-                                select response);
+        repository.Resumes.GetAll()
+            .Where(r => r.IdApplicant == id)
+            .ToList()
+            .ForEach(r=> repository.Resumes.Delete(r.IdResume));
 
-        var resumeToDelete = (from resume in repository.Resumes.GetAll()
-                              where resume.IdApplicant == id
-                              select resume);
-
-        foreach (var response in responseToDelete)
-        {
-            repository.Responses.Delete(response.IdResponse);
-        }
-
-        foreach (var resume in resumeToDelete)
-        {
-            repository.Resumes.Delete(resume.IdResume);
-        }
-
-        if (repository.Applicants.Delete(id)) 
+        if (repository.Applicants.Delete(id))
             return Ok();
         return NotFound();
     }

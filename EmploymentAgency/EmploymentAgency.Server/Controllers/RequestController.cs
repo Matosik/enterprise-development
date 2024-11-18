@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using System.Data;
 using EmploymentAgency.Domain.DTO.ApplicantD;
+using EmploymentAgency.Domain.DTO.JobPositionD;
 using EmploymentAgency.Domain.DTO.EmployerD;
+using EmploymentAgency.Domain.Models;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -18,14 +20,13 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     public ActionResult<IEnumerable<ApplicantDto>> GetApplicantByPoition(string? positionName = null)
     {
         positionName ??= "backend developer C#";
-        var query = (from job in repository.Jobs.GetAll()
+        var query = from job in repository.Jobs.GetAll()
                      join resume in repository.Resumes.GetAll() on job.IdJobPosition equals resume.IdPosition
                      join applicant in repository.Applicants.GetAll() on resume.IdApplicant equals applicant.IdApplicant
                      where job.PositionName == positionName
                      orderby applicant.FirstName
-                     select applicant);
-        var q = mapper.Map<IEnumerable<ApplicantDto>>(query);
-        return Ok(q);
+                     select applicant;
+        return Ok(mapper.Map<IEnumerable<ApplicantDto>>(query));
     }
     /// <summary>
     /// Выводит всех соискателей, оставивших заявки за заданный период. Или по дефолту с 2023.05.01 - 2023.7.30
@@ -52,12 +53,12 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     [HttpGet("applicants-by-vacancy")]
     public ActionResult<IEnumerable<ApplicantDto>> GetApplicantByVacancyId(int? vacancyId = 1)
     {
-        var query = (from vacancy in repository.Vacancies.GetAll()
+        var query = from vacancy in repository.Vacancies.GetAll()
                      join job in repository.Jobs.GetAll() on vacancy.IdJobPosition equals job.IdJobPosition
                      join resume in repository.Resumes.GetAll() on job.IdJobPosition equals resume.IdPosition
                      join applicant in repository.Applicants.GetAll() on resume.IdApplicant equals applicant.IdApplicant
                      where resume.WantSalary <= vacancy.Salary && vacancy.IdVacancy == vacancyId
-                     select applicant);
+                     select applicant;
         return Ok(mapper.Map<IEnumerable<ApplicantDto>>(query));
     }
     /// <summary>
@@ -65,58 +66,30 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     /// </summary>
     /// <returns></returns>
     [HttpGet("get-response")]
-    public Dictionary<string, int> GetCountResponse()
+    public IEnumerable<JobPositionWithCountResponseDto> GetCountResponse()
     {
-        var query = (from response in repository.Responses.GetAll()
-                     join vacancy in repository.Vacancies.GetAll() on response.IdVacancy equals vacancy.IdVacancy
-                     join job in repository.Jobs.GetAll() on vacancy.IdJobPosition equals job.IdJobPosition
-                     group response by new { job.PositionName } into g
-                     select new
-                     {
-                         SectionPosition = g.Key.PositionName,
-                         Count = g.Count()
-                     })
-                     .ToDictionary(x => x.SectionPosition, x => x.Count);
+        var query = from job in repository.Jobs.GetAll() 
+                    join vacancy in repository.Vacancies.GetAll()
+                        on job.IdJobPosition equals vacancy.IdJobPosition into vacancies
+                    from vacancy in vacancies.DefaultIfEmpty() 
+                    join response in repository.Responses.GetAll()
+                        on vacancy?.IdVacancy equals response.IdVacancy into responses
+                    from response in responses.DefaultIfEmpty() 
+                    group response by job into grouped 
+                    select new JobPositionWithCountResponseDto
+                    {
+                        JobPosition = mapper.Map<JobPositionGetDto>(grouped.Key),
+                        Count = grouped.Count(r => r != null) // Считаем только не-null Responses
+                    };
         return query;
     }
-    /// <summary>
-    /// Выводит информацию о количестве заявок по каждому разделу и должности
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("get-response-All")]
-    public Dictionary<string, int> GetCountResponseAll()
-    {
-        var queryPositionName = (from response in repository.Responses.GetAll()
-                                 join vacancy in repository.Vacancies.GetAll() on response.IdVacancy equals vacancy.IdVacancy
-                                 join job in repository.Jobs.GetAll() on vacancy.IdJobPosition equals job.IdJobPosition
-                                 group response by new { job.PositionName } into g
-                                 select new
-                                 {
-                                     Position = $"Рабочая позиция - {g.Key.PositionName}",
-                                     Count = g.Count()
-                                 })
-                     .ToDictionary(x => x.Position, x => x.Count);
-        var querySection = (from response in repository.Responses.GetAll()
-                            join vacancy in repository.Vacancies.GetAll() on response.IdVacancy equals vacancy.IdVacancy
-                            join job in repository.Jobs.GetAll() on vacancy.IdJobPosition equals job.IdJobPosition
-                            group response by new { job.Section } into g
-                            select new
-                            {
-                                SectionAns = $"Раздел - {g.Key.Section}",
-                                Count = g.Count()
-                            })
-                            .ToDictionary(x => x.SectionAns, x => x.Count);
-
-        var query = queryPositionName.Concat(querySection)
-                                     .ToDictionary(x => x.Key, x => x.Value);
-        return query;
-    }
+    
     /// <summary>
     /// Вывод топ Работадателей по количеству вакансий
     /// </summary>
     /// <returns></returns>
-    [HttpGet("top-five-employers")]
-    public IEnumerable<EmployerWithVacancyCountDto> GetTopFiveEmployerByVacancy(int Top = 5)
+    [HttpGet("top-employers-by-vacancy")]
+    public IEnumerable<EmployerWithVacancyCountDto> GetTopEmployerByVacancy(int Top = 5)
     {
         var query = (from vacancy in repository.Vacancies.GetAll()
                      join employer in repository.Employers.GetAll() on vacancy.IdEmployer equals employer.IdEmployer
@@ -124,7 +97,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
                      orderby g.Count() descending
                      select new EmployerWithVacancyCountDto
                      {
-                         Employerr = mapper.Map<EmployerGetDto>(g.Key),
+                         Employer = mapper.Map<EmployerGetDto>(g.Key),
                          Count = g.Count()
                      })
              .Take(Top);
@@ -139,7 +112,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     public IEnumerable<EmployerWithSalaryVacancyDto> GetEmployersByMaxSalary()
     {
         var maxSalary = repository.Vacancies.GetAll().Max(x => x.Salary);
-        var query = (from vacancy in repository.Vacancies.GetAll()
+        var query = from vacancy in repository.Vacancies.GetAll()
                      join employer in repository.Employers.GetAll() on vacancy.IdEmployer equals employer.IdEmployer
                      where vacancy.Salary == maxSalary
                      orderby employer.IdEmployer
@@ -147,7 +120,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
                      {
                          Employerr = mapper.Map<EmployerGetDto>(employer),
                          Salary = maxSalary
-                     });
+                     };
 
         return mapper.Map<IEnumerable<EmployerWithSalaryVacancyDto>>(query);
     }

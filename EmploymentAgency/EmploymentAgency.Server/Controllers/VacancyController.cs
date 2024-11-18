@@ -85,14 +85,11 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var responsesToDelete = (from response in repository.Responses.GetAll()
-                                 where response.IdVacancy == id
-                                 select response);
-        foreach (var response in responsesToDelete)
-        {
-            repository.Responses.Delete(response);
-        }
-        if (repository.Vacancies.Delete(id)) 
+        repository.Responses.GetAll()
+            .Where(r => r.IdVacancy == id)
+            .ToList()
+            .ForEach(r => repository.Responses.Delete(r.IdResponse));
+        if (repository.Vacancies.Delete(id))
             return Ok();
         return NotFound();
     }

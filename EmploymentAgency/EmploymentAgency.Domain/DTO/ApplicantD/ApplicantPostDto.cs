@@ -2,7 +2,7 @@
 
 namespace EmploymentAgency.Domain.DTO.ApplicantD;
 /// <summary>
-/// 
+/// DTO для добавления соискателя
 /// </summary>
 public class ApplicantPostDto
 {
