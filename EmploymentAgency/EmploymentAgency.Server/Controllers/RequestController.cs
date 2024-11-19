@@ -88,7 +88,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
     /// </summary>
     /// <returns></returns>
     [HttpGet("top-employers-by-vacancy")]
-    public IEnumerable<EmployerWithVacancyCountDto> GetTopEmployerByVacancy(int Top = 5)
+    public IEnumerable<EmployerWithVacancyCountDto> GetTopEmployerByVacancy(int top = 5)
     {
         var query = (from vacancy in repository.Vacancies.GetAll()
                      join employer in repository.Employers.GetAll() on vacancy.IdEmployer equals employer.IdEmployer
@@ -99,7 +99,7 @@ public class RequestController(ServiseRepository repository, IMapper mapper) : C
                          Employer = mapper.Map<EmployerGetDto>(g.Key),
                          Count = g.Count()
                      })
-             .Take(Top);
+             .Take(top);
 
         return mapper.Map<IEnumerable<EmployerWithVacancyCountDto>>(query);
     }
