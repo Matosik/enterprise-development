@@ -2,7 +2,7 @@
 using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using AutoMapper;
-using EmploymentAgency.Domain.Dto.ResponseD;
+using EmploymentAgency.Domain.Dto.ResponseDtos;
 
 namespace EmploymentAgency.Server.Controllers;
 

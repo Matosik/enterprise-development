@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using EmploymentAgency.Domain.Dto.ApplicantD;
-using EmploymentAgency.Domain.Dto.EmployerD;
-using EmploymentAgency.Domain.Dto.JobPositionD;
-using EmploymentAgency.Domain.Dto.ResponseD;
-using EmploymentAgency.Domain.Dto.ResumeD;
-using EmploymentAgency.Domain.Dto.VacancyD;
+using EmploymentAgency.Domain.Dto.ApplicantDtos;
+using EmploymentAgency.Domain.Dto.EmployerDtos;
+using EmploymentAgency.Domain.Dto.JobPositionDtos;
+using EmploymentAgency.Domain.Dto.ResponseDtos;
+using EmploymentAgency.Domain.Dto.ResumeDtos;
+using EmploymentAgency.Domain.Dto.VacancyDtos;
 using EmploymentAgency.Domain.Models;
 
 namespace EmploymentAgency.Domain.Dto;

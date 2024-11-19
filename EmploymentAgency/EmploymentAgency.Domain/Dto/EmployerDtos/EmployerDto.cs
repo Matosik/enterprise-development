@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EmploymentAgency.Domain.Dto.EmployerD;
+namespace EmploymentAgency.Domain.Dto.EmployerDtos;
 /// <summary>
 /// DTO Employer для Get по Id 
 /// </summary>

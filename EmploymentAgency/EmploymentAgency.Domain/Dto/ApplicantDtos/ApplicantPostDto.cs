@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EmploymentAgency.Domain.Dto.ApplicantD;
+namespace EmploymentAgency.Domain.Dto.ApplicantDtos;
 /// <summary>
 /// DTO для добавления соискателя
 /// </summary>

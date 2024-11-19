@@ -1,6 +1,6 @@
-﻿using EmploymentAgency.Domain.Dto.JobPositionD;
+﻿using EmploymentAgency.Domain.Dto.JobPositionDtos;
 
-namespace EmploymentAgency.Domain.Dto.ResumeD;
+namespace EmploymentAgency.Domain.Dto.ResumeDtos;
 /// <summary>
 /// DTO для класса Резюме
 /// использоуется для Post

@@ -1,7 +1,7 @@
 ﻿using EmploymentAgency.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace EmploymentAgency.Domain.Dto.ResponseD;
+namespace EmploymentAgency.Domain.Dto.ResponseDtos;
 
 public class ResponseGetDto
 {

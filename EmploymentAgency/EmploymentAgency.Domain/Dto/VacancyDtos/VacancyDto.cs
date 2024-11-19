@@ -1,4 +1,4 @@
-﻿namespace EmploymentAgency.Domain.Dto.VacancyD;
+﻿namespace EmploymentAgency.Domain.Dto.VacancyDtos;
 
 /// <summary>
 /// DTO для класса Вакансия

@@ -1,7 +1,7 @@
 ﻿using EmploymentAgency.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace EmploymentAgency.Domain.Dto.ResponseD;
+namespace EmploymentAgency.Domain.Dto.ResponseDtos;
 /// <summary>
 /// DTO для изменения данных класса Отклика
 /// </summary

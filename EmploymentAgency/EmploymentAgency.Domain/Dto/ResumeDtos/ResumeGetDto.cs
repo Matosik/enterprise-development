@@ -1,5 +1,5 @@
 ﻿
-namespace EmploymentAgency.Domain.Dto.ResumeD;
+namespace EmploymentAgency.Domain.Dto.ResumeDtos;
 /// <summary>
 /// Данная DTO идентичная классу Resume, но если в классе Resume,
 /// когда-то появится свойство, которое мы захотим сокрыть от клиентской части

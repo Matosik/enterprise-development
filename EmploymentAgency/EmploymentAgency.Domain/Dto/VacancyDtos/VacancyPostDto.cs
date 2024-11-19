@@ -1,6 +1,6 @@
-﻿using EmploymentAgency.Domain.Dto.JobPositionD;
+﻿using EmploymentAgency.Domain.Dto.JobPositionDtos;
 
-namespace EmploymentAgency.Domain.Dto.VacancyD;
+namespace EmploymentAgency.Domain.Dto.VacancyDtos;
 
 public class VacancyPostDto
 {
