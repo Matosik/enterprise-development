@@ -1,4 +1,6 @@
-﻿namespace EmploymentAgency.Domain.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EmploymentAgency.Domain.Models;
 /// <summary>
 /// Класс для отклика 
 /// Связывает вакансию и соискателя 
@@ -8,6 +10,7 @@ public class Response
     /// <summary>
     /// Уникальный номер отклика
     /// </summary>
+    [Key]
     public int IdResponse { get; set; }
     /// <summary>
     /// Дата создания отклика

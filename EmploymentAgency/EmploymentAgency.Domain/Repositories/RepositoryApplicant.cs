@@ -1,48 +1,34 @@
 ﻿using EmploymentAgency.Domain.Models;
-namespace EmploymentAgency.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
-public class RepositoryApplicant : IRepository<Applicant>
+namespace EmploymentAgency.Domain.Repositories;
+public class RepositoryApplicant(EmploymentAgencyContext context) : IRepository<Applicant>
 {
-    private int _id;
-    private readonly List<Applicant> _applicants= [];
-    public RepositoryApplicant()
-    {
-        _applicants = new EmploymentAgencyData().Applicants;
-        _id = _applicants.Count > 0 ? _applicants.Max(a => a.IdApplicant) + 1 : 0;
-    }
-    public IEnumerable<Applicant> GetAll() => _applicants;
-    public Applicant? GetById(int id) => _applicants.Find(v => v.IdApplicant == id);
-    public Applicant Post(Applicant applicant)
+    public async Task<List<Applicant>> GetAllAsync() => await context.Applicants.ToListAsync();
+    public async Task<Applicant>? GetByIdAsync(int id) => await context.Applicants.FirstOrDefaultAsync(a => a.IdApplicant == id);
+    public async Task PostAsync(Applicant applicant)
     {
         applicant.Registration = DateTime.UtcNow;
-        applicant.IdApplicant = _id++;
-        _applicants.Add(applicant);
-        return applicant;
+        await context.Applicants.AddAsync(applicant);
+        await context.SaveChangesAsync();
     }
-    public void Overwrite(ref Applicant old, Applicant update)
+    public async Task<bool> PutAsync(int id, Applicant applicant)
     {
-        if (update.Birthday != DateOnly.MinValue)
-        {
-            old.Birthday = update.Birthday;
-        }
-        old.Number = update.Number;
-        if (update.Registration != null)
-        {
-            old.Registration = update.Registration;
-        }
-        old.FirstName = update.FirstName;
-        old.LastName = update.LastName;
+        var old = await GetByIdAsync(id);
+        if (old == null)
+            return false;
+
+        context.Entry(old).CurrentValues.SetValues(applicant);
+        await context.SaveChangesAsync();
+        return true;
     }
-    public void Delete(Applicant applicant)
+    public async Task<bool> DeleteAsync(int id)
     {
-        _applicants.Remove(applicant);
-    }
-    public bool Delete(int id)
-    {
-        var applicant = GetById(id);
-        if (applicant == null) 
-            return false; 
-        _applicants.Remove(applicant);
+        var applicant = await GetByIdAsync(id);
+        if (applicant == null)
+            return false;
+        context.Applicants.Remove(applicant);
+        await context.SaveChangesAsync();
         return true;
     }
 }

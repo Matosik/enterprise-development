@@ -1,41 +1,33 @@
 ﻿using EmploymentAgency.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmploymentAgency.Domain.Repositories;
-
-public class RepositoryJobPosition : IRepository<JobPosition>
+public class RepositoryJobPosition(EmploymentAgencyContext context) : IRepository<JobPosition>
 {
-    private int _id;
-    private readonly List<JobPosition> _jobs = [];
-    public RepositoryJobPosition()
+    public async Task<List<JobPosition>> GetAllAsync() => await context.JobPositions.ToListAsync();
+    public async Task<JobPosition>? GetByIdAsync(int id) => await context.JobPositions.FirstOrDefaultAsync(j => j.IdJobPosition == id);
+    public async Task PostAsync(JobPosition JobPosition)
     {
-        _jobs = new EmploymentAgencyData().Jobs;
-        _id = _jobs.Count > 0 ? _jobs.Max(a => a.IdJobPosition) + 1 : 0;
+        await context.JobPositions.AddAsync(JobPosition);
+        await context.SaveChangesAsync();
     }
-    public JobPosition? GetById(int id) => _jobs.Find(j => j.IdJobPosition == id);
+    public async Task<bool> PutAsync(int id, JobPosition jobPosition)
+    {
+        var old = await GetByIdAsync(id);
+        if (old == null)
+            return false;
 
-    public IEnumerable<JobPosition> GetAll() => _jobs;
-
-    public void Overwrite(ref JobPosition old, JobPosition update)
-    {
-        old.Section = update.Section;
-        old.PositionName = update.PositionName;
+        context.Entry(old).CurrentValues.SetValues(jobPosition);
+        await context.SaveChangesAsync();
+        return true;
     }
-    public JobPosition Post(JobPosition jobPosition)
+    public async Task<bool> DeleteAsync(int id)
     {
-        jobPosition.IdJobPosition = _id++;
-        _jobs.Add(jobPosition);
-        return jobPosition;
-    }
-    public void Delete(JobPosition job)
-    {
-        _jobs.Remove(job);
-    }
-    public bool Delete(int id)
-    {
-        var job = GetById(id);
-        if (job == null) 
-            return false; 
-        Delete(job);
+        var jobPosition = await GetByIdAsync(id);
+        if (jobPosition == null)
+            return false;
+        context.JobPositions.Remove(jobPosition);
+        await context.SaveChangesAsync();
         return true;
     }
 }

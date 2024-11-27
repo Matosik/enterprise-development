@@ -1,47 +1,34 @@
 ﻿using EmploymentAgency.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmploymentAgency.Domain.Repositories;
-
-public class RepositoryResponse : IRepository<Response>
+public class RepositoryResponse(EmploymentAgencyContext context) : IRepository<Response>
 {
-    private int _id;
-    private readonly List<Response> _responses = [];
-    public RepositoryResponse()
-    {
-        _responses = new EmploymentAgencyData().Responses;
-        _id = _responses.Count > 0 ? _responses.Max(a => a.IdResponse) + 1 : 0;
-    }
-    public Response? GetById(int id) => _responses.Find(r => r.IdResponse == id);
-
-    public IEnumerable<Response> GetAll() => _responses;
-
-    public void Overwrite(ref Response old, Response update)
-    {
-        old.IdResume = update.IdResume;
-        old.Status = update.Status;
-        old.SummaryResponse = update.SummaryResponse;
-        old.IdApplicant = update.IdApplicant; 
-        old.IdVacancy = update.IdVacancy;
-        old.DateResponse = update.DateResponse;
-    }
-
-    public Response Post(Response response)
+    public async Task<List<Response>> GetAllAsync() => await context.Responses.ToListAsync();
+    public async Task<Response>? GetByIdAsync(int id) => await context.Responses.FirstOrDefaultAsync(r => r.IdResponse == id);
+    public async Task PostAsync(Response response)
     {
         response.DateResponse = DateTime.UtcNow;
-        response.IdResponse = _id++;
-        _responses.Add(response);
-        return response;
+        await context.Responses.AddAsync(response);
+        await context.SaveChangesAsync();
     }
-    public void Delete(Response response)
+    public async Task<bool> PutAsync(int id, Response response)
     {
-        _responses.Remove(response);
-    }
-    public bool Delete(int id)
-    {
-        var response = GetById(id);
-        if (response == null) 
+        var old = await GetByIdAsync(id);
+        if (old == null)
             return false;
-        Delete(response);
+
+        context.Entry(old).CurrentValues.SetValues(response);
+        await context.SaveChangesAsync();
+        return true;
+    }
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var response = await GetByIdAsync(id);
+        if (response == null)
+            return false;
+        context.Responses.Remove(response);
+        await context.SaveChangesAsync();
         return true;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using EmploymentAgency.Domain.Models;
-
-namespace EmploymentAgency.Domain.Repositories;
-internal class EmploymentAgencyData
+namespace EmploymentAgency.Test;
+public class EmploymentAgencyData
 {
     public List<Applicant> Applicants { get; set; }
     public List<JobPosition> Jobs { get; set; }

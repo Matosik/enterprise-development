@@ -3,6 +3,7 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using AutoMapper;
 using EmploymentAgency.Domain.Dto.ApplicantDtos;
+using EmploymentAgency.Domain.Dto.ResponseDtos;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -15,10 +16,10 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     /// </summary>
     /// <returns>Возвращает HTTP-код ответа и коллекцию объектов ApplicantDto</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<ApplicantGetDto>> Get()
+    public async Task<ActionResult<IEnumerable<ApplicantGetDto>>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<ApplicantGetDto>>(repository.Applicants.GetAll());
-        return Ok(repoDto);
+        var applicants = await repository.Applicants.GetAllAsync();
+        return Ok(mapper.Map<IEnumerable<ApplicantGetDto>>(applicants));
     }
 
     /// <summary>
@@ -27,9 +28,9 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     /// <param name="id"></param>
     /// <returns>Возвращает код HTTP-код ответа и найденое значение соискателя работы по id</returns>
     [HttpGet("{id}")]
-    public ActionResult<ApplicantDto> Get(int id)
+    public async Task<ActionResult<ApplicantDto>> Get(int id)
     {
-        var applicant = repository.Applicants.GetById(id);
+        var applicant = await repository.Applicants.GetByIdAsync(id);
         if (applicant == null)
             return NotFound();
 
@@ -42,10 +43,10 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     /// <param name="value"></param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
     [HttpPost]
-    public IActionResult Post([FromBody] ApplicantPostDto value)
+    public async Task<IActionResult> Post([FromBody] ApplicantPostDto value)
     {
         var applicant = mapper.Map<Applicant>(value);
-        repository.Applicants.Post(applicant);
+        await repository.Applicants.PostAsync(applicant);
         return Ok();
     }
 
@@ -56,9 +57,9 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     /// <param name="value">Объект ApplicantPutDto с обновленными данными соискателя работы</param>
     /// <returns>Возвращает HTTP-код  выполнения операции </returns>     
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] ApplicantPutDto value)
+    public async Task<IActionResult> Put(int id, [FromBody] ApplicantPutDto value)
     {
-        if (repository.Applicants.Put(id, mapper.Map<Applicant>(value)))
+        if (await repository.Applicants.PutAsync(id, mapper.Map<Applicant>(value)))
             return Ok();
         return NotFound();
     }
@@ -69,19 +70,19 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     /// <param name="id">Идентификатор соискателя работы для удаления</param>
     /// <returns>Возвращает HTTP-код операции</returns>
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        repository.Responses.GetAll()
-            .Where(r => r.IdApplicant == id)
-            .ToList()
-            .ForEach(r => repository.Responses.Delete(r.IdResponse));
+        //await repository.Responses.GetAllAsync()
+        //    .Where(r => r.IdApplicant == id)
+        //    .ToList()
+        //    .ForEach(r => repository.Responses.Delete(r.IdResponse));
 
-        repository.Resumes.GetAll()
-            .Where(r => r.IdApplicant == id)
-            .ToList()
-            .ForEach(r=> repository.Resumes.Delete(r.IdResume));
+        //repository.Resumes.GetAll()
+        //    .Where(r => r.IdApplicant == id)
+        //    .ToList()
+        //    .ForEach(r => repository.Resumes.Delete(r.IdResume));
 
-        if (repository.Applicants.Delete(id))
+        if (await repository.Applicants.DeleteAsync(id))
             return Ok();
         return NotFound();
     }

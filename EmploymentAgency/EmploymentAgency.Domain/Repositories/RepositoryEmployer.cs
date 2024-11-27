@@ -1,44 +1,34 @@
 ﻿using EmploymentAgency.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmploymentAgency.Domain.Repositories;
-
-public class RepositoryEmployer : IRepository<Employer>
+public class RepositoryEmployer(EmploymentAgencyContext context) : IRepository<Employer>
 {
-    private int _id ;
-    private readonly List<Employer> _employers = [];
-    public RepositoryEmployer()
-    {
-        _employers = new EmploymentAgencyData().Employers;
-        _id = _employers.Count > 0 ? _employers.Max(a => a.IdEmployer) + 1 : 0;
-    }
-    public Employer? GetById(int id) => _employers.Find(e => e.IdEmployer == id);
-    public IEnumerable<Employer> GetAll() => _employers;
-
-    public void Overwrite(ref Employer old, Employer update)
-    {
-        old.Number = update.Number;
-        old.LastName = update.LastName;
-        old.FirstName = update.FirstName;
-        old.Company = update.Company;
-    }
-
-    public Employer Post(Employer employer)
+    public async Task<List<Employer>> GetAllAsync() => await context.Employers.ToListAsync();
+    public async Task<Employer>? GetByIdAsync(int id) => await context.Employers.FirstOrDefaultAsync(e => e.IdEmployer == id);
+    public async Task PostAsync(Employer employer)
     {
         employer.Registration = DateTime.UtcNow;
-        employer.IdEmployer = _id++;
-        _employers.Add(employer);
-        return employer;
+        await context.Employers.AddAsync(employer);
+        await context.SaveChangesAsync();
     }
-    public void Delete(Employer employer)
+    public async Task<bool> PutAsync(int id, Employer employer)
     {
-        _employers.Remove(employer);
+        var old = await GetByIdAsync(id);
+        if (old == null)
+            return false;
+
+        context.Entry(old).CurrentValues.SetValues(employer);
+        await context.SaveChangesAsync();
+        return true;
     }
-    public bool Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        var employer = GetById(id);
-        if (employer == null) 
-            return false; 
-        _employers.Remove(employer);
+        var employer = await GetByIdAsync(id);
+        if (employer == null)
+            return false;
+        context.Employers.Remove(employer);
+        await context.SaveChangesAsync();
         return true;
     }
 }

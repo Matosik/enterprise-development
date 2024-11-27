@@ -1,4 +1,6 @@
-﻿namespace EmploymentAgency.Domain.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EmploymentAgency.Domain.Models;
 /// <summary>
 /// Класс резюме
 /// </summary>
@@ -7,6 +9,7 @@ public class Resume
     /// <summary>
     ///  Уникальный номер резюме
     /// </summary>
+    [Key]
     public int IdResume { get; set; }
     /// <summary>
     /// Номер соискателя к которому относится резюме

@@ -1,45 +1,33 @@
 ﻿using EmploymentAgency.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmploymentAgency.Domain.Repositories;
-
-public class RepositoryResume : IRepository<Resume>
+public class RepositoryResume(EmploymentAgencyContext context) : IRepository<Resume>
 {
-    private int _id;
-    private readonly List<Resume> _resumes = [];
-    public RepositoryResume()
+    public async Task<List<Resume>> GetAllAsync() => await context.Resumes.ToListAsync();
+    public async Task<Resume>? GetByIdAsync(int id) => await context.Resumes.FirstOrDefaultAsync(r => r.IdResume == id);
+    public async Task PostAsync(Resume resume)
     {
-        _resumes = new EmploymentAgencyData().Resumes;
-        _id = _resumes.Count > 0 ? _resumes.Max(a => a.IdResume) + 1 : 0;
+        await context.Resumes.AddAsync(resume);
+        await context.SaveChangesAsync();
     }
-    public Resume? GetById(int id) => _resumes.Find(r => r.IdResume == id);
-
-    public IEnumerable<Resume> GetAll() => _resumes;
-
-    public void Overwrite(ref Resume old, Resume update)
+    public async Task<bool> PutAsync(int id, Resume resume)
     {
-        old.Education = update.Education;
-        old.IdPosition = update.IdPosition; 
-        old.IdApplicant = update.IdApplicant;
-        old.Experience = update.Experience;
-        old.WantSalary = update.WantSalary;
-    }
-
-    public Resume Post(Resume resume)
-    {
-        resume.IdResume = _id++;
-        _resumes.Add(resume);
-        return resume;
-    }
-    public void Delete(Resume resume)
-    {
-        _resumes.Remove(resume);
-    }
-    public bool Delete(int id)
-    {
-        var resume = GetById(id);
-        if (resume == null) 
+        var old = await GetByIdAsync(id);
+        if (old == null)
             return false;
-        Delete(resume);
+
+        context.Entry(old).CurrentValues.SetValues(resume);
+        await context.SaveChangesAsync();
+        return true;
+    }
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var resume = await GetByIdAsync(id);
+        if (resume == null)
+            return false;
+        context.Resumes.Remove(resume);
+        await context.SaveChangesAsync();
         return true;
     }
 }

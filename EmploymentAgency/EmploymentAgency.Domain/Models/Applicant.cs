@@ -1,4 +1,6 @@
-﻿namespace EmploymentAgency.Domain.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EmploymentAgency.Domain.Models;
 
 /// <summary>
 ///  Класс для соискателя работы, наследуемый от User
@@ -8,6 +10,7 @@ public class Applicant : User
     /// <summary>
     /// Уникальный номер соискателя
     /// </summary>
+    [Key]
     public int IdApplicant { get; set; }
     /// <summary>
     /// Дата рождения соискателя

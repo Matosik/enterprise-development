@@ -3,6 +3,7 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using AutoMapper;
 using EmploymentAgency.Domain.Dto.ResponseDtos;
+using EmploymentAgency.Domain.Dto.ResumeDtos;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -15,9 +16,10 @@ public class ResponseController(ServiseRepository repository, IMapper mapper) : 
     /// </summary>
     /// <returns>Возвращает HTTP-код ответа и коллекцию объектов ResponseDto</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<ResponseGetDto>> Get()
+    public async Task<ActionResult<IEnumerable<ResponseGetDto>>> Get()
     {
-        return Ok(mapper.Map<IEnumerable<ResponseGetDto>>(repository.Responses.GetAll()));
+        var responses = await repository.Responses.GetAllAsync();
+        return Ok(mapper.Map<IEnumerable<ResponseGetDto>>(responses));
     }
 
     /// <summary>
@@ -26,9 +28,9 @@ public class ResponseController(ServiseRepository repository, IMapper mapper) : 
     /// <param name="id"></param>
     /// <returns>Возвращает код HTTP-код ответа и найденое значение отклик по id</returns>
     [HttpGet("{id}")]
-    public ActionResult<ResponseDto> Get(int id)
+    public async Task<ActionResult<ResponseDto>> Get(int id)
     {
-        var job = repository.Responses.GetById(id);
+        var job = await repository.Responses.GetByIdAsync(id);
         if (job == null)
             return NotFound();
 
@@ -41,17 +43,17 @@ public class ResponseController(ServiseRepository repository, IMapper mapper) : 
     /// <param name="value"></param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
     [HttpPost]
-    public IActionResult Post([FromBody] ResponsePostDto value)
+    public async Task<IActionResult> Post([FromBody] ResponsePostDto value)
     {
-        if(repository.Resumes.GetById(value.IdResume) == null)
-            return NotFound("Резюме с таким ID не найден");
+        //if(await repository.Resumes.GetByIdAsync(value.IdResume) == null)
+        //    return NotFound("Резюме с таким ID не найден");
 
-        if (repository.Applicants.GetById(value.IdApplicant) == null)
-            return NotFound("Applicant с таким ID не найден");
+        //if (await repository.Applicants.GetByIdAsync(value.IdApplicant) == null)
+        //    return NotFound("Applicant с таким ID не найден");
 
-        if (repository.Vacancies.GetById(value.IdVacancy) == null)
-            return NotFound("Вакансяи с таким ID не найден");
-        repository.Responses.Post(mapper.Map<Response>(value));
+        //if (await repository.Vacancies.GetByIdAsync(value.IdVacancy) == null)
+        //    return NotFound("Вакансяи с таким ID не найден");
+        await repository.Responses.PostAsync(mapper.Map<Response>(value));
 
         return Ok();
     }
@@ -63,9 +65,9 @@ public class ResponseController(ServiseRepository repository, IMapper mapper) : 
     /// <param name="value">Объект ResponsePutDto с обновленными данными отклик</param>
     /// <returns>Возвращает HTTP-код  выполнения операции </returns>   
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] ResponsePutDto value)
+    public async Task<IActionResult> Put(int id, [FromBody] ResponsePutDto value)
     {
-        if (repository.Responses.Put(id, mapper.Map<Response>(value)))
+        if (await repository.Responses.PutAsync(id, mapper.Map<Response>(value)))
             return Ok();
         return NotFound();
     }
@@ -76,9 +78,9 @@ public class ResponseController(ServiseRepository repository, IMapper mapper) : 
     /// <param name="id">Идентификатор отклик для удаления</param>
     /// <returns>Возвращает HTTP-код операции</returns> 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        if (repository.Responses.Delete(id))
+        if (await repository.Responses.DeleteAsync(id))
             return Ok();
         return NotFound();
     }

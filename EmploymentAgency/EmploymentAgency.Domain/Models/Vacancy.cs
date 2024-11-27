@@ -1,4 +1,6 @@
-﻿namespace EmploymentAgency.Domain.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EmploymentAgency.Domain.Models;
 
 /// <summary>
 /// Класс Вакансия.
@@ -8,6 +10,7 @@ public class Vacancy
     /// <summary>
     /// Уникальный номер вакансии
     /// </summary>
+    [Key]
     public int IdVacancy { get; set; }
     /// <summary>
     /// Номер Работодателя который разместил вакансию

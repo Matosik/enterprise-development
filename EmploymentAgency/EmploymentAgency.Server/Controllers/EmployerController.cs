@@ -3,6 +3,7 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using AutoMapper;
 using EmploymentAgency.Domain.Dto.EmployerDtos;
+using EmploymentAgency.Domain.Dto.ResponseDtos;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -15,10 +16,10 @@ public class EmployerController(ServiseRepository repository, IMapper mapper) : 
     /// </summary>
     /// <returns>Возвращает HTTP-код ответа и коллекцию объектов EmployerDto</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<EmployerGetDto>> Get()
+    public async Task<ActionResult<IEnumerable<EmployerGetDto>>> Get()
     {
-        var repoDto = mapper.Map<IEnumerable<EmployerGetDto>>(repository.Employers.GetAll());
-        return Ok(repoDto);
+        var employers = await repository.Employers.GetAllAsync();
+        return Ok(mapper.Map<IEnumerable<EmployerGetDto>>(employers));
     }
 
     /// <summary>
@@ -27,9 +28,9 @@ public class EmployerController(ServiseRepository repository, IMapper mapper) : 
     /// <param name="id"></param>
     /// <returns>Возвращает код HTTP-код ответа и найденое значение работадатель по id</returns>
     [HttpGet("{id}")]
-    public ActionResult<EmployerDto> Get(int id)
+    public async Task<ActionResult<EmployerDto>> Get(int id)
     {
-        var employer = repository.Employers.GetById(id);
+        var employer = await repository.Employers.GetByIdAsync(id);
         if (employer == null)
             return NotFound();
 
@@ -42,9 +43,9 @@ public class EmployerController(ServiseRepository repository, IMapper mapper) : 
     /// <param name="value"></param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
     [HttpPost]
-    public IActionResult Post([FromBody] EmployerPostDto value)
+    public async Task<IActionResult> Post([FromBody] EmployerPostDto value)
     {
-        repository.Employers.Post(mapper.Map<Employer>(value));
+        await repository.Employers.PostAsync(mapper.Map<Employer>(value));
         return Ok();
     }
 
@@ -55,9 +56,9 @@ public class EmployerController(ServiseRepository repository, IMapper mapper) : 
     /// <param name="value">Объект EmployerPutDto с обновленными данными работадателя</param>
     /// <returns>Возвращает HTTP-код  выполнения операции </returns>   
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] EmployerPutDto value)
+    public async Task<IActionResult> Put(int id, [FromBody] EmployerPutDto value)
     {
-        if (repository.Employers.Put(id, mapper.Map<Employer>(value)))
+        if (await repository.Employers.PutAsync(id, mapper.Map<Employer>(value)))
             return Ok();
         return NotFound();
     }
@@ -68,22 +69,22 @@ public class EmployerController(ServiseRepository repository, IMapper mapper) : 
     /// <param name="id">Идентификатор работадателя для удаления</param>
     /// <returns>Возвращает HTTP-код операции</returns> 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        repository.Responses.GetAll()
-            .Where(r => repository.Vacancies.GetAll()
-                .Where(v => v.IdEmployer == id)
-                .Select(v => v.IdVacancy)
-                .Contains(r.IdVacancy))
-            .ToList()
-            .ForEach(r=> repository.Responses.Delete(r.IdResponse));
+        //repository.Responses.GetAll()
+        //    .Where(r => repository.Vacancies.GetAll()
+        //        .Where(v => v.IdEmployer == id)
+        //        .Select(v => v.IdVacancy)
+        //        .Contains(r.IdVacancy))
+        //    .ToList()
+        //    .ForEach(r => repository.Responses.Delete(r.IdResponse));
 
-        repository.Vacancies.GetAll()
-            .Where(r => r.IdEmployer == id)
-            .ToList()
-            .ForEach(r=> repository.Vacancies.Delete(r.IdVacancy));
+        //repository.Vacancies.GetAll()
+        //    .Where(r => r.IdEmployer == id)
+        //    .ToList()
+        //    .ForEach(r => repository.Vacancies.Delete(r.IdVacancy));
 
-        if (repository.Employers.Delete(id))
+        if (await repository.Employers.DeleteAsync(id))
             return Ok();
         return NotFound();
     }

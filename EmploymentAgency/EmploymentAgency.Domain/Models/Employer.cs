@@ -1,4 +1,6 @@
-﻿namespace EmploymentAgency.Domain.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EmploymentAgency.Domain.Models;
 
 /// <summary>
 /// Класс для работодателя, наследуемый от User
@@ -8,6 +10,7 @@ public class Employer : User
     /// <summary>
     /// Уникальный номер работодателя
     /// </summary>
+    [Key]
     public int IdEmployer { get; set; }
     /// <summary>
     /// Название компании которую представляет работоатель
