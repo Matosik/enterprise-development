@@ -9,7 +9,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class VacancyController(ServiseRepository repository, IMapper mapper) : ControllerBase
+public class VacancyController(IRepository<Vacancy, VacancyPostDto> repository, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список вакансий из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -18,7 +18,7 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     [HttpGet]
     public async Task<IEnumerable<VacancyGetDto>> Get()
     {
-        var vacancies = await repository.Vacancies.GetAllAsync();
+        var vacancies = await repository.GetAllAsync();
         return mapper.Map<IEnumerable<VacancyGetDto>>(vacancies);
     }
 
@@ -30,7 +30,7 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     [HttpGet("{id}")]
     public async Task<ActionResult<VacancyDto>> Get(int id)
     {
-        var vacancy = await repository.Vacancies.GetByIdAsync(id);
+        var vacancy = await repository.GetByIdAsync(id);
         if (vacancy == null)
             return NotFound();
 
@@ -45,25 +45,19 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] VacancyPostDto value)
     {
-        //string message = "Создание Вакансии прошло успешно";
-        //if (repository.Employers.GetById(value.IdEmployer) == null)
-        //    return NotFound("Работодатель с таким ID не найден");
-        //var jobs = repository.Jobs.GetAll();
-        //var cur = value.Job;
-        //JobPosition? job;
-
-        //job = jobs.FirstOrDefault(s => s.PositionName == cur.PositionName && s.Section == cur.Section);
-        //if (job == null)
-        //{
-        //    job = repository.Jobs.Post(mapper.Map<JobPosition>(value.Job));
-        //    message += "\nТакой рабочей позиции нет, но спецально для вас добавили";
+        //try { await repository.Vacancies.PostAsync(mapper.Map<Vacancy>(value)); }
+        //catch (Exception e) {
+        //    return NotFound(e.Message);
         //}
-        //var added = mapper.Map<Vacancy>(value);
-        //added.IdJobPosition = job.IdJobPosition;
-        await repository.Vacancies.PostAsync(mapper.Map<Vacancy>(value));
+        //return Ok();
+
+        try { await repository.PostAsync(value); }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
         return Ok();
     }
-
     /// <summary>
     /// Обновляет существующую вакансию в репозитории на основе переданных данных в формате DTO
     /// </summary>
@@ -74,7 +68,7 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     public async Task<IActionResult> Put(int id, [FromBody] VacancyPutDto value)
     {
         var vacancy = mapper.Map<Vacancy>(value);
-        if (await repository.Vacancies.PutAsync(id, vacancy))
+        if (await repository.PutAsync(id, vacancy))
             return Ok();
         return NotFound();
     }
@@ -87,11 +81,7 @@ public class VacancyController(ServiseRepository repository, IMapper mapper) : C
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        //await repository.Responses.GetAllAsync()
-        //    .Where(r => r.IdVacancy == id)
-        //    .ToList()
-        //    .ForEach(r => repository.Responses.Delete(r.IdResponse));
-        if (await repository.Vacancies.DeleteAsync(id))
+        if (await repository.DeleteAsync(id))
             return Ok();
         return NotFound();
     }

@@ -20,11 +20,11 @@
 //    {
 //        positionName ??= "backend developer C#";
 //        var query = from job in repository.Jobs.GetAllAsync()
-//                     join resume in repository.Resumes.GetAllAsync() on job.IdJobPosition equals resume.IdPosition
-//                     join applicant in repository.Applicants.GetAll() on resume.IdApplicant equals applicant.IdApplicant
-//                     where job.PositionName == positionName
-//                     orderby applicant.FirstName
-//                     select applicant;
+//                    join resume in repository.Resumes.GetAllAsync() on job.IdJobPosition equals resume.IdPosition
+//                    join applicant in repository.Applicants.GetAll() on resume.IdApplicant equals applicant.IdApplicant
+//                    where job.PositionName == positionName
+//                    orderby applicant.FirstName
+//                    select applicant;
 //        return Ok(mapper.Map<IEnumerable<ApplicantDto>>(query));
 //    }
 //    /// <summary>
@@ -50,14 +50,14 @@
 //    /// <param name="vacancyId"></param>
 //    /// <returns></returns>
 //    [HttpGet("applicants-by-vacancy")]
-//    public ActionResult<IEnumerable<ApplicantDto>> GetApplicantByVacancyId(int? vacancyId = 1)
+//    public async ActionResult<IEnumerable<ApplicantDto>> GetApplicantByVacancyId(int? vacancyId = 1)
 //    {
-//        var query = from vacancy in repository.Vacancies.GetAll()
-//                     join job in repository.Jobs.GetAll() on vacancy.IdJobPosition equals job.IdJobPosition
-//                     join resume in repository.Resumes.GetAll() on job.IdJobPosition equals resume.IdPosition
-//                     join applicant in repository.Applicants.GetAll() on resume.IdApplicant equals applicant.IdApplicant
-//                     where resume.WantSalary <= vacancy.Salary && vacancy.IdVacancy == vacancyId
-//                     select applicant;
+//        var query = from vacancy in repository.Vacancies.GetAllAsync()
+//                    join job in repository.Jobs.GetAllAsync() on vacancy.IdJobPosition equals job.IdJobPosition
+//                    join resume in repository.Resumes.GetAllAsync() on job.IdJobPosition equals resume.IdPosition
+//                    join applicant in repository.Applicants.GetAllAsync() on resume.IdApplicant equals applicant.IdApplicant
+//                    where resume.WantSalary <= vacancy.Salary && vacancy.IdVacancy == vacancyId
+//                    select applicant;
 //        return Ok(mapper.Map<IEnumerable<ApplicantDto>>(query));
 //    }
 //    /// <summary>
@@ -67,14 +67,14 @@
 //    [HttpGet("get-response")]
 //    public IEnumerable<JobPositionWithCountResponseDto> GetCountResponse()
 //    {
-//        var query = from job in repository.Jobs.GetAll() 
+//        var query = from job in repository.Jobs.GetAll()
 //                    join vacancy in repository.Vacancies.GetAll()
 //                        on job.IdJobPosition equals vacancy.IdJobPosition into vacancies
-//                    from vacancy in vacancies.DefaultIfEmpty() 
+//                    from vacancy in vacancies.DefaultIfEmpty()
 //                    join response in repository.Responses.GetAll()
 //                        on vacancy?.IdVacancy equals response.IdVacancy into responses
-//                    from response in responses.DefaultIfEmpty() 
-//                    group response by job into grouped 
+//                    from response in responses.DefaultIfEmpty()
+//                    group response by job into grouped
 //                    select new JobPositionWithCountResponseDto
 //                    {
 //                        JobPosition = mapper.Map<JobPositionGetDto>(grouped.Key),
@@ -86,7 +86,7 @@
 //    /// <summary>
 //    /// Вывод топ Работадателей по количеству вакансий
 //    /// </summary>
-//    /// <returns></returns>
+//    /// <returns></returns> 
 //    [HttpGet("top-employers-by-vacancy")]
 //    public IEnumerable<EmployerWithVacancyCountDto> GetTopEmployerByVacancy(int top = 5)
 //    {
@@ -112,14 +112,14 @@
 //    {
 //        var maxSalary = repository.Vacancies.GetAll().Max(x => x.Salary);
 //        var query = from vacancy in repository.Vacancies.GetAll()
-//                     join employer in repository.Employers.GetAll() on vacancy.IdEmployer equals employer.IdEmployer
-//                     where vacancy.Salary == maxSalary
-//                     orderby employer.IdEmployer
-//                     select new EmployerWithSalaryVacancyDto
-//                     {
-//                         Employerr = mapper.Map<EmployerGetDto>(employer),
-//                         Salary = maxSalary
-//                     };
+//                    join employer in repository.Employers.GetAll() on vacancy.IdEmployer equals employer.IdEmployer
+//                    where vacancy.Salary == maxSalary
+//                    orderby employer.IdEmployer
+//                    select new EmployerWithSalaryVacancyDto
+//                    {
+//                        Employerr = mapper.Map<EmployerGetDto>(employer),
+//                        Salary = maxSalary
+//                    };
 
 //        return mapper.Map<IEnumerable<EmployerWithSalaryVacancyDto>>(query);
 //    }
