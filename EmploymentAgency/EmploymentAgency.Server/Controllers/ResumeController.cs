@@ -3,12 +3,13 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using EmploymentAgency.Domain.Dto.ResumeDtos;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ResumeController(ServiseRepository repository, IMapper mapper) : ControllerBase
+public class ResumeController(IRepository<Resume> repository, IRepository<JobPosition> repositoryJob, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список резюме из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -17,7 +18,7 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     [HttpGet]
     public async Task<IEnumerable<ResumeGetDto>> Get()
     {
-        var resumes = await repository.Resumes.GetAllAsync();
+        var resumes = await repository.GetAllAsync();
         return mapper.Map<IEnumerable<ResumeGetDto>>(resumes);
     }
 
@@ -29,7 +30,7 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     [HttpGet("{id}")]
     public async Task<ActionResult<ResumeDto>> Get(int id)
     {
-        var resume = await repository.Resumes.GetByIdAsync(id);
+        var resume = await repository.GetByIdAsync(id);
         if (resume == null)
             return NotFound();
 
@@ -40,15 +41,27 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     /// Добавляет новое резюме в репозиторий в формате DTO
     /// </summary>
     /// <param name="resumeDto"></param>
+    /// <param name="id">Id соискателя который создает резюме</param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns>
-    [HttpPost]
-    public async Task<IActionResult> Post([FromBody] ResumePostDto resumeDto)
+    [HttpPost("{id}")]
+    public async Task<IActionResult> Post(int id, [FromBody] ResumePostDto resumeDto)
     {
-        //var message = "Резюме добавлено";
-        //if (await repository.Applicants.GetByIdAsync(resumeDto.IdApplicant) == null)
-        //    return NotFound("Кандидат на работу с таким ID не найден");     
+        var jobs = await repositoryJob.GetAllAsync();
+        var job = jobs.FirstOrDefault(j => j.Section == resumeDto.Job.Section && j.PositionName == resumeDto.Job.PositionName);
+        if (job == null)
+            return NotFound("Такой вакансии не найдено, можете создать свою рабочую поизицию");
 
-        await repository.Resumes.PostAsync(mapper.Map<Resume>(resumeDto));
+        var added = mapper.Map<Resume>(resumeDto);
+        added.IdApplicant = id;
+        added.IdPosition = job.IdJobPosition;
+        try
+        {
+            await repository.PostAsync(added);
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
         return Ok();
     }
 
@@ -61,7 +74,7 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] ResumePutDto value)
     {
-        if (await repository.Resumes.PutAsync(id, mapper.Map<Resume>(value)))
+        if (await repository.PutAsync(id, mapper.Map<Resume>(value)))
             return Ok();
         return NotFound();
     }
@@ -74,7 +87,7 @@ public class ResumeController(ServiseRepository repository, IMapper mapper) : Co
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        if (await repository.Resumes.DeleteAsync(id))
+        if (await repository.DeleteAsync(id))
             return Ok();
         return NotFound();
     }

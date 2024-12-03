@@ -8,6 +8,11 @@ public class RepositoryResponse(EmploymentAgencyContext context) : IRepository<R
     public async Task<Response>? GetByIdAsync(int id) => await context.Responses.FirstOrDefaultAsync(r => r.IdResponse == id);
     public async Task PostAsync(Response response)
     {
+        if (await context.Applicants.FirstOrDefaultAsync(a => a.IdApplicant == response.IdApplicant) == null)
+            throw new Exception("Applicant с таким ID не найден");
+        if (await context.Vacancies.FirstOrDefaultAsync(r => r.IdVacancy == response.IdVacancy) == null)
+            throw new Exception("Вакансяи с таким ID не найдена");
+        response.Status = StatusType.Requested;
         response.DateResponse = DateTime.UtcNow;
         await context.Responses.AddAsync(response);
         await context.SaveChangesAsync();

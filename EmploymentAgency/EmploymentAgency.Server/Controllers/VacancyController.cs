@@ -9,7 +9,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class VacancyController(IRepository<Vacancy, VacancyPostDto> repository, IMapper mapper) : ControllerBase
+public class VacancyController(IRepository<Vacancy> repository, IRepository<JobPosition> repositoryJob, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список вакансий из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -41,17 +41,22 @@ public class VacancyController(IRepository<Vacancy, VacancyPostDto> repository, 
     /// Добавляет новую вакансию в репозиторий в формате DTO
     /// </summary>
     /// <param name="value"></param>
+    /// <param name="id">Id Работодателя который создает ваканисю</param>>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns>
-    [HttpPost]
-    public async Task<IActionResult> Post([FromBody] VacancyPostDto value)
+    [HttpPost("{id}")]
+    public async Task<IActionResult> Post(int id, [FromBody] VacancyPostDto value)      
     {
-        //try { await repository.Vacancies.PostAsync(mapper.Map<Vacancy>(value)); }
-        //catch (Exception e) {
-        //    return NotFound(e.Message);
-        //}
-        //return Ok();
+        var jobs = await repositoryJob.GetAllAsync();
+        var job = jobs.FirstOrDefault(j => j.Section == value.Job.Section && j.PositionName == value.Job.PositionName);
+        if (job == null)
+        {
+            return NotFound("Такой вакансии не найдено, можете создать свою рабочубю поизицию");
+        }
 
-        try { await repository.PostAsync(value); }
+        var added = mapper.Map<Vacancy>(value);
+        added.IdJobPosition = job.IdJobPosition;
+        added.IdEmployer = id;
+        try { await repository.PostAsync(added); }
         catch (Exception e)
         {
             return NotFound(e.Message);

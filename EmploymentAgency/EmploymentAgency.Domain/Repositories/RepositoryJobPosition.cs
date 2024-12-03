@@ -6,9 +6,11 @@ public class RepositoryJobPosition(EmploymentAgencyContext context) : IRepositor
 {
     public async Task<List<JobPosition>> GetAllAsync() => await context.JobPositions.ToListAsync();
     public async Task<JobPosition>? GetByIdAsync(int id) => await context.JobPositions.FirstOrDefaultAsync(j => j.IdJobPosition == id);
-    public async Task PostAsync(JobPosition JobPosition)
+    public async Task PostAsync(JobPosition jobPosition)
     {
-        await context.JobPositions.AddAsync(JobPosition);
+        if (await context.JobPositions.FirstOrDefaultAsync(j => j.PositionName == jobPosition.PositionName && j.Section == jobPosition.Section) != null)
+            throw new Exception("Такая рабочая позиция уже есть"); 
+        await context.JobPositions.AddAsync(jobPosition);
         await context.SaveChangesAsync();
     }
     public async Task<bool> PutAsync(int id, JobPosition jobPosition)

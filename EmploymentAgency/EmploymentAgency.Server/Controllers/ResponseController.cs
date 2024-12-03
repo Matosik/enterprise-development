@@ -9,7 +9,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ResponseController(ServiseRepository repository, IMapper mapper) : ControllerBase
+public class ResponseController(IRepository<Response> repository, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список откликов из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -18,7 +18,7 @@ public class ResponseController(ServiseRepository repository, IMapper mapper) : 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ResponseGetDto>>> Get()
     {
-        var responses = await repository.Responses.GetAllAsync();
+        var responses = await repository.GetAllAsync();
         return Ok(mapper.Map<IEnumerable<ResponseGetDto>>(responses));
     }
 
@@ -30,31 +30,33 @@ public class ResponseController(ServiseRepository repository, IMapper mapper) : 
     [HttpGet("{id}")]
     public async Task<ActionResult<ResponseDto>> Get(int id)
     {
-        var job = await repository.Responses.GetByIdAsync(id);
-        if (job == null)
+        var response = await repository.GetByIdAsync(id);
+        if (response == null)
             return NotFound();
-
-        return Ok(mapper.Map<ResponseDto>(job));
+        return Ok(mapper.Map<ResponseDto>(response));
     }
 
     /// <summary>
     /// Добавляет новое отклик в репозиторий в формате DTO
     /// </summary>
     /// <param name="value"></param>
+    /// <param name="id">Id Кандидата, который оставляет отклик</param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
-    [HttpPost]
-    public async Task<IActionResult> Post([FromBody] ResponsePostDto value)
+    [HttpPost("{id}")]
+    public async Task<IActionResult> Post(int id,[FromBody] ResponsePostDto value)
     {
-        //if(await repository.Resumes.GetByIdAsync(value.IdResume) == null)
-        //    return NotFound("Резюме с таким ID не найден");
-
-        //if (await repository.Applicants.GetByIdAsync(value.IdApplicant) == null)
-        //    return NotFound("Applicant с таким ID не найден");
-
-        //if (await repository.Vacancies.GetByIdAsync(value.IdVacancy) == null)
-        //    return NotFound("Вакансяи с таким ID не найден");
-        await repository.Responses.PostAsync(mapper.Map<Response>(value));
-
+        var added = mapper.Map<Response>(value);
+        if (value.IdResume == null) // по идее это mapper должен делать но чет у меня не получилосьб и я сделал ручками 
+            added.IdResume = null;
+        added.IdApplicant = id;
+        try
+        {
+            await repository.PostAsync(added);
+        }
+        catch (Exception ex)
+        {
+            NotFound(ex.Message);
+        }
         return Ok();
     }
 
@@ -67,7 +69,7 @@ public class ResponseController(ServiseRepository repository, IMapper mapper) : 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] ResponsePutDto value)
     {
-        if (await repository.Responses.PutAsync(id, mapper.Map<Response>(value)))
+        if (await repository.PutAsync(id, mapper.Map<Response>(value)))
             return Ok();
         return NotFound();
     }
@@ -80,7 +82,7 @@ public class ResponseController(ServiseRepository repository, IMapper mapper) : 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        if (await repository.Responses.DeleteAsync(id))
+        if (await repository.DeleteAsync(id))
             return Ok();
         return NotFound();
     }

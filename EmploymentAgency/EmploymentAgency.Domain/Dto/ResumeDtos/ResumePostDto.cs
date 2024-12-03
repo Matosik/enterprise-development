@@ -8,10 +8,6 @@ namespace EmploymentAgency.Domain.Dto.ResumeDtos;
 public class ResumePostDto
 {
     /// <summary>
-    /// Номер соискателя к которому относится резюме
-    /// </summary>
-    public int IdApplicant { get; set; }
-    /// <summary>
     /// Опыт работы в годах
     /// </summary>
     public float Experience { get; set; }

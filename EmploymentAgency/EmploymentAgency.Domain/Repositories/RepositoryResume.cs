@@ -8,6 +8,9 @@ public class RepositoryResume(EmploymentAgencyContext context) : IRepository<Res
     public async Task<Resume>? GetByIdAsync(int id) => await context.Resumes.FirstOrDefaultAsync(r => r.IdResume == id);
     public async Task PostAsync(Resume resume)
     {
+        if (context.Applicants.FirstOrDefaultAsync(a=> a.IdApplicant == resume.IdApplicant) == null)
+            throw new Exception("Не найден Applicant");
+
         await context.Resumes.AddAsync(resume);
         await context.SaveChangesAsync();
     }

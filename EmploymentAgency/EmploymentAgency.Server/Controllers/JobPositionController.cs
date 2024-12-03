@@ -9,7 +9,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class JobPositionController(ServiseRepository repository, IMapper mapper) : ControllerBase
+public class JobPositionController(IRepository<JobPosition> repository, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список рабочих позиций из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -18,7 +18,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     [HttpGet]
     public async Task<ActionResult<IEnumerable<JobPositionGetDto>>> Get()
     {
-        var jobs = await repository.Jobs.GetAllAsync();
+        var jobs = await repository.GetAllAsync();
         return Ok(mapper.Map<IEnumerable<JobPositionGetDto>>(jobs));
     }
 
@@ -30,7 +30,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     [HttpGet("{id}")]
     public async Task<ActionResult<JobPositionDto>> Get(int id)
     {
-        var job = await repository.Jobs.GetByIdAsync(id);
+        var job = await repository.GetByIdAsync(id);
         if (job == null)
             return NotFound();
 
@@ -45,7 +45,15 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] JobPositionPostDto value)
     {
-        await repository.Jobs.PostAsync(mapper.Map<JobPosition>(value));
+
+        try 
+        { 
+            await repository.PostAsync(mapper.Map<JobPosition>(value)); 
+        }
+        catch(Exception ex) 
+        {
+            return BadRequest(ex.Message);
+        }
         return Ok();
     }
 
@@ -58,7 +66,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] JobPositionPutDto value)
     {
-        if (await repository.Jobs.PutAsync(id, mapper.Map<JobPosition>(value)))
+        if (await repository.PutAsync(id, mapper.Map<JobPosition>(value)))
             return Ok();
         return NotFound();
     }
@@ -71,21 +79,7 @@ public class JobPositionController(ServiseRepository repository, IMapper mapper)
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        // по мне так раньше было лучше(именно здесь и в EmployerController)
-        //repository.Responses.GetAll()
-        //    .Where(r => repository.Vacancies.GetAll()
-        //        .Where(v => v.IdJobPosition == id)
-        //        .Select(v => v.IdVacancy)
-        //        .Contains(r.IdVacancy))
-        //    .ToList()
-        //    .ForEach(r => repository.Responses.Delete(r.IdResponse));
-
-        //repository.Vacancies.GetAll()
-        //    .Where(v => v.IdJobPosition == id)
-        //    .ToList()
-        //    .ForEach(v => repository.Vacancies.Delete(v.IdVacancy));
-
-        if (await repository.Jobs.DeleteAsync(id))
+        if (await repository.DeleteAsync(id))
             return Ok();
         return NotFound();
     }

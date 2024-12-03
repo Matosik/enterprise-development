@@ -32,5 +32,5 @@ public class ResponseDto
     /// <summary>
     /// Номер резюме, которыей соискатель прикрепил к отклику
     /// </summary>
-    public int IdResume { get; set; }
+    public int? IdResume { get; set; }
 }

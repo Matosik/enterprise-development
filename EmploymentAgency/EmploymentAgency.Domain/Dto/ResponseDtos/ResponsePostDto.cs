@@ -10,20 +10,11 @@ public class ResponsePostDto
     /// </summary>
     public int IdVacancy { get; set; }
     /// <summary>
-    /// Номер Соискателя работы, который оставил отклик
-    /// </summary>
-    public int IdApplicant { get; set; }
-    /// <summary>
-    /// Cтатуса отклика
-    /// </summary>
-    [EnumDataType(typeof(StatusType))]
-    public required string Status { get; set; }
-    /// <summary>
     /// Сообщение соискателя при отклике
     /// </summary>
     public string? SummaryResponse { get; set; }
     /// <summary>
     /// Номер резюме, которыей соискатель прикрепил к отклику
     /// </summary>
-    public int IdResume { get; set; }
+    public int? IdResume { get; set; }
 }

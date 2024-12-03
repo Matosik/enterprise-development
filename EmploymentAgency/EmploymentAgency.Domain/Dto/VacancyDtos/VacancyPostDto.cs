@@ -5,10 +5,6 @@ namespace EmploymentAgency.Domain.Dto.VacancyDtos;
 public class VacancyPostDto
 {
     /// <summary>
-    /// Номер Работодателя который разместил вакансию
-    /// </summary>
-    public int IdEmployer { get; set; }
-    /// <summary>
     /// Название рабочей позиции
     /// </summary>
     public required JobPositionDto Job { get; set; }
