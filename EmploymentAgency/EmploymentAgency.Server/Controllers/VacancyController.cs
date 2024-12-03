@@ -3,7 +3,6 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using AutoMapper;
 using EmploymentAgency.Domain.Dto.VacancyDtos;
-using EmploymentAgency.Domain.Dto.ResumeDtos;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -25,7 +24,7 @@ public class VacancyController(IRepository<Vacancy> repository, IRepository<JobP
     /// <summary>
     /// Получает вакансию из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">Id ваканчии которую хотим получить</param>
     /// <returns>Возвращает код HTTP-код ответа и найденое значение вакансии по id</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<VacancyDto>> Get(int id)

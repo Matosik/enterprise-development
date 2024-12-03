@@ -1,11 +1,8 @@
-﻿using EmploymentAgency.Domain.Dto.VacancyDtos;
-using EmploymentAgency.Domain.Models;
+﻿using EmploymentAgency.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using EmploymentAgency.Domain.Dto;
-using AutoMapper;
 
 namespace EmploymentAgency.Domain.Repositories;
-public class RepositoryVacancy(EmploymentAgencyContext context, IRepository<Employer> repositoryEmployer, IMapper mapper) : IRepository<Vacancy>
+public class RepositoryVacancy(EmploymentAgencyContext context) : IRepository<Vacancy>
 {
     public async Task<List<Vacancy>> GetAllAsync() => await context.Vacancies.ToListAsync();
     public async Task<Vacancy>? GetByIdAsync(int id) => await context.Vacancies.FirstOrDefaultAsync(v => v.IdVacancy == id);
@@ -35,10 +32,6 @@ public class RepositoryVacancy(EmploymentAgencyContext context, IRepository<Empl
         var vacancy = await GetByIdAsync(id);
         if (vacancy == null)
             return false;
-        //var responses = await context.Responses
-        //    .Where(r => r.IdVacancy == id)
-        //    .ToListAsync();
-        //responses.ForEach(r => context.Remove(r));
         context.Vacancies.Remove(vacancy);
         await context.SaveChangesAsync();
         return true;

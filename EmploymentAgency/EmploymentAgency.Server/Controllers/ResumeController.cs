@@ -25,7 +25,7 @@ public class ResumeController(IRepository<Resume> repository, IRepository<JobPos
     /// <summary>
     /// Получает резюме из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">Id резюме данные, которого мы хотим получить</param>
     /// <returns>Возвращает код HTTP-код ответа и найденое значение резюме по id</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<ResumeDto>> Get(int id)

@@ -3,7 +3,6 @@ using EmploymentAgency.Domain.Repositories;
 using EmploymentAgency.Domain.Models;
 using AutoMapper;
 using EmploymentAgency.Domain.Dto.EmployerDtos;
-using EmploymentAgency.Domain.Dto.ResponseDtos;
 
 namespace EmploymentAgency.Server.Controllers;
 
@@ -71,19 +70,6 @@ public class EmployerController(ServiseRepository repository, IMapper mapper) : 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        //repository.Responses.GetAll()
-        //    .Where(r => repository.Vacancies.GetAll()
-        //        .Where(v => v.IdEmployer == id)
-        //        .Select(v => v.IdVacancy)
-        //        .Contains(r.IdVacancy))
-        //    .ToList()
-        //    .ForEach(r => repository.Responses.Delete(r.IdResponse));
-
-        //repository.Vacancies.GetAll()
-        //    .Where(r => r.IdEmployer == id)
-        //    .ToList()
-        //    .ForEach(r => repository.Vacancies.Delete(r.IdVacancy));
-
         if (await repository.Employers.DeleteAsync(id))
             return Ok();
         return NotFound();

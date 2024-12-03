@@ -25,7 +25,7 @@ public class JobPositionController(IRepository<JobPosition> repository, IMapper 
     /// <summary>
     /// Получает рабочую позицию из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">Id рабочей позиции данные, которй мы хотим получить </param>
     /// <returns>Возвращает код HTTP-код ответа и найденое значение рабочая позиция по id</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<JobPositionDto>> Get(int id)

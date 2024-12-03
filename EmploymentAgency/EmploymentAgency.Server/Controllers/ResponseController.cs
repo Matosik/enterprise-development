@@ -25,8 +25,8 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     /// <summary>
     /// Получает отклик из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns>Возвращает код HTTP-код ответа и найденое значение отклик по id</returns>
+    /// <param name="id">Id отклика данные, которого мы хоти получить</param>
+    /// <returns>Возвращает HTTP-код ответа и найденое значение отклик по id</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<ResponseDto>> Get(int id)
     {
