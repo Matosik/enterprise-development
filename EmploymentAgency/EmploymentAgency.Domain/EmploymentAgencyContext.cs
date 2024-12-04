@@ -4,12 +4,12 @@ namespace EmploymentAgency.Domain;
 
 public class EmploymentAgencyContext : DbContext
 {
-    public DbSet<Applicant> Applicants { get; set; } = null!;
-    public DbSet<Employer> Employers { get; set; } = null!;
-    public DbSet<Vacancy> Vacancies { get; set; } = null!;
-    public DbSet<Resume> Resumes { get; set; } = null!;
-    public DbSet<Response> Responses { get; set; } = null!;
-    public DbSet<JobPosition> JobPositions { get; set; } = null!;
+    public DbSet<Applicant> Applicants { get; set; } 
+    public DbSet<Employer> Employers { get; set; } 
+    public DbSet<Vacancy> Vacancies { get; set; } 
+    public DbSet<Resume> Resumes { get; set; } 
+    public DbSet<Response> Responses { get; set; } 
+    public DbSet<JobPosition> JobPositions { get; set; } 
     public EmploymentAgencyContext()
     {
         Database.EnsureCreated();
@@ -19,6 +19,7 @@ public class EmploymentAgencyContext : DbContext
     {
         Database.EnsureCreated();
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Resume>()

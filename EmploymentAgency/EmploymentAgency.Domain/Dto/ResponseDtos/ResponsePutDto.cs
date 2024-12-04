@@ -11,7 +11,7 @@ public class ResponsePutDto
     ///  Cтатуса отклика
     /// </summary>
     [EnumDataType(typeof(StatusType))]
-    public required string Status { get; set; }
+    public string? Status { get; set; }
     /// <summary>
     /// Сообщение соискателя при отклике
     /// </summary>

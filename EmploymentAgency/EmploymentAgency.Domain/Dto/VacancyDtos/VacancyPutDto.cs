@@ -12,11 +12,11 @@ public class VacancyPutDto
     /// <summary>
     /// Название вакансии
     /// </summary>
-    public required string NameVacancy { get; set; }
+    public string? NameVacancy { get; set; }
     /// <summary>
     /// Статус вакансии активна/неактивна
     /// </summary>
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
     /// <summary>
     /// Зарплата на данную вакансию
     /// </summary>
@@ -24,7 +24,7 @@ public class VacancyPutDto
     /// <summary>
     /// Опыть работы в годах
     /// </summary>
-    public float Experience { get; set; }
+    public float? Experience { get; set; }
     /// <summary>
     ///  Описание вакансии
     /// </summary>

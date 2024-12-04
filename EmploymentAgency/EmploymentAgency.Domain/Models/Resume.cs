@@ -22,7 +22,7 @@ public class Resume
     /// <summary>
     ///  Номер рабочей позиции на которой работал соискатель
     /// </summary>
-    public int IdPosition { get; set;}
+    public int? IdPosition { get; set;}
     /// <summary>
     /// Желаемая зарплата соискателя
     /// </summary>

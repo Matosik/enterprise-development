@@ -10,11 +10,12 @@ public class ResumePutDto
     /// <summary>
     /// Опыт работы в годах
     /// </summary>
-    public float Experience { get; set; }
+    public float? Experience { get; set; }
     /// <summary>
     ///  Номер рабочей позиции на которой работал соискатель
     /// </summary>
-    public int IdPosition { get; set; } // Можно по идее сделать тип JobPosition, но оставлю так нарочно
+    public int? IdPosition { get; set; } 
+
     /// <summary>
     /// Желаемая зарплата соискателя
     /// </summary>

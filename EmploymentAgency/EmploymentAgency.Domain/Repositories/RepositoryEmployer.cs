@@ -5,7 +5,7 @@ namespace EmploymentAgency.Domain.Repositories;
 public class RepositoryEmployer(EmploymentAgencyContext context) : IRepository<Employer>
 {
     public async Task<List<Employer>> GetAllAsync() => await context.Employers.ToListAsync();
-    public async Task<Employer>? GetByIdAsync(int id) => await context.Employers.FirstOrDefaultAsync(e => e.IdEmployer == id);
+    public async Task<Employer?> GetByIdAsync(int id) => await context.Employers.FirstOrDefaultAsync(e => e.IdEmployer == id);
     public async Task PostAsync(Employer employer)
     {
         employer.Registration = DateTime.UtcNow;
@@ -18,7 +18,21 @@ public class RepositoryEmployer(EmploymentAgencyContext context) : IRepository<E
         if (old == null)
             return false;
 
-        context.Entry(old).CurrentValues.SetValues(employer);
+        var properties = typeof(Employer).GetProperties()
+            .Where
+            (
+                p => 
+                p.Name != nameof(Employer.IdEmployer) &&
+                p.Name != nameof(Employer.Registration)
+            );
+
+        foreach (var property in properties)
+        {
+            var newValue = property.GetValue(employer);
+            if (newValue != null)
+                property.SetValue(old, newValue);
+        }
+
         await context.SaveChangesAsync();
         return true;
     }

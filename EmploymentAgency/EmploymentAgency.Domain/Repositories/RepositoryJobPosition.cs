@@ -5,11 +5,11 @@ namespace EmploymentAgency.Domain.Repositories;
 public class RepositoryJobPosition(EmploymentAgencyContext context) : IRepository<JobPosition>
 {
     public async Task<List<JobPosition>> GetAllAsync() => await context.JobPositions.ToListAsync();
-    public async Task<JobPosition>? GetByIdAsync(int id) => await context.JobPositions.FirstOrDefaultAsync(j => j.IdJobPosition == id);
+    public async Task<JobPosition?> GetByIdAsync(int id) => await context.JobPositions.FirstOrDefaultAsync(j => j.IdJobPosition == id);
     public async Task PostAsync(JobPosition jobPosition)
     {
         if (await context.JobPositions.FirstOrDefaultAsync(j => j.PositionName == jobPosition.PositionName && j.Section == jobPosition.Section) != null)
-            throw new Exception("Такая рабочая позиция уже есть"); 
+            throw new Exception("Такая рабочая позиция уже есть");
         await context.JobPositions.AddAsync(jobPosition);
         await context.SaveChangesAsync();
     }
@@ -19,7 +19,18 @@ public class RepositoryJobPosition(EmploymentAgencyContext context) : IRepositor
         if (old == null)
             return false;
 
-        context.Entry(old).CurrentValues.SetValues(jobPosition);
+        var properties = typeof(JobPosition).GetProperties()
+            .Where
+            (
+                p => p.Name != nameof(JobPosition.IdJobPosition) 
+            );
+
+        foreach (var property in properties)
+        {
+            var newValue = property.GetValue(jobPosition);
+            if (newValue != null)
+                property.SetValue(old, newValue);
+        }
         await context.SaveChangesAsync();
         return true;
     }

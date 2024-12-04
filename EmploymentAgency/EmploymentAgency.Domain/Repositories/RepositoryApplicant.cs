@@ -5,7 +5,7 @@ namespace EmploymentAgency.Domain.Repositories;
 public class RepositoryApplicant(EmploymentAgencyContext context) : IRepository<Applicant>
 {
     public async Task<List<Applicant>> GetAllAsync() => await context.Applicants.ToListAsync();
-    public async Task<Applicant>? GetByIdAsync(int id) => await context.Applicants.FirstOrDefaultAsync(a => a.IdApplicant == id);
+    public async Task<Applicant?> GetByIdAsync(int id) => await context.Applicants.FirstOrDefaultAsync(a => a.IdApplicant == id);
     public async Task PostAsync(Applicant applicant)
     {
         applicant.Registration = DateTime.UtcNow;
@@ -17,8 +17,27 @@ public class RepositoryApplicant(EmploymentAgencyContext context) : IRepository<
         var old = await GetByIdAsync(id);
         if (old == null)
             return false;
+        // Так то можно просто вот так сделать(и возможно правильнее будет именно так):
+        //if(applicant.Number!= null)
+        //    old.Number = applicant.Number;
+        //if (applicant.FirstName != null)
+        //    old.FirstName = applicant.FirstName;
+        //if (applicant.LastName != null)
+        //    old.LastName = applicant.LastName;
 
-        context.Entry(old).CurrentValues.SetValues(applicant);
+
+        var properties = typeof(Applicant).GetProperties()
+            .Where(p => p.Name != nameof(Applicant.IdApplicant) && 
+                   p.Name != nameof(Applicant.Birthday) &&
+                   p.Name != nameof(Applicant.Registration));
+
+        foreach (var property in properties)
+        {
+            var newValue = property.GetValue(applicant);
+            if (newValue != null)
+                property.SetValue(old, newValue);
+        }
+
         await context.SaveChangesAsync();
         return true;
     }

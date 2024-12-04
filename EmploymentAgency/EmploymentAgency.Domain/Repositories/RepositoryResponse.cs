@@ -5,7 +5,7 @@ namespace EmploymentAgency.Domain.Repositories;
 public class RepositoryResponse(EmploymentAgencyContext context) : IRepository<Response>
 {
     public async Task<List<Response>> GetAllAsync() => await context.Responses.ToListAsync();
-    public async Task<Response>? GetByIdAsync(int id) => await context.Responses.FirstOrDefaultAsync(r => r.IdResponse == id);
+    public async Task<Response?> GetByIdAsync(int id) => await context.Responses.FirstOrDefaultAsync(r => r.IdResponse == id);
     public async Task PostAsync(Response response)
     {
         if (await context.Applicants.FirstOrDefaultAsync(a => a.IdApplicant == response.IdApplicant) == null)
@@ -23,7 +23,24 @@ public class RepositoryResponse(EmploymentAgencyContext context) : IRepository<R
         if (old == null)
             return false;
 
-        context.Entry(old).CurrentValues.SetValues(response);
+        var properties = typeof(Response).GetProperties()
+            .Where
+            (
+                p => 
+                p.Name != nameof(Response.IdVacancy) &&
+                p.Name != nameof(Response.IdApplicant) &&
+                p.Name != nameof(Response.DateResponse) &&
+                p.Name != nameof(Response.IdResponse) &&
+                p.Name != nameof(Response.IdResume)
+            );
+
+        foreach (var property in properties)
+        {
+            var newValue = property.GetValue(response);
+            if (newValue != null)
+                property.SetValue(old, newValue);
+        }
+
         await context.SaveChangesAsync();
         return true;
     }

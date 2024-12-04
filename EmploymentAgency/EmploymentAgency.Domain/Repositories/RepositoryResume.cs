@@ -20,7 +20,20 @@ public class RepositoryResume(EmploymentAgencyContext context) : IRepository<Res
         if (old == null)
             return false;
 
-        context.Entry(old).CurrentValues.SetValues(resume);
+        var properties = typeof(Resume).GetProperties()
+            .Where
+            (
+                p => p.Name != nameof(Resume.IdResume) &&
+                p.Name != nameof(Resume.IdApplicant) 
+            );
+
+        foreach (var property in properties)
+        {
+            var newValue = property.GetValue(resume);
+            if (newValue != null)
+                property.SetValue(old, newValue);
+        }
+
         await context.SaveChangesAsync();
         return true;
     }

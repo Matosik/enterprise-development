@@ -9,5 +9,5 @@ public class JobPositionPutDto
     /// <summary>
     /// должность (программист, дизайнер и т.д.)
     /// </summary>
-    public required string PositionName { get; set; }
+    public string? PositionName { get; set; }
 }

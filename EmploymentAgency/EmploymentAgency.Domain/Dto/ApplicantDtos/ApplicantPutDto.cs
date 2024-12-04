@@ -16,9 +16,9 @@ public class ApplicantPutDto
     /// <summary>
     /// Имя Пользователя
     /// </summary>
-    public required string FirstName { get; set; }
+    public string? FirstName { get; set; }
     /// <summary>
     /// Фамилия пользователя
     /// </summary>
-    public required string LastName { get; set; }
+    public string? LastName { get; set; }
 }

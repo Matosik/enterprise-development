@@ -17,6 +17,10 @@ public class ApplicantGetDto
     /// </summary>
     public DateOnly Birthday { get; set; }
     /// <summary>
+    /// Дата регистрации соискателя
+    /// </summary>
+    public DateTime Registration {  get; set; }
+    /// <summary>
     /// Контактный номер пользователя
     /// </summary>
     [Phone(ErrorMessage = "Неверный формат номера телефона")]
