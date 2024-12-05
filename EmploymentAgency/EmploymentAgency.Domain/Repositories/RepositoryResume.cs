@@ -5,12 +5,9 @@ namespace EmploymentAgency.Domain.Repositories;
 public class RepositoryResume(EmploymentAgencyContext context) : IRepository<Resume>
 {
     public async Task<List<Resume>> GetAllAsync() => await context.Resumes.ToListAsync();
-    public async Task<Resume>? GetByIdAsync(int id) => await context.Resumes.FirstOrDefaultAsync(r => r.IdResume == id);
+    public async Task<Resume?> GetByIdAsync(int id) => await context.Resumes.FirstOrDefaultAsync(r => r.IdResume == id);
     public async Task PostAsync(Resume resume)
     {
-        if (context.Applicants.FirstOrDefaultAsync(a=> a.IdApplicant == resume.IdApplicant) == null)
-            throw new Exception("Не найден Applicant");
-
         await context.Resumes.AddAsync(resume);
         await context.SaveChangesAsync();
     }
@@ -24,7 +21,7 @@ public class RepositoryResume(EmploymentAgencyContext context) : IRepository<Res
             .Where
             (
                 p => p.Name != nameof(Resume.IdResume) &&
-                p.Name != nameof(Resume.IdApplicant) 
+                p.Name != nameof(Resume.IdApplicant)
             );
 
         foreach (var property in properties)

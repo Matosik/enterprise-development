@@ -45,7 +45,9 @@ public class JobPositionController(IRepository<JobPosition> repository, IMapper 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] JobPositionPostDto value)
     {
-
+        var jobs = await repository.GetAllAsync();
+        if (jobs.FirstOrDefault(j => j.PositionName == value.PositionName && j.Section == value.Section) != null)
+            return NotFound("Такая JobPosition уже есть");
         try 
         { 
             await repository.PostAsync(mapper.Map<JobPosition>(value)); 
@@ -66,6 +68,7 @@ public class JobPositionController(IRepository<JobPosition> repository, IMapper 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] JobPositionPutDto value)
     {
+
         if (await repository.PutAsync(id, mapper.Map<JobPosition>(value)))
             return Ok();
         return NotFound();

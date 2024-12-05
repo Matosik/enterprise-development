@@ -8,8 +8,6 @@ public class RepositoryJobPosition(EmploymentAgencyContext context) : IRepositor
     public async Task<JobPosition?> GetByIdAsync(int id) => await context.JobPositions.FirstOrDefaultAsync(j => j.IdJobPosition == id);
     public async Task PostAsync(JobPosition jobPosition)
     {
-        if (await context.JobPositions.FirstOrDefaultAsync(j => j.PositionName == jobPosition.PositionName && j.Section == jobPosition.Section) != null)
-            throw new Exception("Такая рабочая позиция уже есть");
         await context.JobPositions.AddAsync(jobPosition);
         await context.SaveChangesAsync();
     }

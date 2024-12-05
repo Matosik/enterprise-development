@@ -22,6 +22,14 @@ public class EmploymentAgencyContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Applicant>()
+            .HasIndex(a=> a.Number)
+            .IsUnique();
+
+        modelBuilder.Entity<Employer>()
+            .HasIndex(e => e.Number)
+            .IsUnique();
+
         modelBuilder.Entity<Resume>()
             .HasOne<Applicant>()
             .WithMany()

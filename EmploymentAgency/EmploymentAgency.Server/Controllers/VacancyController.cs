@@ -8,7 +8,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class VacancyController(IRepository<Vacancy> repository, IRepository<JobPosition> repositoryJob, IMapper mapper) : ControllerBase
+public class VacancyController(IRepository<Vacancy> repository, IRepository<JobPosition> repositoryJob, IRepository<Employer> repositoryEmployer, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список вакансий из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -43,22 +43,29 @@ public class VacancyController(IRepository<Vacancy> repository, IRepository<JobP
     /// <param name="id">Id Работодателя который создает ваканисю</param>>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns>
     [HttpPost("{id}")]
-    public async Task<IActionResult> Post(int id, [FromBody] VacancyPostDto value)      
+    public async Task<IActionResult> Post(int id, [FromBody] VacancyPostDto value)
     {
+
         var jobs = await repositoryJob.GetAllAsync();
+        var employers = await repositoryEmployer.GetAllAsync();
+
+        if (employers.FirstOrDefault(e => e.IdEmployer == id) == null)
+            return NotFound("Такой Employer не найден");
+
         var job = jobs.FirstOrDefault(j => j.Section == value.Job.Section && j.PositionName == value.Job.PositionName);
         if (job == null)
-        {
-            return NotFound("Такой вакансии не найдено, можете создать свою рабочубю поизицию");
-        }
+            return NotFound("Такой JobPosition нет не найдено, но Вы можете создать свою рабочубю поизицию");
 
-        var added = mapper.Map<Vacancy>(value);
-        added.IdJobPosition = job.IdJobPosition;
-        added.IdEmployer = id;
-        try { await repository.PostAsync(added); }
+        var addedVacancy = mapper.Map<Vacancy>(value);
+        addedVacancy.IdEmployer = id;
+        addedVacancy.IdJobPosition = job.IdJobPosition;
+        try 
+        { 
+            await repository.PostAsync(addedVacancy); 
+        }
         catch (Exception e)
         {
-            return NotFound(e.Message);
+            return BadRequest(e.Message);
         }
         return Ok();
     }

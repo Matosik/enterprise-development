@@ -9,7 +9,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ResponseController(IRepository<Response> repository, IMapper mapper) : ControllerBase
+public class ResponseController(IRepository<Response> repository, IRepository<Applicant> repositoryApplicant, IRepository<Vacancy> repositoryVacancy, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список откликов из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -43,19 +43,25 @@ public class ResponseController(IRepository<Response> repository, IMapper mapper
     /// <param name="id">Id Кандидата, который оставляет отклик</param>
     /// <returns>Возвращает HTTP-код  выполнения операции</returns> 
     [HttpPost("{id}")]
-    public async Task<IActionResult> Post(int id,[FromBody] ResponsePostDto value)
+    public async Task<IActionResult> Post(int id, [FromBody] ResponsePostDto value)
     {
         var added = mapper.Map<Response>(value);
-        if (value.IdResume == null) // по идее это mapper должен делать но чет у меня не получилосьб и я сделал ручками 
-            added.IdResume = null;
         added.IdApplicant = id;
+        var applicants = await repositoryApplicant.GetAllAsync();
+        var vacancies = await repositoryVacancy.GetAllAsync();
+        if (applicants.FirstOrDefault(a => a.IdApplicant == added.IdApplicant) == null)
+            return NotFound("Applicant с таким ID не найден");
+        if (vacancies.FirstOrDefault(r => r.IdVacancy == value.IdVacancy) == null)
+            return NotFound("Vacancy с таким ID не найдена");
+        if (value.IdResume == null)
+            added.IdResume = null;
         try
         {
             await repository.PostAsync(added);
         }
         catch (Exception ex)
         {
-            NotFound(ex.Message);
+            BadRequest(ex.Message);
         }
         return Ok();
     }

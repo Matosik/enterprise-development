@@ -17,15 +17,6 @@ public class RepositoryApplicant(EmploymentAgencyContext context) : IRepository<
         var old = await GetByIdAsync(id);
         if (old == null)
             return false;
-        // Так то можно просто вот так сделать(и возможно правильнее будет именно так):
-        //if(applicant.Number!= null)
-        //    old.Number = applicant.Number;
-        //if (applicant.FirstName != null)
-        //    old.FirstName = applicant.FirstName;
-        //if (applicant.LastName != null)
-        //    old.LastName = applicant.LastName;
-
-
         var properties = typeof(Applicant).GetProperties()
             .Where(p => p.Name != nameof(Applicant.IdApplicant) && 
                    p.Name != nameof(Applicant.Birthday) &&

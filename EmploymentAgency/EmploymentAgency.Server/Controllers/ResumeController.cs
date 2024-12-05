@@ -9,7 +9,7 @@ namespace EmploymentAgency.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ResumeController(IRepository<Resume> repository, IRepository<JobPosition> repositoryJob, IMapper mapper) : ControllerBase
+public class ResumeController(IRepository<Resume> repository, IRepository<JobPosition> repositoryJob, IRepository<Applicant> repositoryApplicant, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Получает список резюме из репозитория, в формате DTO и возвращает результат с кодом выполнения
@@ -46,17 +46,22 @@ public class ResumeController(IRepository<Resume> repository, IRepository<JobPos
     [HttpPost("{id}")]
     public async Task<IActionResult> Post(int id, [FromBody] ResumePostDto resumeDto)
     {
-        var jobs = await repositoryJob.GetAllAsync();
-        var job = jobs.FirstOrDefault(j => j.Section == resumeDto.Job.Section && j.PositionName == resumeDto.Job.PositionName);
-        if (job == null)
-            return NotFound("Такой вакансии не найдено, можете создать свою рабочую поизицию");
+        var addedResume = mapper.Map<Resume>(resumeDto);
+        addedResume.IdApplicant = id;
 
-        var added = mapper.Map<Resume>(resumeDto);
-        added.IdApplicant = id;
-        added.IdPosition = job.IdJobPosition;
+        var jobs = await repositoryJob.GetAllAsync();
+        var applicants = await repositoryApplicant.GetAllAsync();
+        var job = jobs.FirstOrDefault(j => j.Section == resumeDto.Job.Section && j.PositionName == resumeDto.Job.PositionName);
+
+        if (job == null)
+            return NotFound("Такая JobPosition не найдена, но Вы можете создать свою рабочую поизицию");
+        if (applicants.FirstOrDefault(a => a.IdApplicant == id) == null)
+            return NotFound("Такой Applicant не найден");
+
+        addedResume.IdPosition = job.IdJobPosition;
         try
         {
-            await repository.PostAsync(added);
+            await repository.PostAsync(addedResume);
         }
         catch (Exception ex)
         {
