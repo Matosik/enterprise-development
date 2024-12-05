@@ -45,11 +45,8 @@ public class VacancyController(IRepository<Vacancy> repository, IRepository<JobP
     [HttpPost("{id}")]
     public async Task<IActionResult> Post(int id, [FromBody] VacancyPostDto value)
     {
-
         var jobs = await repositoryJob.GetAllAsync();
-        var employers = await repositoryEmployer.GetAllAsync();
-
-        if (employers.FirstOrDefault(e => e.IdEmployer == id) == null)
+        if (repositoryEmployer.GetByIdAsync(id) == null)
             return NotFound("Такой Employer не найден");
 
         var job = jobs.FirstOrDefault(j => j.Section == value.Job.Section && j.PositionName == value.Job.PositionName);

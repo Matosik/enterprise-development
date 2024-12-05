@@ -47,11 +47,9 @@ public class ResponseController(IRepository<Response> repository, IRepository<Ap
     {
         var added = mapper.Map<Response>(value);
         added.IdApplicant = id;
-        var applicants = await repositoryApplicant.GetAllAsync();
-        var vacancies = await repositoryVacancy.GetAllAsync();
-        if (applicants.FirstOrDefault(a => a.IdApplicant == added.IdApplicant) == null)
+        if (repositoryApplicant.GetByIdAsync(id) == null)
             return NotFound("Applicant с таким ID не найден");
-        if (vacancies.FirstOrDefault(r => r.IdVacancy == value.IdVacancy) == null)
+        if (repositoryVacancy.GetByIdAsync(added.IdVacancy) == null)
             return NotFound("Vacancy с таким ID не найдена");
         if (value.IdResume == null)
             added.IdResume = null;

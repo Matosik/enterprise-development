@@ -50,12 +50,11 @@ public class ResumeController(IRepository<Resume> repository, IRepository<JobPos
         addedResume.IdApplicant = id;
 
         var jobs = await repositoryJob.GetAllAsync();
-        var applicants = await repositoryApplicant.GetAllAsync();
         var job = jobs.FirstOrDefault(j => j.Section == resumeDto.Job.Section && j.PositionName == resumeDto.Job.PositionName);
 
         if (job == null)
             return NotFound("Такая JobPosition не найдена, но Вы можете создать свою рабочую поизицию");
-        if (applicants.FirstOrDefault(a => a.IdApplicant == id) == null)
+        if (repositoryApplicant.GetByIdAsync(id) == null)
             return NotFound("Такой Applicant не найден");
 
         addedResume.IdPosition = job.IdJobPosition;
