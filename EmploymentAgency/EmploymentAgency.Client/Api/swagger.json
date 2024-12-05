@@ -1,0 +1,2106 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "EmploymentAgency.Server",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Applicant": {
+      "get": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Получает список соискателей работы из репозитория, в формате DTO и возвращает результат с кодом выполнения",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantGetDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantGetDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantGetDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Добавляет нового соискателя работы в репозиторий в формате DTO",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicantPostDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicantPostDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicantPostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Applicant/{id}": {
+      "get": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Получает соискателя работы из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicantDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicantDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicantDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Обновляет существующую соискателя работы в репозитории на основе переданных данных в формате DTO",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор соискателя работы для обновления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект ApplicantPutDto с обновленными данными соискателя работы",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicantPutDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicantPutDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicantPutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Удаляет соискателя работы из репозитория по указанному идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор соискателя работы для удаления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Employer": {
+      "get": {
+        "tags": [
+          "Employer"
+        ],
+        "summary": "Получает список Работодателей из репозитория, в формате DTO и возвращает результат с кодом выполнения",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployerGetDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployerGetDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployerGetDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Employer"
+        ],
+        "summary": "Добавляет нового работадателя в репозиторий в формате DTO",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployerPostDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployerPostDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployerPostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Employer/{id}": {
+      "get": {
+        "tags": [
+          "Employer"
+        ],
+        "summary": "Получает работадателя из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployerDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployerDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployerDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Employer"
+        ],
+        "summary": "Обновляет существующего работадателя в репозитории на основе переданных данных в формате DTO",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор работадателя для обновления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект EmployerPutDto с обновленными данными работадателя",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployerPutDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployerPutDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployerPutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Employer"
+        ],
+        "summary": "Удаляет работадателя из репозитория по указанному идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор работадателя для удаления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/JobPosition": {
+      "get": {
+        "tags": [
+          "JobPosition"
+        ],
+        "summary": "Получает список рабочих позиций из репозитория, в формате DTO и возвращает результат с кодом выполнения",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPositionGetDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPositionGetDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPositionGetDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "JobPosition"
+        ],
+        "summary": "Добавляет новую рабочую позицию в репозиторий в формате DTO",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPositionPostDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPositionPostDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPositionPostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/JobPosition/{id}": {
+      "get": {
+        "tags": [
+          "JobPosition"
+        ],
+        "summary": "Получает рабочую позицию из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id рабочей позиции данные, которй мы хотим получить",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPositionDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPositionDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPositionDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "JobPosition"
+        ],
+        "summary": "Обновляет существующую рабочую позицию в репозитории на основе переданных данных в формате DTO",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор рабочей позиции для обновления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект JobPositionDto с обновленными данными рабочая позиция",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPositionPutDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPositionPutDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPositionPutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "JobPosition"
+        ],
+        "summary": "Удаляет рабочую позицию из репозитория по указанному идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор рабочей позиции для удаления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Request/applicants-by-position": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Выводит сведения о всех соискателях, ищущих работу по заданной позиции. По дефолту ищет \"backend developer C#\"",
+        "parameters": [
+          {
+            "name": "positionName",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "backend developer C#"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantGetDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantGetDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantGetDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Request/applicants-by-date": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Выводит всех соискателей, оставивших заявки за заданный период. Или по дефолту с 2023.05.01 - 2023.7.30",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Request/applicants-by-vacancy": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Вывести сведения о соискателях, соответствующих определенной заявке работодателя",
+        "parameters": [
+          {
+            "name": "vacancyId",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicantDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Request/get-response": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Выводит информацию о кол-во заявок по каждому разделу и должности",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPositionWithCountResponseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPositionWithCountResponseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPositionWithCountResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Request/top-employers-by-vacancy": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Вывод топ Работадателей по количеству вакансий",
+        "parameters": [
+          {
+            "name": "top",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployerWithVacancyCountDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployerWithVacancyCountDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployerWithVacancyCountDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Request/min-salary-vacancy": {
+      "get": {
+        "tags": [
+          "Request"
+        ],
+        "summary": "Выводит информацию о работодателях, открывших заявки с максимальным уровнем зарплаты.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployerWithSalaryVacancyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployerWithSalaryVacancyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployerWithSalaryVacancyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Response": {
+      "get": {
+        "tags": [
+          "Response"
+        ],
+        "summary": "Получает список откликов из репозитория, в формате DTO и возвращает результат с кодом выполнения",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseGetDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseGetDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseGetDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Response/{id}": {
+      "get": {
+        "tags": [
+          "Response"
+        ],
+        "summary": "Получает отклик из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id отклика данные, которого мы хоти получить",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Response"
+        ],
+        "summary": "Добавляет новое отклик в репозиторий в формате DTO",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id Кандидата, который оставляет отклик",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsePostDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsePostDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Response"
+        ],
+        "summary": "Обновляет существующую отклик в репозитории на основе переданных данных в формате DTO",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор отклик для обновления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект ResponsePutDto с обновленными данными отклик",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsePutDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsePutDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsePutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Response"
+        ],
+        "summary": "Удаляет отклик из репозитория по указанному идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор отклик для удаления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Resume": {
+      "get": {
+        "tags": [
+          "Resume"
+        ],
+        "summary": "Получает список резюме из репозитория, в формате DTO и возвращает результат с кодом выполнения",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResumeGetDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResumeGetDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResumeGetDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Resume/{id}": {
+      "get": {
+        "tags": [
+          "Resume"
+        ],
+        "summary": "Получает резюме из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id резюме данные, которого мы хотим получить",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumeDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumeDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Resume"
+        ],
+        "summary": "Добавляет новое резюме в репозиторий в формате DTO",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id соискателя который создает резюме",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumePostDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumePostDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Resume"
+        ],
+        "summary": "Обновляет существующую резюме в репозитории на основе переданных данных в формате DTO",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор резюме для обновления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект ResumePutDto с обновленными данными резюме",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumePutDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumePutDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumePutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Resume"
+        ],
+        "summary": "Удаляет резюме из репозитория по указанному идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор резюме для удаления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Vacancy": {
+      "get": {
+        "tags": [
+          "Vacancy"
+        ],
+        "summary": "Получает список вакансий из репозитория, в формате DTO и возвращает результат с кодом выполнения",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VacancyGetDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VacancyGetDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VacancyGetDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Vacancy/{id}": {
+      "get": {
+        "tags": [
+          "Vacancy"
+        ],
+        "summary": "Получает вакансию из репозитория по Id, в формате DTO и возвращает результат с кодом выполнения",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id ваканчии которую хотим получить",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VacancyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VacancyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VacancyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Vacancy"
+        ],
+        "summary": "Добавляет новую вакансию в репозиторий в формате DTO",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id Работодателя который создает ваканисю",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VacancyPostDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VacancyPostDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VacancyPostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vacancy"
+        ],
+        "summary": "Обновляет существующую вакансию в репозитории на основе переданных данных в формате DTO",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор вакансии для обновления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект VacancyPutDto с обновленными данными вакансии",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VacancyPutDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VacancyPutDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VacancyPutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vacancy"
+        ],
+        "summary": "Удаляет вакансию из репозитория по указанному идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор вакансии для удаления",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApplicantDto": {
+        "required": [
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "birthday": {
+            "type": "string",
+            "format": "date"
+          },
+          "registration": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "format": "tel",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApplicantGetDto": {
+        "required": [
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "idApplicant": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date"
+          },
+          "registration": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "number": {
+            "type": "string",
+            "format": "tel",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApplicantPostDto": {
+        "required": [
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "birthday": {
+            "type": "string",
+            "format": "date"
+          },
+          "number": {
+            "type": "string",
+            "format": "tel",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApplicantPutDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "format": "tel",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmployerDto": {
+        "required": [
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "format": "tel",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "company": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmployerGetDto": {
+        "required": [
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "idEmployer": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "company": {
+            "type": "string",
+            "nullable": true
+          },
+          "registration": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "format": "tel",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmployerPostDto": {
+        "required": [
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "format": "tel",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "company": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmployerPutDto": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "format": "tel",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "company": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmployerWithSalaryVacancyDto": {
+        "required": [
+          "employerr"
+        ],
+        "type": "object",
+        "properties": {
+          "employerr": {
+            "$ref": "#/components/schemas/EmployerGetDto"
+          },
+          "salary": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmployerWithVacancyCountDto": {
+        "required": [
+          "employer"
+        ],
+        "type": "object",
+        "properties": {
+          "employer": {
+            "$ref": "#/components/schemas/EmployerGetDto"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "JobPositionDto": {
+        "required": [
+          "positionName"
+        ],
+        "type": "object",
+        "properties": {
+          "section": {
+            "type": "string",
+            "nullable": true
+          },
+          "positionName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "JobPositionGetDto": {
+        "required": [
+          "positionName"
+        ],
+        "type": "object",
+        "properties": {
+          "idJobPosition": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "section": {
+            "type": "string",
+            "nullable": true
+          },
+          "positionName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "JobPositionPostDto": {
+        "required": [
+          "positionName"
+        ],
+        "type": "object",
+        "properties": {
+          "section": {
+            "type": "string",
+            "nullable": true
+          },
+          "positionName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "JobPositionPutDto": {
+        "type": "object",
+        "properties": {
+          "section": {
+            "type": "string",
+            "nullable": true
+          },
+          "positionName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "JobPositionWithCountResponseDto": {
+        "type": "object",
+        "properties": {
+          "jobPosition": {
+            "$ref": "#/components/schemas/JobPositionGetDto"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResponseDto": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "idVacancy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateResponse": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "idApplicant": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "summaryResponse": {
+            "type": "string",
+            "nullable": true
+          },
+          "idResume": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResponseGetDto": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "idResponse": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateResponse": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "idVacancy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idApplicant": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "summaryResponse": {
+            "type": "string",
+            "nullable": true
+          },
+          "idResume": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResponsePostDto": {
+        "type": "object",
+        "properties": {
+          "idVacancy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "summaryResponse": {
+            "type": "string",
+            "nullable": true
+          },
+          "idResume": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResponsePutDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "summaryResponse": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResumeDto": {
+        "type": "object",
+        "properties": {
+          "idApplicant": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "experience": {
+            "type": "number",
+            "format": "float"
+          },
+          "idPosition": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "wantSalary": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "education": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResumeGetDto": {
+        "type": "object",
+        "properties": {
+          "idResume": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idApplicant": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "experience": {
+            "type": "number",
+            "format": "float"
+          },
+          "idPosition": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "wantSalary": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "education": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResumePostDto": {
+        "required": [
+          "job"
+        ],
+        "type": "object",
+        "properties": {
+          "experience": {
+            "type": "number",
+            "format": "float"
+          },
+          "job": {
+            "$ref": "#/components/schemas/JobPositionDto"
+          },
+          "wantSalary": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "education": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResumePutDto": {
+        "type": "object",
+        "properties": {
+          "experience": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "idPosition": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "wantSalary": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "education": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VacancyDto": {
+        "required": [
+          "idJobPosition",
+          "nameVacancy"
+        ],
+        "type": "object",
+        "properties": {
+          "idEmployer": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idJobPosition": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nameVacancy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateVacancy": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "salary": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "experience": {
+            "type": "number",
+            "format": "float"
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VacancyGetDto": {
+        "required": [
+          "nameVacancy"
+        ],
+        "type": "object",
+        "properties": {
+          "idVacancy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idEmployer": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idJobPosition": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nameVacancy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateVacancy": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "salary": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "experience": {
+            "type": "number",
+            "format": "float"
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VacancyPostDto": {
+        "required": [
+          "job",
+          "nameVacancy"
+        ],
+        "type": "object",
+        "properties": {
+          "job": {
+            "$ref": "#/components/schemas/JobPositionDto"
+          },
+          "nameVacancy": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "salary": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "experience": {
+            "type": "number",
+            "format": "float"
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VacancyPutDto": {
+        "type": "object",
+        "properties": {
+          "nameVacancy": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "salary": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "experience": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
