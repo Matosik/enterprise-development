@@ -47,9 +47,9 @@ public class ResponseController(IRepository<Response> repository, IRepository<Ap
     {
         var added = mapper.Map<Response>(value);
         added.IdApplicant = id;
-        if (repositoryApplicant.GetByIdAsync(id) == null)
+        if (await repositoryApplicant.GetByIdAsync(id) == null)
             return NotFound("Applicant с таким ID не найден");
-        if (repositoryVacancy.GetByIdAsync(added.IdVacancy) == null)
+        if (await repositoryVacancy.GetByIdAsync(added.IdVacancy) == null)
             return NotFound("Vacancy с таким ID не найдена");
         if (value.IdResume == null)
             added.IdResume = null;

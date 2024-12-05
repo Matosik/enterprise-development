@@ -54,7 +54,7 @@ public class ResumeController(IRepository<Resume> repository, IRepository<JobPos
 
         if (job == null)
             return NotFound("Такая JobPosition не найдена, но Вы можете создать свою рабочую поизицию");
-        if (repositoryApplicant.GetByIdAsync(id) == null)
+        if (await repositoryApplicant.GetByIdAsync(id) == null)
             return NotFound("Такой Applicant не найден");
 
         addedResume.IdPosition = job.IdJobPosition;
