@@ -1,0 +1,187 @@
+﻿@page "/applicant/resume"
+
+<h3>Мои резюме</h3>
+
+@if (IsLoading)
+{
+    <p>Загрузка...</p>
+}
+else if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="error-message">@ErrorMessage</div>
+}
+else
+{
+    <button class="btn btn-success mb-3" @onclick="OpenCreateResumeModal">Создать резюме</button>
+    <button class="btn btn-dark" @onclick="Cancel">Назад</button>
+    @if (Resumes == null || !Resumes.Any())
+    {
+        <p>У вас пока нет резюме.</p>
+    }
+    else
+    {
+        <div class="list-group">
+            @foreach (var resume in Resumes)
+            {
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5>@resume.IdResume</h5>
+                        <p>Образование @resume.Education</p>
+                        <p>Рабочая секция @GetSection(resume.IdPosition)</p>
+                        <p>Рабочая должность @Job.First(j => j.IdJobPosition == resume.IdPosition).PositionName</p>
+
+                        <p>Желаемая зарплата: @resume.WantSalary</p>
+                        <p>Опыт работы: @resume.Experience год(а)</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary me-2" @onclick="() => EditResume(resume.IdResume)">Редактировать</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteResume(resume.IdResume)">Удалить</button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+
+@if (IsModalVisible)
+{
+    <div class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+        <div class="modal-content" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); width: 400px;">
+            <h5 class="modal-title">Создать резюме</h5>
+            <button type="button" class="btn-close" style="float: right;" @onclick="CloseModal">&times;</button>
+
+            <EditForm Model="@NewResume" OnValidSubmit="CreateResume">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div>
+                    <label>Название позиции:</label>
+                    <InputText @bind-Value="NewResume.Job.Section" class="form-control" />
+                </div>
+                <div>
+                    <label>Название должности:</label>
+                    <InputText @bind-Value="NewResume.Job.PositionName" class="form-control" />
+                </div>
+                <div>
+                    <label>Опыт работы (в годах):</label>
+                    <InputNumber @bind-Value="NewResume.Experience" class="form-control" />
+                </div>
+                <div>
+                    <label>Желаемая зарплата:</label>
+                    <InputNumber @bind-Value="NewResume.WantSalary" class="form-control" />
+                </div>
+                <div>
+                    <label>Образование:</label>
+                    <InputTextArea @bind-Value="NewResume.Education" class="form-control" />
+                </div>
+
+                <div class="modal-footer" style="margin-top: 15px; display: flex; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-success me-2">Создать</button>
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Отмена</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+
+@code {
+    private bool IsLoading { get; set; } = true;
+    private string ErrorMessage { get; set; } = string.Empty;
+    private List<ResumeGetDto> Resumes { get; set; } = new();
+    private List<JobPositionGetDto> Job { get; set; } = new();
+    private bool IsModalVisible { get; set; } = false;
+
+    private ResumePostDto NewResume { get; set; } = new();
+
+    [Inject]
+    private UserSessionService UserSessionService { get; set; }
+
+    [Inject]
+    private IEmploymentAgencyWrapper EmploymentAgencyApiWrapper { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    public string GetSection(int id)
+    {
+
+        var q = Job.First(j => j.IdJobPosition == id).Section;
+        return q;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        if (!UserSessionService.UserId.HasValue || !UserSessionService.IsApplicant)
+        {
+            ErrorMessage = "Пользователь не авторизован.";
+            IsLoading = false;
+            IsModalVisible = false;
+            return;
+        }
+
+        try
+        {
+            Job = (await EmploymentAgencyApiWrapper.GetAllJobPosition()).ToList();
+            Resumes = (await EmploymentAgencyApiWrapper.GetAllResume())
+                .Where(r => r.IdApplicant == UserSessionService.UserId.Value)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Ошибка: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void OpenCreateResumeModal()
+    {
+        NewResume = new ResumePostDto();
+        IsModalVisible = true;
+    }
+
+    private  void CloseModal()
+    {
+        IsModalVisible = false;
+        NavigationManager.NavigateTo("/applicant");
+        NavigationManager.NavigateTo("/applicant/resume");
+    }
+
+    private async Task CreateResume()
+    {
+        
+        try
+        {
+            await EmploymentAgencyApiWrapper.CreateResume(UserSessionService.UserId.Value, NewResume);
+            CloseModal();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Ошибка при создании резюме: {ex.Message}";
+        }
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/applicant");
+    }
+    private void EditResume(int resumeId)
+    {
+        NavigationManager.NavigateTo($"/applicant/resume/{resumeId}/edit");
+    }
+
+    private async Task DeleteResume(int resumeId)
+    {
+        try
+        {
+            await EmploymentAgencyApiWrapper.DeleteResume(resumeId);
+            Resumes = Resumes.Where(r => r.IdResume != resumeId).ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Ошибка при удалении резюме: {ex.Message}";
+        }
+    }
+}
