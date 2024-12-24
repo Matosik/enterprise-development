@@ -1,0 +1,160 @@
+﻿@page "/user/edit"
+
+<h3>Редактирование пользователя</h3>
+
+@if (IsLoading)
+{
+    <p>Загрузка...</p>
+}
+else if (Applicant == null && Employer == null)
+{
+    <p>Пользователь не авторизован. Пожалуйста, войдите в систему.</p>
+    <button class="btn btn-primary" @onclick="Login">Войти</button>
+}
+else if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="error-message">@ErrorMessage</div>
+}
+else if (IsApplicant)
+{
+    <EditForm Model="@(IsApplicant ? ApplicantForm : EmployerForm)" OnValidSubmit="SaveChanges">
+        <h4>Изменение данных кандидата</h4>
+
+        <div>
+            <label>Имя:</label>
+            <InputText @bind-Value="(ApplicantForm.FirstName) " />
+        </div>
+        <div>
+            <label>Фамилия:</label>
+            <InputText @bind-Value="(ApplicantForm.LastName)" />
+        </div>
+        <div>
+            <label>Номер телефона:</label>
+            <InputText @bind-Value="(ApplicantForm.Number)" />
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить изменения</button>
+        <button type="button" class="btn btn-secondary" @onclick="Cancel">Отмена</button>
+       
+    </EditForm>
+}
+else
+{
+    <EditForm Model="EmployerForm" OnValidSubmit="SaveChanges">
+        <h4>Изменение данных работадателя</h4>
+
+        <div>
+            <label>Имя:</label>
+            <InputText @bind-Value="(EmployerForm.FirstName) " />
+        </div>
+        <div>
+            <label>Фамилия:</label>
+            <InputText @bind-Value="(EmployerForm.LastName)" />
+        </div>
+        <div>
+            <label>Номер телефона:</label>
+            <InputText @bind-Value="(EmployerForm.Number)" />
+        </div>
+        <div>
+            <label>Компания:</label>
+            <InputText @bind-Value="(EmployerForm.Company)" />
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить изменения</button>
+        <button type="button" class="btn btn-secondary" @onclick="Cancel">Отмена</button>
+
+    </EditForm>
+}
+
+@code {
+    private bool IsLoading { get; set; } = true;
+    private string ErrorMessage { get; set; } = string.Empty;
+    private bool IsApplicant { get; set; }
+    private ApplicantDto Applicant { get; set; }
+    private EmployerDto Employer { get; set; }
+    private ApplicantPutDto ApplicantForm { get; set; } = new();
+    private EmployerPutDto EmployerForm { get; set; } = new();
+
+    [Inject]
+    private UserSessionService UserSessionService { get; set; }
+
+    [Inject]
+    private IEmploymentAgencyWrapper EmploymentAgencyApiWrapper { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!UserSessionService.UserId.HasValue)
+        {
+            ErrorMessage = "Пользователь не авторизован.";
+            IsLoading = false;
+            return;
+        }
+
+        try
+        {
+            if (UserSessionService.IsApplicant)
+            {
+                Applicant = await EmploymentAgencyApiWrapper.GetApplicant(UserSessionService.UserId.Value);
+                ApplicantForm = new ApplicantPutDto
+                    {
+                        FirstName = Applicant.FirstName,
+                        LastName = Applicant.LastName,
+                        Number = Applicant.Number
+                    };
+                IsApplicant = true;
+            }
+            else
+            {
+                Employer = await EmploymentAgencyApiWrapper.GetEmployer(UserSessionService.UserId.Value);
+                EmployerForm = new EmployerPutDto
+                    {
+                        FirstName = Employer.FirstName,
+                        LastName = Employer.LastName,
+                        Number = Employer.Number,
+                        Company = Employer.Company
+                    };
+                IsApplicant = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Ошибка: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        try
+        {
+            if (IsApplicant)
+            {
+                await EmploymentAgencyApiWrapper.UpdateApplicant(UserSessionService.UserId.Value, ApplicantForm);
+            }
+            else
+            {
+                await EmploymentAgencyApiWrapper.UpdateEmployer(UserSessionService.UserId.Value, EmployerForm);
+            }
+
+            NavigationManager.NavigateTo(IsApplicant ? "/applicant" : "/employer");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Ошибка при сохранении данных: {ex.Message}";
+        }
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo(IsApplicant ? "/applicant" : "/employer");
+    }
+
+    private void Login()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}

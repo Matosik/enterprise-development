@@ -1,6 +1,74 @@
-﻿@page "/Login"
-<h3>Login</h3>
+﻿@page "/login"
+
+<h3>Вход в систему</h3>
+
+<InputCheckbox @bind-Value="IsApplicant" /> Войти как Applicant
+
+<div>
+    <InputText @bind-Value="PhoneNumber" placeholder="Введите номер телефона" />
+</div>
+
+<button @onclick="Loging">Войти</button>
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="error-message">@ErrorMessage</div>
+}
 
 @code {
+    private bool IsApplicant { get; set; } = true;
+    private string PhoneNumber { get; set; } = string.Empty;
+    private string ErrorMessage { get; set; } = string.Empty;
+    [Inject]
+    private UserSessionService UserSessionService { get; set; }
 
+    [Inject]
+    private IEmploymentAgencyWrapper EmploymentAgencyApiWrapper { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private async Task Loging()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(PhoneNumber))
+            {
+                ErrorMessage = "Введите номер телефона.";
+                return;
+            }
+
+            if (IsApplicant)
+            {
+                var applicant = await EmploymentAgencyApiWrapper.GetAllApplicant();
+                var user = applicant.FirstOrDefault(a => a.Number == PhoneNumber);
+                if (user != null)
+                {
+                    UserSessionService.UserId = user.IdApplicant;
+                    UserSessionService.IsApplicant = true;
+                    NavigationManager.NavigateTo("/applicant");
+                    return;
+                }
+            }
+            else
+            {
+                var employer = await EmploymentAgencyApiWrapper.GetAllEmployer();
+                var user = employer.FirstOrDefault(e => e.Number == PhoneNumber);
+                if (user != null)
+                {
+                    UserSessionService.UserId = user.IdEmployer;
+                    UserSessionService.IsApplicant = false;
+                    NavigationManager.NavigateTo("/employer");
+                    return;
+                }
+            }
+
+            ErrorMessage = "Пользователь с таким номером телефона не найден.";
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Ошибка: {ex.Message}";
+        }
+
+    }
 }

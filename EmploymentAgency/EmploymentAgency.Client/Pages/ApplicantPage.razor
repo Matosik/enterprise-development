@@ -1,0 +1,107 @@
+﻿@page "/applicant"
+
+<h3>Личный кабинет</h3>
+
+@if (IsLoading)
+{
+    <p>Загрузка...</p>
+}
+
+else if (Applicant == null )
+{
+    <div>
+        <p>Пользователь не авторизован. Пожалуйста, войдите в систему или зарегистрируйтесь.</p>
+        <button class="btn btn-dark" @onclick="SingnUp">Зарегестрироваться</button>
+        <button class="btn btn-primary" @onclick="Login">Войти</button>
+    </div>
+}
+else
+{
+    <div>
+        <h4>Данные пользователя</h4>
+        <p>Имя: @Applicant.FirstName</p>
+        <p>Фамилия: @Applicant.LastName</p>
+        <p>Номер телефона: @Applicant.Number</p>
+        <p>Дата регистрации: @Applicant.Registration.ToString()</p>
+
+        <button @onclick="EditDetails">Редактировать данные</button>
+        <button class="btn-danger" @onclick="DeleteAccount">Удалить аккаунт</button>
+    </div>
+
+    <div>
+        <h4>Навигация</h4>
+        <ul>
+            <li><a href="/applicant/resume">Мои резюме</a></li>
+            <li><a href="/applicant/vacancy">Вакансии</a></li>
+            <li><a href="/applicant/myResponse">Мои отклики</a></li>
+        </ul>
+    </div>
+}
+
+@code {
+    private ApplicantDto Applicant { get; set; }
+    private bool IsLoading { get; set; } = true;
+    private string ErrorMessage { get; set; } = string.Empty;
+
+    [Inject]
+    private UserSessionService UserSessionService { get; set; }
+
+    [Inject]
+    private IEmploymentAgencyWrapper EmploymentAgencyApiWrapper { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!UserSessionService.UserId.HasValue || !UserSessionService.IsApplicant)
+        {
+            Applicant = null;
+            IsLoading = false;
+            return;
+        }
+
+        try
+        {
+            Applicant = await EmploymentAgencyApiWrapper.GetApplicant(UserSessionService.UserId.Value);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Ошибка: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void EditDetails()
+    {
+        NavigationManager.NavigateTo("/user/edit");
+    }
+
+    private async Task DeleteAccount()
+    {
+        try
+        {
+            if (UserSessionService.UserId.HasValue)
+            {
+                await EmploymentAgencyApiWrapper.DeleteApplicant(UserSessionService.UserId.Value);
+                UserSessionService.UserId = null;
+                NavigationManager.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Ошибка при удалении аккаунта: {ex.Message}";
+        }
+    }
+    private void SingnUp()
+    {
+        NavigationManager.NavigateTo("/Signup");
+    }
+    private void Login()
+    {
+        NavigationManager.NavigateTo("/Login");
+    }
+}
