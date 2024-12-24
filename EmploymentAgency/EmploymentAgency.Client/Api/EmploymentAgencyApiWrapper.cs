@@ -1,10 +1,11 @@
-﻿
-namespace EmploymentAgency.Client.Api;
+﻿using Microsoft.Extensions.Configuration;
+using System.Net.Http;
 
+namespace EmploymentAgency.Client.Api;
 public class EmploymentAgencyApiWrapper(IConfiguration configuration) : IEmploymentAgencyWrapper
 {
-    public readonly EmploymentAgencyClient _client = new(configuration["OpenApi:ServerUrl"], new HttpClient());
-
+    public readonly EmploymentAgencyClient _client = new(configuration["OpenApi:Url"], new HttpClient());
+  
     public async Task CreateApplicant(ApplicantPostDto entity) => await _client.ApplicantPOSTAsync(entity);
     public async Task CreateEmployer(EmployerPostDto entity) => await _client.EmployerPOSTAsync(entity);
     public async Task CreateJobPosition(JobPositionPostDto entity) => await _client.JobPositionPOSTAsync(entity);

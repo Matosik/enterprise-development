@@ -32,8 +32,14 @@ builder.Services.AddScoped<ServiseRepository>();
 
 builder.Services.AddAutoMapper(typeof(Mapper));
 
-var app = builder.Build();
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy => {
+    policy.AllowAnyOrigin();
+    policy.AllowAnyMethod();
+    policy.AllowAnyHeader();
+}));
 
+var app = builder.Build();
+app.UseCors();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

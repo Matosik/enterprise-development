@@ -1,7 +1,18 @@
 ﻿@page "/"
-
-<PageTitle>Home</PageTitle>
+@inject NavigationManager Navigation
+<PageTitle>Главная страница</PageTitle>
 
 <h1>Hello, world!</h1>
+<button class="btn btn-dark" @onclick="SingnUp">Зарегестрироваться</button>
+<button class="btn btn-primary" @onclick="Login">Войти</button>
 
-Welcome to your new app.
+@code {
+    private void SingnUp()
+    {
+        Navigation.NavigateTo("/Signup");
+    }
+    private void Login()
+    {
+        Navigation.NavigateTo("/Login");
+    }
+}

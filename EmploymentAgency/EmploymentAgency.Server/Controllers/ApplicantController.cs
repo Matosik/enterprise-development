@@ -26,7 +26,10 @@ public class ApplicantController(ServiseRepository repository, IMapper mapper) :
     /// </summary>
     /// <param name="id"></param>
     /// <returns>Возвращает код HTTP-код ответа и найденое значение соискателя работы по id</returns>
+    
     [HttpGet("{id}")]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(200)]
     public async Task<ActionResult<ApplicantDto>> Get(int id)
     {
         var applicant = await repository.Applicants.GetByIdAsync(id);

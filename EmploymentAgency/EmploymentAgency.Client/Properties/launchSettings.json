@@ -1,4 +1,7 @@
 {
+  "OpenApi": {
+    "ServerUrl": "http://localhost:5218"
+  },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,

@@ -1,0 +1,54 @@
+﻿@page "/signup"
+
+<h3>Регистрация</h3>
+
+<InputCheckbox @bind-Value="IsApplicant" /> Зарегистрироваться как Applicant
+
+@if (IsApplicant)
+{
+    <div>
+        <InputText @bind-Value="Applicant.FirstName" placeholder="First Name" />
+        <InputText @bind-Value="Applicant.LastName" placeholder="Last Name" />
+        <InputText @bind-Value="Applicant.Number" placeholder="Phone Number" />
+        <InputDate @bind-Value="Applicant.Birthday" />
+    </div>
+}
+else
+{
+    <div>
+        <InputText @bind-Value="Employer.Company" placeholder="Company Name" />
+        <InputText @bind-Value="Employer.FirstName" placeholder="First Name" />
+        <InputText @bind-Value="Employer.LastName" placeholder="Last Name" />
+        <InputText @bind-Value="Employer.Number" placeholder="Phone Number" />
+    </div>
+}
+
+<button @onclick="CreateUser">Создать</button>
+<button @onclick="Cancel">Отменить</button>
+
+@code {
+    private bool IsApplicant { get; set; }
+    private ApplicantPostDto Applicant { get; set; } = new();
+    private EmployerPostDto Employer { get; set; } = new();
+    [Inject]
+    private IEmploymentAgencyWrapper EmploymentAgencyApiWrapper { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private async Task CreateUser()
+    {
+        if (IsApplicant)
+        {
+            await EmploymentAgencyApiWrapper.CreateApplicant(Applicant);
+        }
+        else
+        {
+            await EmploymentAgencyApiWrapper.CreateEmployer(Employer);
+        }
+
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void Cancel() => NavigationManager.NavigateTo("/");
+}
